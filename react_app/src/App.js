@@ -8,10 +8,12 @@ import Count from '../src/component/count';
 function App() {
   return (
     <div className="App">
-      {/* <Accordion/>
+      {/* 
+      <Accordion/>
       <ProgressBar/>
-      <TabComponent/> */}
+      <TabComponent/> 
       <Count/>
+      */}
     </div>
   );
 }
