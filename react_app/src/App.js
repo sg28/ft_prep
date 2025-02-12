@@ -5,6 +5,7 @@ import ProgressBar from '../src/component/progressbar';
 import TabComponent from '../src/component/tabComponent';
 import Count from '../src/component/count';
 import According_Sg from '../src/component/accordian_sg';
+import ContactUsForm from '../src/component/contact_us_form';
 
 
 function App() {
@@ -15,8 +16,9 @@ function App() {
       <ProgressBar/>
       <TabComponent/> 
       <Count/>
-      */}
       < According_Sg />
+      */}
+      <ContactUsForm/>
     </div>
   );
 }
