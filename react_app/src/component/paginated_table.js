@@ -18,10 +18,9 @@ export default function PaginatedTable() {
     { name: "Ava", age: 25 },
   ];
 
+  const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5; 
   const totalPages = Math.ceil(employeeData.length / pageSize);
-  const [currentPage, setCurrentPage] = useState(1);
-
   const startIndex = (currentPage - 1) * pageSize;
   const currentTableData = employeeData.slice(startIndex, startIndex + pageSize);
 
