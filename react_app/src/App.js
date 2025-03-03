@@ -7,6 +7,7 @@ import Count from '../src/component/count';
 import According_Sg from '../src/component/accordian_sg';
 import ContactUsForm from '../src/component/contact_us_form';
 import MortagageCalculator from './component/mortgage_calculator';
+import PaginatedTable from './component/paginated_table';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
       < According_Sg />
       <ContactUsForm/>
       */}
-      <MortagageCalculator/>
+      {/* <MortagageCalculator/> */}
+      <PaginatedTable/>
     </div>
   );
 }
