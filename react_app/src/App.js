@@ -10,6 +10,7 @@ import MortagageCalculator from './component/mortgage_calculator';
 import PaginatedTable from './component/paginated_table';
 import FileExplorer from './component/fileExplorer';
 import ButtonState from './component/button_state';
+import Modal from "../src/component/modal"; 
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
       <ContactUsForm/>
       <MortagageCalculator/>
       <PaginatedTable/>
-      <FileExplorer/>*/}
-      <ButtonState />
+      <FileExplorer/>
+      <ButtonState />*/}
+      <Modal />
     </div>
   );
 }
