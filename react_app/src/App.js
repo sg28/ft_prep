@@ -11,6 +11,7 @@ import PaginatedTable from './component/paginated_table';
 import FileExplorer from './component/fileExplorer';
 import ButtonState from './component/button_state';
 import Modal from "../src/component/modal"; 
+import StarRating from './component/star_rating';
 
 function App() {
   return (
@@ -25,8 +26,9 @@ function App() {
       <MortagageCalculator/>
       <PaginatedTable/>
       <FileExplorer/>
-      <ButtonState />*/}
-      <Modal />
+      <ButtonState />
+      <Modal />*/}
+      <StarRating />
     </div>
   );
 }
