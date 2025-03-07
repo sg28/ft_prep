@@ -9,6 +9,7 @@ import ContactUsForm from '../src/component/contact_us_form';
 import MortagageCalculator from './component/mortgage_calculator';
 import PaginatedTable from './component/paginated_table';
 import FileExplorer from './component/fileExplorer';
+import ButtonState from './component/button_state';
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
       < According_Sg />
       <ContactUsForm/>
       <MortagageCalculator/>
-      <PaginatedTable/>*/}
-      <FileExplorer/>
+      <PaginatedTable/>
+      <FileExplorer/>*/}
+      <ButtonState />
     </div>
   );
 }
