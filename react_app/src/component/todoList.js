@@ -31,6 +31,24 @@ export default function ToDoList() {
 
   let removeTask = (id) => {
     console.log(id)
+    let updatedList = todoList.filter((item) => item.id !== id);
+    setTodoList(updatedList);
+  }
+
+  let updateTaskStatus =(id)=>{
+   
+   console.log(id)
+    let updatedListWithTaskStatus = todoList.map((item) =>{
+      if(item.id === id){
+        return {
+          ...item,
+          status: item.status === "pending"? "done": "pending"
+        }
+      }
+      return item;
+    })
+
+    setTodoList(updatedListWithTaskStatus);
   }
 
   return (
@@ -136,6 +154,7 @@ export default function ToDoList() {
 
                 {/* Task Status */}
                 <span
+                  onClick={()=>updateTaskStatus(item.id)}
                   style={{
                     padding: "6px 12px",
                     borderRadius: "3px",
