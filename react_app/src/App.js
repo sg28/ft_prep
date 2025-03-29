@@ -13,6 +13,9 @@ import ButtonState from './component/button_state';
 import Modal from "../src/component/modal"; 
 import StarRating from './component/star_rating';
 import ToDoList from './component/todoList';
+import TrafficLight from "./component/trafficLight";
+
+
 
 function App() {
   return (
@@ -29,8 +32,9 @@ function App() {
       <FileExplorer/>
       <ButtonState />
       <Modal />
-      <StarRating />*/}
-      <ToDoList/>
+      <StarRating />
+      <ToDoList/>*/}
+      <TrafficLight/>
     </div>
   );
 }
