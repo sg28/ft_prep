@@ -1,0 +1,19 @@
+function rightSideView(root) {
+  let res = [];
+
+  function helper(node, depth) {
+    if (!node) return;
+
+    // If this is the first node at this depth, add it
+    if (depth === res.length) {
+      res.push(node.val);
+    }
+
+    // Prioritize right subtree first
+    helper(node.right, depth + 1);
+    helper(node.left, depth + 1);
+  }
+
+  helper(root, 0);
+  return res;
+}
