@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 
 export default function TrafficLight() {
-    const [lights] = useState(["red", "orange", "green"]);
-    const [lightIndex, setLightIndex] = useState(0);
-  
-    useEffect(() => {
-        const interval = setInterval(() => {
-          setLightIndex((prevIndex) => {
-            // const nextIndex = (prevIndex + 1) % lights.length;
-            const nextIndex = prevIndex + 1 === lights.length ? 0 : prevIndex + 1;
-            return nextIndex;
-          });
-        }, 2000);
-    
-        return () => {
-          clearInterval(interval);
-        };
-      }, [lights]);
+  const [lights] = useState(["red", "orange", "green"]);
+  const [lightIndex, setLightIndex] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLightIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1 === lights.length ? 0 : prevIndex + 1;
+        return nextIndex;
+      });
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [lights]);
 
   return (
     <div className="main_component">
@@ -39,11 +37,11 @@ export default function TrafficLight() {
               key={index}
               className={light}
               style={{
-                backgroundColor: index === lightIndex ? light : '#fff',
+                backgroundColor: index === lightIndex ? light : "#fff",
                 border: `1px solid ${light}`,
                 borderRadius: "4px",
                 margin: "2px",
-                color:"#fff"
+                color: "#fff",
               }}
             >
               {light}{" "}
