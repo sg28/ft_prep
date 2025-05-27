@@ -24,10 +24,10 @@ function nextGreaterElements(nums) {
 
     // Traverse the array twice to simulate circularity
     for (let i = 0; i < 2 * n; i++) {
-        let num = nums[i % n];
-        while (stack.length && nums[stack[stack.length - 1]] < num) {
+        let current_num = nums[i % n];
+        while (stack.length && current_num > nums[stack[stack.length - 1]]) {
             let idx = stack.pop();
-            res[idx] = num;
+            res[idx] = current_num;
         }
         if (i < n) stack.push(i);
     }
