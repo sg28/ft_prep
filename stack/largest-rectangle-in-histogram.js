@@ -34,7 +34,12 @@ function largestRectangleArea(heights) {
     // Process any remaining bars in the stack
     while (stack.length) {
         let height = heights[stack.pop()];
-        let width = stack.length === 0 ? heights.length : heights.length - stack[stack.length - 1] - 1;
+        let width;
+        if(stack.length === 0){
+            width = heights.length;
+        }else{
+            width = heights.length - stack[stack.length - 1] - 1;
+        }
         maxArea = Math.max(maxArea, height * width);
     }
 
