@@ -17,6 +17,14 @@ The number 2 can't find next greater number.
 The second 1's next greater number needs to search circularly, which is also 2.
 */
 
+
+/*
+    // monotonic decreasing stack
+    few of the things we are doing here differently is.
+    1. i < 2 * n (multiplying 2 with n)
+    2. let current_num = nums[i % n]; ( diving the index by % n )
+    3. if (i < n) stack.push(i); ( We could have done only stack.push(i))
+*/
 function nextGreaterElements(nums) {
     const n = nums.length;
     const res = new Array(n).fill(-1);
@@ -38,4 +46,3 @@ function nextGreaterElements(nums) {
 console.log(nextGreaterElements([1,2,1])); // [2, -1, 2]
 console.log(nextGreaterElements([1,2,3,4,3])); // [2,3,4,-1,4]
 
-// monotonic decreasing stack
