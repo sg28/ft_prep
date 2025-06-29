@@ -30,6 +30,9 @@ function dominateIndex(nums: number[]): number {
             secondMax = nums[i];
         }
     }
-
-    return max > 2 * secondMax ? index : -1;
+    if (max > 2 * secondMax) {
+        return index;
+    } else {
+        return -1;
+    }
 }
