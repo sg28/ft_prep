@@ -11,6 +11,7 @@ function Men() {
   let [items, setItems] = useState([
     {
       id: 1,
+      sku: "TSHIRT-001",
       name: "Classic T-Shirt",
       price: 19.99,
       image: men1,
@@ -18,6 +19,7 @@ function Men() {
     },
     {
       id: 2,
+      sku: "BAG-002",
       name: "Leather Bag",
       price: 49.99,
       image: men2,
@@ -25,6 +27,7 @@ function Men() {
     },
     {
       id: 3,
+      sku: "SHOES-003",
       name: "Running Shoes",
       price: 59.99,
       image: men3,
@@ -32,12 +35,42 @@ function Men() {
     },
     {
       id: 4,
+      sku: "JACKET-004",
       name: "Denim Jacket",
       price: 39.99,
       image: men4,
       description: "Trendy denim jacket for casual outings.",
     },
   ]);
+
+  let [menCart, setmenCart] = useState({});
+
+  function addFn(item) {
+  setmenCart(prev => {
+    const updated = { ...prev };
+    if (updated[item.sku]) {
+      updated[item.sku]++;
+    } else {
+      updated[item.sku] = 1;
+    }
+    return updated;
+  });
+}
+
+function removeFn(item) {
+  setmenCart(prev => {
+    const updated = { ...prev };
+    if (updated[item.sku]) {
+      updated[item.sku]--;
+      if (updated[item.sku] === 0) delete updated[item.sku];
+    }
+    return updated;
+  });
+}
+
+  useEffect(()=>{
+    console.log("menCart ", menCart)
+  },[menCart])
 
   return (
     <div className="main-item-container">
@@ -59,8 +92,8 @@ function Men() {
               </div>
               <div className="item-elem-price">{elem.price}</div>
               <div className="item-elem-quantity">
-                <button> + Add</button>
-                <button> - remove</button>
+                <button onClick={()=>addFn(elem)}>Add</button>
+                <button onClick={()=>removeFn(elem)}>Remove</button>
               </div>
             </div>
           ))}
