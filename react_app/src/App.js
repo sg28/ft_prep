@@ -1,19 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import Accordion from '../src/component/accordion';
-import ProgressBar from '../src/component/progressbar';
-import TabComponent from '../src/component/tabComponent';
-import Count from '../src/component/count';
-import According_Sg from '../src/component/accordian_sg';
-import ContactUsForm from '../src/component/contact_us_form';
-import MortagageCalculator from './component/mortgage_calculator';
-import PaginatedTable from './component/paginated_table';
-import FileExplorer from './component/fileExplorer';
-import ButtonState from './component/button_state';
-import Modal from "../src/component/modal"; 
-import StarRating from './component/star_rating';
-import ToDoList from './component/todoList';
-import TrafficLight from "./component/trafficLight";
+import Accordion from './container/accordion';
+import ProgressBar from './container/progressbar';
+import TabComponent from './container/tabComponent';
+import Count from './container/count';
+import According_Sg from './container/accordian_sg';
+import ContactUsForm from './container/contact_us_form';
+import MortagageCalculator from './container/mortgage_calculator';
+import PaginatedTable from './container/paginated_table';
+import FileExplorer from './container/fileExplorer';
+import ButtonState from './container/button_state';
+import Modal from "./container/modal"; 
+import StarRating from './container/star_rating';
+import ToDoList from './container/todoList';
+import TrafficLight from "./container/trafficLight";
 
 
 
