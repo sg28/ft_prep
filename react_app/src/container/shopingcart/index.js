@@ -1,12 +1,25 @@
 import React,{useEffect} from 'react';
+import { useState } from 'react';
 import Header from "../../component/header";
 import Category from '../../component/category';
-import { useState } from 'react';
+import Men from '../../component/ItemContainer/Men';
+import Women from '../../component/ItemContainer/Women';
 
 export default function ShopingCart(props={}){
 
     let [categorySelected, setCategorySelected] = useState("Men");
     
+    function loadItemComponent() {
+        if (categorySelected.name === 'Men') {
+            console.log('Men selected')
+            return <Men />;
+        } else if (categorySelected.name === 'Women') {
+            return <Women />;
+        } else {
+            return null;
+        }
+    }
+
     // category selected
     useEffect(()=>{
         console.log('categorySelected ', categorySelected)
@@ -24,9 +37,10 @@ export default function ShopingCart(props={}){
             <div><Header/></div>
             <div>
                 <Category
-                   categorySelected={setCategorySelected} 
+                   onCategorySelect={setCategorySelected} 
                 />
             </div>
+            <div>{loadItemComponent()}</div>
         </div>
     )
 }

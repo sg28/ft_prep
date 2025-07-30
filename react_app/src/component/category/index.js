@@ -13,7 +13,7 @@ export default function Category(props){
     ]);
 
     function catgegorySelectedFn(elem){
-        props.categorySelected(elem)
+        props.onCategorySelect(elem)
     }
 
 
