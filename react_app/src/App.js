@@ -34,7 +34,8 @@ function App() {
       <Modal />
       <StarRating />
       <ToDoList/>*/}
-      <TrafficLight/>
+      {/* <TrafficLight/> */}
+      helloWorld
     </div>
   );
 }
