@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react';
 import Header from "../../component/header";
-
+import Category from '../../component/category';
 
 export default function ShopingCart(props={}){
 
@@ -12,6 +12,9 @@ export default function ShopingCart(props={}){
 
 
     return(
-        <div><Header/></div>
+        <div className='shoping-cart'>
+            <div><Header/></div>
+            <div><Category/></div>
+        </div>
     )
 }
