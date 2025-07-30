@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "./men.css";
 
-import men1 from "../../../assets/men/men1.avif";
-import men2 from "../../../assets/men/men2.avif";
-import men3 from "../../../assets/men/men3.avif";
-import men4 from "../../../assets/men/men4.avif";
+import men1 from "../../../../assets/men/men1.avif";
+import men2 from "../../../../assets/men/men2.avif";
+import men3 from "../../../../assets/men/men3.avif";
+import men4 from "../../../../assets/men/men4.avif";
 
 function Men() {
   let [items, setItems] = useState([
