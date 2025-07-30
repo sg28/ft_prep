@@ -1,0 +1,14 @@
+.category {
+  display: flex;
+  gap: 100px;
+}
+.category-main-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.category-element-text{
+    font-size: 10px;
+    font-weight: 400;
+}

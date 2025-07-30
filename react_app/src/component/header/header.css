@@ -11,7 +11,8 @@
 }
 
 .title{
-    font-size: "30px";
+    font-size: 30px;
+    font-weight: 600;
 }
 .nav-elements-text{
     text-decoration: underline;
