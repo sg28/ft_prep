@@ -14,7 +14,7 @@ import Modal from "./container/modal";
 import StarRating from './container/star_rating';
 import ToDoList from './container/todoList';
 import TrafficLight from "./container/trafficLight";
-
+import ShopingCart from './container/shopingcart';
 
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
       <StarRating />
       <ToDoList/>*/}
       {/* <TrafficLight/> */}
-      helloWorld
+      <ShopingCart/>
     </div>
   );
 }
