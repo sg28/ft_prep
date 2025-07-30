@@ -1,10 +1,10 @@
 import React,{useEffect} from 'react';
 import { useState } from 'react';
-import Header from "../../component/header";
-import Category from '../../component/category';
+import Header from "../../component/shopingCart/header";
+import Category from '../../component/shopingCart/category';
 
-import Men from '../../component/ItemContainer/Men';
-import Women from '../../component/ItemContainer/Women';
+import Men from '../../component/shopingCart/ItemContainer/Men';
+import Women from '../../component/shopingCart/ItemContainer/Women';
 
 
  

@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "./women.css";
 
-import men1 from "../../../assets/women/women1.avif";
-import men2 from "../../../assets/women/women2.avif";
-import men3 from "../../../assets/women/women3.avif";
-import men4 from "../../../assets/women/women4.avif";
+import men1 from "../../../../assets/women/women1.avif";
+import men2 from "../../../../assets/women/women2.avif";
+import men3 from "../../../../assets/women/women3.avif";
+import men4 from "../../../../assets/women/women4.avif";
 
 function Women() {
   let [items, setItems] = useState([
