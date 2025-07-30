@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import "./header.css";
 
 function Header(props) {
-  let [title, setTitle] = useState("CarNama");
+  let [title, setTitle] = useState("Out-Street");
   let [location, setLocation] = useState({
     streetName: "Divon Street",
     state: "California",
