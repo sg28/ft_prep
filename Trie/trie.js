@@ -1,31 +1,46 @@
-
-class TrieNode{
-  constructor(){
-    this.children = {};
+class TrieNode {
+  constructor() {
+    this.children = {};  // map char → TrieNode
     this.isEndOfWord = false;
   }
 }
 
 class Trie {
-  constructor(){
-    this.root = new TrieNode();  
+  constructor() {
+    this.root = new TrieNode();
   }
-  
-  insert(word){
+
+  insert(word) {
     let node = this.root;
-    for(let char of word){
-      if(!node.children[char]){
-        node.children[char] = new TrieNode();
-      }
+    for (let char of word) {
+      if (!node.children[char]) node.children[char] = new TrieNode();
       node = node.children[char];
     }
+    node.isEndOfWord = true;
   }
-  
-  
-  search(word){
-    
+
+  search(word) {
+    let node = this.root;
+    for (let char of word) {
+      if (!node.children[char]) return false;
+      node = node.children[char];
+    }
+    return node.isEndOfWord;
   }
-  startsWith(prefix){
-    
+
+  startsWith(prefix) {
+    let node = this.root;
+    for (let char of prefix) {
+      if (!node.children[char]) return false;
+      node = node.children[char];
+    }
+    return true;
   }
 }
+
+// Example
+const trie = new Trie();
+trie.insert("apple");
+console.log(trie.search("apple"));   // true
+console.log(trie.search("app"));     // false
+console.log(trie.startsWith("app")); // true
