@@ -1,0 +1,63 @@
+
+
+
+
+Here’s a concise end‑to‑end **Prefix Recall** flow for a user typing **“new yo”**, shown in **both modes** side‑by‑side:
+
+
+
+
+                [Client types "new yo"]
+                        │
+                        ▼
+                Normalize → "new yo"
+                Tokenize  → ["new","yo"]
+                        │
+                        ├─────────────────────────────────────────────────────────────────────┐
+                        │                                                                     │
+                        ▼                                                                     ▼
+                 LAST‑TOKEN MODE                                                       WHOLE‑QUERY MODE
+                 ----------------                                                       ----------------
+                Scope: use last token "yo"                                     Scope: use entire string "new yo"
+                Enforce min/max length                                          Enforce min/max length
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Key Shaping:                                                        Key Shaping:
+                (field=name, locale=en, prefix=yo, norm=v3)                        (field=name, locale=en, prefix=new yo, norm=v3)
+                → "name|en|yo|v3"                                                  → "name|en|new yo|v3"
+                        │                                                                     │
+                        ▼                                                                     ▼
+                L1 Cache (edge/CDN): check shaped key → hit?                         L1 Cache (edge/CDN): check shaped key → hit?
+                 if HIT → return TopK immediately                                     if HIT → return TopK immediately
+                 if MISS → continue                                                   if MISS → continue
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Shard Routing: hash("name|en|yo") → shard s2                           Shard Routing: hash("name|en|new yo") → shard s5
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Index Lookup (recall fanout):                                         Index Lookup (recall fanout):
+                - Trie/DAWG: traverse y→o, collect descendants                         - Trie/DAWG: traverse n→e→w→␣→y→o, collect descendants
+                - Inverted idx: postings for "yo"                                      - Inverted idx: postings for "new yo"
+                Apply hard cap (e.g., 5–20k IDs)                                      Apply hard cap (e.g., 5–20k IDs)
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Merge Freshness (hot delta list):                                      Merge Freshness (hot delta list):
+                Overlay trending/new for "yo"                                          Overlay trending/new for "new yo"
+                De‑dupe                                                                De‑dupe
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Popularity/Freshness Pre‑score:                                        Popularity/Freshness Pre‑score:
+                score = w_pop*pop + w_fresh*recency + w_exact*exactness                same formula
+                (Use "new" as context later in ranking)                                (Context already embedded in key)
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Top‑K via fixed min‑heap (e.g., K=10–20)                               Top‑K via fixed min‑heap (e.g., K=10–20)
+                Attach light metadata (name/type/snippet)                              Attach light metadata (name/type/snippet)
+                        │                                                                     │
+                        ▼                                                                     ▼
+                Return shortlist to client (5–15 ms target)                            Return shortlist to client (5–15 ms target)
+
+                Examples shown to user:
+                - Last‑token: "new york", "new yoga studio", "new yosemite trail"  (yo* + "new" used in later ranking)
+                - Whole‑query: "new york", "new yorker", "new youth center"         (direct "new yo*" matches)
+
