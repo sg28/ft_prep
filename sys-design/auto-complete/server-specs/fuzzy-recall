@@ -1,0 +1,24 @@
+
+
+                [User types "applw"]
+                        │
+                        ▼
+                Prefix Recall
+                - Exact lookup for "applw"
+                - → No strong matches
+                        │
+                        ▼
+                Fuzzy Recall Triggered
+                - Levenshtein (edit distance ≤ 1)
+                - Or N-gram overlap
+                → Candidates: ["apple","apply","applet"]
+                        │
+                        ▼
+                Safeguards Applied
+                - Cap expansion (e.g., top 100 fuzzy hits)
+                - Normalize locale (ß → ss, é → e)
+                        │
+                        ▼
+                Merge into Candidate Set
+                - Combine with Prefix Recall results
+                - Rank later by popularity/freshness

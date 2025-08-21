@@ -61,3 +61,61 @@ Here’s a concise end‑to‑end **Prefix Recall** flow for a user typing **“
                 - Last‑token: "new york", "new yoga studio", "new yosemite trail"  (yo* + "new" used in later ranking)
                 - Whole‑query: "new york", "new yorker", "new youth center"         (direct "new yo*" matches)
 
+
+
+
+
+
+                [Client types "App"]
+                        │
+                        ▼
+                1. Normalize Input
+                - Lowercase, strip accents, clean text
+                → "app"
+                        │
+                        ▼
+                2. Scope → Prefix Extraction
+                - Last-token vs Whole-query
+                - Enforce min/max length
+                → prefix = "app"
+                        │
+                        ▼
+                3. Key Shaping
+                - Build (field_id, locale, prefix, norm_version)
+                → "name|en|app|v3"
+                        │
+                        ▼
+                4. L1 Cache Check (Edge/CDN)
+                - prefix → TopK memo
+                - If hit → return instantly
+                - If miss → continue
+                        │
+                        ▼
+                5. Shard Routing
+                - Hash(field_id, locale, prefix)
+                - Route to owning shard
+                        │
+                        ▼
+                6. Index Lookup (Recall Fanout)
+                - Trie/DAWG → traverse a→p→p → collect descendants
+                - Inverted Index → postings for "app"
+                - Apply hard cap (e.g., 5–20k IDs)
+                        │
+                        ▼
+                7. Merge Freshness (Hot Delta List)
+                - Overlay small, fast structure of new/trending terms
+                - De-duplicate with base index results
+                        │
+                        ▼
+                8. Popularity/Freshness Pre-score
+                - score = w_pop*popularity + w_fresh*recency + w_exact*exactness
+                        │
+                        ▼
+                9. Top-K Selection
+                - Fixed-size min-heap (e.g., 10–20 best)
+                - Attach lightweight metadata (name, type, snippet)
+                        │
+                        ▼
+                [Return Shortlist to Client]
+                - Latency target: 5–15 ms
+                - Feeds into later heavy ranking/personalization
