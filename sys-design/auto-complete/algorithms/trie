@@ -29,7 +29,11 @@ class Trie {
 }
 // usage
 const trie = new Trie();
+
+
 ["apple", "application", "appetite"].forEach((w) =>
   trie.insert(w, { id: w, name: w })
 );
+
+
 console.log(trie.search("app", 10)); // Top candidates
