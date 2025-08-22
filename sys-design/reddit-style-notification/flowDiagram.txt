@@ -1,0 +1,29 @@
+
+
+[ Producers ] {upstream apps/features that emit raw events}
+   (Posts / Comments / Votes / Mentions / Mod Actions)
+        │
+        ▼
+[ Ingestion ]
+   (API Gateway → Kafka)
+        │
+        ▼
+[ Stream Processing ]
+   (Flink / Kafka Streams)
+   ├─ Deduplication
+   ├─ User Preferences & Quiet Hours
+   ├─ Spam / Abuse Filtering
+   └─ Fanout to Recipients
+        │
+        ▼
+[ Redis Hot Inbox ]
+   (Fast cache: lists, hashes, counters <10ms)
+        │
+   ┌─────┴─────┐
+   ▼           ▼
+[ Websockets ]   [ Durable Store ]
+ (Realtime        (DynamoDB / Scylla)
+  Online Users)          │
+                         ▼
+                   [ Push / Email ]
+          (APNs • FCM • ESP • Webhooks for offline/mobile)
