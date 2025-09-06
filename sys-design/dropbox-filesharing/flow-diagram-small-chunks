@@ -1,0 +1,70 @@
+
+
+small chunks
+
+ ┌──────────┐
+ │  Client  │
+ └──────────┘
+      │
+      ├───────────────────────────────────────────────────────────────┐
+      │                                                               │
+      ▼                                                               ▼
+[SMALL EDIT / UPLOAD PATH]                                     [DELETE/RETENTION PATH]
+
+ 1. Detect deltas                                              1. Delete request
+    - rolling hash + strong hash                                  - User/admin deletes file/folder
+    - unchanged chunks skipped                                    - Request goes directly to Metadata Service
+    - only delta chunks prepared                                   
+      ▼                                                               ▼
+ ┌──────────────────────────────┐                          ┌──────────────────────────────┐
+ │        Upload Gateway        │                          │      Metadata Service        │
+ │──────────────────────────────│                          │──────────────────────────────│
+ │ • Validates identity & quotas│                          │ • Write tombstone flag       │
+ │ • Issues session + URLs      │                          │ • Check retention/holds      │
+ │ • Accepts delta chunks       │                          │ • Record audit log           │
+ │ • Verifies checksums         │                          │ • Enqueue Outbox event       │
+ │ • Supports retries/resume    │                          └──────────────────────────────┘
+ │ • On commit request →        │                                 │
+ │   forwards manifest details  │                                 │ Delete event
+ └──────────────────────────────┘                                 ▼
+      │                                                  ┌──────────────────────────────┐
+      │ 2. Commit manifest OR Sharing update             │          Event Bus           │
+      ▼                                                  │──────────────────────────────│
+ ┌──────────────────────────────┐                        │ • Fans out delete events     │
+ │      Metadata Service        │                        │ • Update search index        │
+ │──────────────────────────────│                        │ • Trigger compliance hooks   │
+ │ • For uploads:               │                        │ • Notifies other devices     │
+ │    - Validate chunks exist   │                        └──────────────────────────────┘
+ │    - Create new Version      │                                 │
+ │    - Save Manifest           │                                 │ Async cleanup
+ │    - Update latestVersion    │                                 ▼
+ │                              │                        ┌──────────────────────────────┐
+ │ • For sharing:               │                        │     Garbage Collector        │
+ │    - Update ACLs/roles       │                        │──────────────────────────────│
+ │    - Mint link tokens (JWT)  │                        │ • Scan chunk ref counts      │
+ │    - Audit log entry         │                        │ • Respect retention/holds    │
+ │                              │                        │ • Delete unreferenced chunks │
+ │ • Enqueue Outbox event       │                        └──────────────────────────────┘
+ └──────────────────────────────┘
+      │
+      │ 3. Outbox event → publish
+      ▼
+ ┌──────────────────────────────┐
+ │          Event Bus           │
+ │──────────────────────────────│
+ │ • Fans out file changes      │
+ │ • Fans out sharing changes   │
+ │ • Triggers indexing          │
+ │ • Notifies other devices     │
+ │ • Sends webhooks/integrations│
+ └──────────────────────────────┘
+      │
+      │ 4. Devices receive update
+      ▼
+ ┌──────────────────────────────┐
+ │       Other Devices          │
+ │──────────────────────────────│
+ │ • For edits: fetch deltas    │
+ │ • For shares: apply ACLs     │
+ │ • For deletes: remove file   │
+ └──────────────────────────────┘
