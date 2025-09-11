@@ -23,7 +23,8 @@ export default function maxSumSubArray(numbers) {
   let best = numbers[0];
 
   for (let i = 1; i < numbers.length; i++) {
-    current = Math.max(numbers[i], current + numbers[i]);
+    let sum = current + numbers[i];
+    current = Math.max(numbers[i], sum);
     best = Math.max(best, current);
   }
 
