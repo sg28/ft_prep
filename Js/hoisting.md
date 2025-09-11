@@ -29,7 +29,7 @@ console.log(x); // 5
 ### Example:
 console.log(y); // Error: Cannot access 'y' before initialization
 let y = 10;
-
+x
 console.log(z); // Error: Cannot access 'z' before initialization
 const z = 15;
 
