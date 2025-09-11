@@ -4,12 +4,26 @@ import "./header.css";
 
 function Header(props) {
   let [title, setTitle] = useState("Out-Street");
+  let [navigation, setNavigation] = useState("");
   let [location, setLocation] = useState({
     streetName: "Divon Street",
     state: "California",
     zip: "94086",
   });
-  let [navs, setNavs] = useState(["search", "store", "signin", "brands"]);
+  let [navs, setNavs] = useState(["search", "store", "signin", "brands", "cart"]);
+
+  function openCartDrawer(e){
+    setNavigation(e.target.innerText)
+  }
+
+
+  useEffect(()=>{
+    if(navigation === 'cart'){
+      props.openShopingCartDrawer(true);
+    }else{
+      props.openShopingCartDrawer(false);
+    }
+  }, [navigation])
 
   useEffect(() => {
     console.log(" onload ");
@@ -26,7 +40,7 @@ function Header(props) {
       <div className="navs">
         {navs.map((elem, i) => {
           return (
-            <div className="navs-element" key={i}>
+            <div className="navs-element" key={i} onClick={openCartDrawer}>
               <span className="nav-elements-text">{elem}</span>
             </div>
           );
