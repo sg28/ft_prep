@@ -1,5 +1,22 @@
 import React, { useEffect, useState } from "react";
 
+const styles = {
+    container: {
+        border: "1px solid lightblue",
+        width: "50%",
+        margin: "auto"
+    },
+    progressText: {
+        fontSize: "16px",
+        marginBottom: "5px"
+    },
+    progressBar: {
+        height: "20px",
+        marginTop: "10px",
+        transition: "width 0.5s, background 0.5s"
+    }
+};
+
 function ProgressBar() {
     const [count, setCount] = useState(0);
     const [color, setColor] = useState("blue");
@@ -36,20 +53,13 @@ function ProgressBar() {
     };
 
     return (
-        <div style={{
-            border: "1px solid lightblue",
-            width: "50%",
-            margin: "auto"
-        }}
-        >
-            <div>Progress: {count}</div>
+        <div style={styles.container}>
+            <div style={styles.progressText}>Progress: {count}</div>
             <div
                 style={{
+                    ...styles.progressBar,
                     width: `${count * 10}%`,
-                    height: "20px",
-                    background: color,
-                    marginTop: "10px",
-                    transition: "width 0.5s, background 0.5s", // Smooth transitions
+                    background: color
                 }}
             ></div> 
         </div>

@@ -1,23 +1,46 @@
 import React, { useState } from "react";
 
+const styles = {
+  container: {
+    padding: "20px",
+  },
+  title: {
+    marginBottom: "15px",
+    color: "#333",
+  },
+  starContainer: {
+    marginBottom: "10px",
+  },
+  star: {
+    cursor: "pointer",
+    fontSize: "24px",
+    marginRight: "5px",
+    transition: "color 0.2s ease",
+  },
+  rating: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "#555",
+  },
+};
+
 export default function StarRating() {
   const [starRating, setStarRating] = useState(0);
 
   const clickStar = (index) => {
-    setStarRating(index + 1); // Setting rating to 1-based index
+    setStarRating(index + 1);
   };
 
   return (
-    <div>
-      <h5>Star Rating</h5>
-      <div className="star-rating">
+    <div style={styles.container}>
+      <h5 style={styles.title}>Star Rating</h5>
+      <div className="star-rating" style={styles.starContainer}>
         {Array.from({ length: 5 }).map((_, i) => (
           <span
             key={i}
             onClick={() => clickStar(i)}
             style={{
-              cursor: "pointer",
-              fontSize: "24px",
+              ...styles.star,
               color: i < starRating ? "gold" : "gray",
             }}
           >
@@ -25,7 +48,7 @@ export default function StarRating() {
           </span>
         ))}
       </div>
-      <p>Rating: {starRating}</p>
+      <p style={styles.rating}>Rating: {starRating}</p>
     </div>
   );
 }

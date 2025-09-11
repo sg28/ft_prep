@@ -1,5 +1,50 @@
 import React, { useState } from "react";
 
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+    flexDirection: "column",
+  },
+  table: {
+    width: "100%",
+    border: "1px solid #ccc",
+    borderCollapse: "collapse",
+  },
+  tableHeader: {
+    backgroundColor: "#f5f5f5",
+    padding: "10px",
+    textAlign: "left",
+  },
+  tableCell: {
+    padding: "8px 10px",
+    borderBottom: "1px solid #ddd",
+  },
+  pagination: {
+    marginTop: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  pageInfo: {
+    margin: "0 10px",
+    fontSize: "14px",
+  },
+  button: {
+    padding: "8px 12px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+    borderRadius: "4px",
+  },
+  buttonDisabled: {
+    opacity: "0.5",
+    cursor: "not-allowed",
+  },
+};
+
 export default function PaginatedTable() {
   const employeeData = [
     { name: "John", age: 25 },
@@ -24,7 +69,6 @@ export default function PaginatedTable() {
   const startIndex = (currentPage - 1) * pageSize;
   const currentTableData = employeeData.slice(startIndex, startIndex + pageSize);
 
-
   const previous = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -38,38 +82,44 @@ export default function PaginatedTable() {
   };
 
   return (
-    <div
-    style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
+    <div style={styles.container}>
       <div>
-        <table border="1" style={{ width: "100%" }}>
+        <table style={styles.table}>
           <thead>
             <tr>
-              <th>Employee</th>
+              <th style={styles.tableHeader}>Employee</th>
             </tr>
           </thead>
           <tbody>
             {currentTableData.map((data, index) => (
               <tr key={index}>
-                <td>{data.name}</td>
+                <td style={styles.tableCell}>{data.name}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={previous} disabled={currentPage === 1}>
+        <div style={styles.pagination}>
+          <button 
+            onClick={previous} 
+            disabled={currentPage === 1}
+            style={{
+              ...styles.button,
+              ...(currentPage === 1 ? styles.buttonDisabled : {})
+            }}
+          >
             Previous
           </button>
-          <span style={{ margin: "0 10px" }}>
+          <span style={styles.pageInfo}>
             Page {currentPage} of {totalPages}
           </span>
-          <button onClick={next} disabled={currentPage === totalPages}>
+          <button 
+            onClick={next} 
+            disabled={currentPage === totalPages}
+            style={{
+              ...styles.button,
+              ...(currentPage === totalPages ? styles.buttonDisabled : {})
+            }}
+          >
             Next
           </button>
         </div>
