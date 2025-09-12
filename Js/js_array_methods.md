@@ -28,8 +28,11 @@ slice(start, end) - start: inclusive, end: exclusive
 ### splice()
 
 Add/remove elements at index.
-splice(start, deleteCount, ...items) - start: index, deleteCount: how many to remove, items: what to add
+splice(index, numberOfElements, addItems)
 [1,2,3].splice(1,1,9) → [2], array becomes [1,9,3]
+
+let list = [1,3,4,5];
+list.splice(1, 2, 8,9) // [ 1, 8, 9, 5 ]
 
 ### map()
 
@@ -41,16 +44,23 @@ map(callback) - callback: function to transform each element
 
 Keep elements passing test.
 filter(callback) - callback: function that returns true/false to keep/remove elements
-[1,2,3].filter(x=> x > 1) → [2,3]
-[1,2,3,4,5].filter(x=> x % 2 === 0) → [2,4] (even numbers)
-['apple','banana','cherry'].filter(x => x.length > 5) → ['banana','cherry']
-[{age:25},{age:17},{age:30}].filter(x => x.age >= 18) → [{age:25},{age:30}]
+let list = [1,2,3,4,2,1,1];
+let res = list.filter((e, i)=>{
+    return e > 2;    
+});
+
+console.log(res) // [ 3, 4 ]
 
 ### reduce()
 
 Accumulate values.
 reduce(callback, initialValue) - callback: accumulator function, initialValue: starting value
-[1,2,3].reduce((a,b)=>a+b,0) → 6
+let list = [1,2,3,4,2,1,1];
+let res = list.reduce((acc, elem) =>{
+    return acc + elem;
+}, 0)
+
+console.log(res) // 14
 [1,2,3,4].reduce((a,b)=>a*b,1) → 24 (multiplication)
 ['a','b','c'].reduce((a,b)=>a+b,'') → 'abc' (string concatenation)
 [{x:1},{x:2},{x:3}].reduce((a,b)=>a+b.x,0) → 6 (sum object property)
