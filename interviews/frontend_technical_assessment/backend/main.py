@@ -6,7 +6,7 @@ import json
 
 app = FastAPI(title="VectorShift Pipeline API", version="1.0.0")
 
-# Add CORS middleware to allow frontend requests
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # React dev server
@@ -33,37 +33,31 @@ class PipelineData(BaseModel):
     edges: List[Edge]
 
 def is_dag(nodes: List[Node], edges: List[Edge]) -> bool:
-    """
-    Check if the pipeline forms a Directed Acyclic Graph (DAG)
-    Uses DFS-based cycle detection algorithm
-    """
-    # Build adjacency list
+
+
     graph = {node.id: [] for node in nodes}
     
     for edge in edges:
         if edge.source in graph and edge.target in graph:
             graph[edge.source].append(edge.target)
     
-    # Track visit states: 0=unvisited, 1=visiting, 2=visited
+
     visit_state = {node.id: 0 for node in nodes}
     
     def has_cycle_dfs(node_id: str) -> bool:
-        if visit_state[node_id] == 1:  # Currently visiting - cycle detected
+        if visit_state[node_id] == 1:
             return True
-        if visit_state[node_id] == 2:  # Already processed
+        if visit_state[node_id] == 2:
             return False
             
-        visit_state[node_id] = 1  # Mark as visiting
+        visit_state[node_id] = 1
         
-        # Check all neighbors
         for neighbor in graph[node_id]:
             if has_cycle_dfs(neighbor):
                 return True
                 
-        visit_state[node_id] = 2  # Mark as processed
+        visit_state[node_id] = 2
         return False
-    
-    # Check for cycles starting from each unvisited node
     for node_id in graph:
         if visit_state[node_id] == 0:
             if has_cycle_dfs(node_id):
@@ -84,27 +78,24 @@ def read_root():
 
 @app.post('/pipelines/parse')
 def parse_pipeline(pipeline_data: PipelineData):
-    """
-    Analyze pipeline and return statistics including DAG validation
-    """
     try:
         nodes = pipeline_data.nodes
         edges = pipeline_data.edges
         
-        # Calculate basic statistics
+
         num_nodes = len(nodes)
         num_edges = len(edges)
         
-        # Check if it forms a DAG
+
         is_dag_result = is_dag(nodes, edges)
         
-        # Additional analysis
+
         node_types = {}
         for node in nodes:
             node_type = node.type
             node_types[node_type] = node_types.get(node_type, 0) + 1
         
-        # Find isolated nodes (no connections)
+
         connected_nodes = set()
         for edge in edges:
             connected_nodes.add(edge.source)
@@ -112,7 +103,7 @@ def parse_pipeline(pipeline_data: PipelineData):
         
         isolated_nodes = [node.id for node in nodes if node.id not in connected_nodes]
         
-        # Calculate in-degree and out-degree
+
         in_degree = {node.id: 0 for node in nodes}
         out_degree = {node.id: 0 for node in nodes}
         
@@ -122,7 +113,7 @@ def parse_pipeline(pipeline_data: PipelineData):
             if edge.source in out_degree:
                 out_degree[edge.source] += 1
         
-        # Find source nodes (no incoming edges) and sink nodes (no outgoing edges)
+
         source_nodes = [node_id for node_id, degree in in_degree.items() if degree == 0 and node_id in connected_nodes]
         sink_nodes = [node_id for node_id, degree in out_degree.items() if degree == 0 and node_id in connected_nodes]
         
