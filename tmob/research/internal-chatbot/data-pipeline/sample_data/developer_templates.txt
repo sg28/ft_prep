@@ -1,0 +1,110 @@
+# Developer Templates and Starter Kits
+
+## Spring Boot Conducktor Template
+
+### Overview
+**Template Name**: springboot-maven-helm-conducktor  
+**Display Name**: Spring Boot Conducktor  
+**ID**: 23  
+**Status**: Published  
+**Author**: Dev Center  
+
+### Description
+Fully-templatized SpringBoot application, built with Maven and deployed to Conducktor. Requires Swagger as input, which will autogenerate required boilerplate code during the generation process. Ideal for backend APIs and REST-based Microservices.
+
+### Technical Specifications
+- **Technology**: Java
+- **Build Tool**: Maven
+- **Platform**: Conducktor
+- **Template Version**: 1.0
+- **Package Version**: 3.0.4
+- **Category**: API
+
+### Prerequisites
+- Java 17
+- GitLab account and access
+- Swagger Specification (JSON/YAML)
+- Conducktor Namespace
+
+### Generated Components
+When using this template, you will get:
+- Spring Boot Source Code (auto-generated from Swagger)
+- GitLab Repository with CI/CD pipeline
+- GitLab Pipeline configuration
+- Conducktor deployment configuration
+- Conducktor Application setup
+
+### Required Configuration Fields
+
+#### Project Information
+- **Project Name**: Minimum 3 characters, lowercase, hyphen-separated (e.g., my-api-project)
+- **Project Description**: 20-500 characters describing the project
+- **Application Version**: Semantic versioning (e.g., 1.0.0)
+
+#### GitLab Configuration
+- **GitLab Subgroup Path**: Must start with "tmobile/" (e.g., tmobile/workforce-transformation/developer-toolbox/hello-world-sandboxes-conducktor)
+- **Codeowners**: GitLab user handles for merge approval (e.g., @jdoe123 @GitlabUserID2)
+
+#### Java/Maven Settings
+- **Java Version**: Only Java 17 is currently supported
+- **Base Package Name**: Minimum 12 characters, lowercase, dot-separated (e.g., com.tmobile.devtoolbox.service)
+- **Maven Group ID**: Minimum 12 characters, lowercase, dot-separated (e.g., com.tmobile.devtoolbox.apps)
+
+#### Swagger Integration
+- **Swagger Specification URL**: Valid HTTP/HTTPS URL pointing to .json, .yaml, or .yml file
+- Example: https://gitlab.com/tmobile/workforce-transformation/developer-toolbox/toolbox-docs/-/blob/tmo/main/sample_swagger_specs/petstore_oas3.yaml
+
+#### Kubernetes/Conducktor Deployment
+- **Kubernetes API URL**: Format: (west|east).(dev|stg|plb|prd).duck.master.kube.t-mobile.com
+- **Kubernetes Cluster Name**: Format: duck-(dev|stg|plb|prd)-(w|e)(1|2) (e.g., duck-dev-w2)
+- **Kubernetes Namespace**: Format: 3-letter-app-code-duck-(environment)-(region) (e.g., dtx-dev-duck-dev-w2)
+- **Docker Registry Secret**: Default is "tmobile-cdp-image-pull"
+
+### Contact and Support
+For help with this template:
+- **Email**: developer-toolbox-support@t-mobile.com
+- **Slack**: #dev-center channel
+- **Documentation**: https://developer-toolbox.docs.t-mobile.com/docs/end-user/
+
+### Repository Links
+- **Starter Kit Repository**: https://gitlab.com/tmobile/workforce-transformation/developer-toolbox/toolbox-starter-kits/springboot-maven-helm-conducktor/-/tree/tmo/main
+- **Documentation**: https://gitlab.com/tmobile/workforce-transformation/developer-toolbox/toolbox-starter-kits/springboot-maven-helm-conducktor/-/blob/tmo/main/code-files/README.md
+- **Package Generator**: https://istio-app-builder-prd.tt-prd4107.tke.t-mobile.com/ace-tools/v1/istio-code-generator?platform-type=conducktor&generate-istio=false
+
+### Tags
+- Certified template
+- Production-ready
+- Enterprise-grade
+
+### Best Practices
+1. Always use semantic versioning for your application
+2. Follow T-Mobile naming conventions for GitLab projects
+3. Ensure your Swagger specification is valid and accessible
+4. Use appropriate Kubernetes namespace for your environment
+5. Configure proper codeowners for merge request approvals
+
+### Common Use Cases
+- Building REST APIs for microservices
+- Creating backend services with database integration
+- Developing APIs that require GraphQL migration from REST
+- Setting up CI/CD pipelines for Java applications
+- Deploying applications to Conducktor platform
+
+### Environment Setup
+This template supports deployment to multiple environments:
+- **Development**: duck-dev-w2 cluster
+- **Staging**: duck-stg-w2 cluster
+- **Pre-production**: duck-plb-w2 cluster
+- **Production**: duck-prd-w2 cluster
+
+### Getting Started
+1. Prepare your Swagger specification file
+2. Determine your target Kubernetes cluster and namespace
+3. Fill out the template form with required information
+4. Review generated code and configuration
+5. Deploy to your target environment
+6. Set up monitoring and logging as needed
+
+---
+
+For additional templates or custom requirements, contact the Dev Center team through the support channels listed above.
