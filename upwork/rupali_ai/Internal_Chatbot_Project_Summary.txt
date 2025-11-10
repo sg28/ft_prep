@@ -1,0 +1,60 @@
+Internal Developer Assistant Chatbot (RAG + LLM-based)
+
+Overview:
+This project builds an internal AI-powered chatbot for developers. It connects to company systems (forms, project data, org structure, knowledge base) to let employees request, query, or check statuses conversationally — without replacing existing systems. It acts as a natural language interface over internal APIs and data sources.
+
+Workflow Summary:
+1. User interacts via chat UI (web portal).
+2. Backend interprets intent using an LLM (e.g., GPT-4o, Claude, or Llama).
+3. Retrieves relevant company data (forms, org info, policies, etc.) via APIs.
+4. Builds context and generates a response using RAG (Retrieval-Augmented Generation).
+5. Optionally pre-fills or submits internal request forms.
+6. Supports tracking of requests and secure audit logging.
+7. Integrates with company authentication (SSO, OAuth2) and follows data privacy rules.
+
+Architecture (High-Level):
+Frontend: React or Next.js chat interface
+Backend: FastAPI or Node.js orchestrator
+Retrieval Layer: LangChain or LlamaIndex for RAG
+Vector Store: Chroma (MVP) or Pinecone (scalable)
+Embedding Model: text-embedding-3-small or bge-large-en
+LLM: GPT-4o (MVP), Llama 3 / Mistral for on-prem
+Data Sources: Internal APIs (Forms, Org DB, Docs, Knowledge base)
+Authentication: SSO / OAuth2 / SAML
+Monitoring: ELK / Grafana / Prometheus
+
+Data Pipeline:
+- Collect internal data (forms, org charts, KB docs)
+- Clean, normalize, and remove PII
+- Chunk into 500–1000 token blocks
+- Generate embeddings and store in vector DB with metadata
+- Retrieve top relevant chunks per query for contextual AI response
+
+Performance Targets:
+- Intent detection ≥ 90%
+- Retrieval accuracy ≥ 85%
+- Answer correctness ≥ 80%
+- Latency ≤ 3 seconds
+
+Development Phases (Estimated 17–19 days):
+1. Planning + API access setup – 2 days
+2. Data preparation & embedding – 5–6 days
+3. Retrieval + RAG orchestration – 3–4 days
+4. LLM integration – 2 days
+5. Backend + frontend integration – 4 days
+6. Testing & demo – 3 days
+
+Deliverables:
+- Data ingestion & vector DB setup
+- Working RAG-based retrieval system
+- Secure internal chat UI
+- Integrated LLM backend
+- Demo with 5–10 example queries
+- Documentation & architecture overview
+
+Goal:
+Create a secure, private, and efficient internal chatbot that simplifies developer workflows by automating data retrieval and request handling through conversational AI.
+
+Youtube Ref:
+https://youtu.be/t9IDoenf-lo?si=xXct6U-LDR-gkcHt
+https://youtu.be/_HQ2H_0Ayy0?si=R2Qso_UMqVs6K3Uf
