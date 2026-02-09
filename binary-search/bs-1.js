@@ -1,0 +1,4 @@
+
+function binarySearch(list, target){
+    
+}
