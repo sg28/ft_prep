@@ -33,15 +33,12 @@
   TIME: O(log n)  SPACE: O(1)
 */
 function binarySearch(nums, target) {
-  // YOUR CODE HERE
-  let left = 0, right = nums.length - 1;
-  while(left <= right){
+  let left = 0, right = nums.length;
+  while (left < right) {
     let mid = Math.floor((left + right) / 2);
-    if(nums[mid] === target){
-        return mid;
-    }
-    if(nums[mid] < target) left = mid + 1;
-    else right = mid - 1;
+    if (nums[mid] === target) return mid;
+    if (nums[mid] < target) left = mid + 1;
+    else right = mid;
   }
   return -1;
 }
@@ -235,7 +232,29 @@ console.log(searchRange([1], 1));                        // Expected: [0, 0]
   TIME: O(log n)  SPACE: O(1)
 */
 function searchInRotatedArray(nums, target) {
-  // YOUR CODE HERE
+  let left = 0;
+  let right = nums.length - 1;
+  while(left <= right){
+    let mid = Math.floor((left+right) / 2);
+    if(nums[mid] === target) return mid;
+    // The left half is sorted
+    if(nums[mid] >= nums[left]){
+        if(target >= nums[left] && target < nums[mid]){
+        right = mid - 1;
+        }else{
+        left = mid + 1;
+        }
+    }
+    // The right half is sorted.
+    else{
+        if(target > nums[mid] && target <= nums[right]){
+        left = mid + 1;
+        }else{
+        right = mid - 1;
+        }
+    }
+  }
+  return -1;
 }
 
 console.log("\n=== TEST: SEARCH IN ROTATED SORTED ARRAY ===");
@@ -273,7 +292,17 @@ console.log(searchInRotatedArray([1], 1));                        // Expected: 0
   TIME: O(log n)  SPACE: O(1)
 */
 function findMin(nums) {
-  // YOUR CODE HERE
+    let left = 0, right = nums.length - 1;
+    while(left < right){
+        let mid = Math.floor((left + right) / 2);
+        if(nums[mid] > nums[right]){
+            left = mid + 1;
+        }
+        else{
+            right = mid;
+        }
+    }
+    return nums[left];
 }
 
 console.log("\n=== TEST: FIND MINIMUM IN ROTATED SORTED ARRAY ===");
