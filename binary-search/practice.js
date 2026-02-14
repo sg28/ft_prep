@@ -33,7 +33,8 @@
   TIME: O(log n)  SPACE: O(1)
 */
 function binarySearch(nums, target) {
-  let left = 0, right = nums.length;
+  let left = 0,
+    right = nums.length;
   while (left < right) {
     let mid = Math.floor((left + right) / 2);
     if (nums[mid] === target) return mid;
@@ -45,12 +46,11 @@ function binarySearch(nums, target) {
 
 // Test cases for you to verify
 console.log("=== TEST: CLASSIC BINARY SEARCH ===");
-console.log(binarySearch([1, 3, 5, 7, 9], 5));           // Expected: 2
-console.log(binarySearch([1, 3, 5, 7, 9], 1));           // Expected: 0
-console.log(binarySearch([1, 3, 5, 7, 9], 9));           // Expected: 4
-console.log(binarySearch([1, 3, 5, 7, 9], 4));           // Expected: -1
-console.log(binarySearch([], 5));                        // Expected: -1
-
+console.log(binarySearch([1, 3, 5, 7, 9], 5)); // Expected: 2
+console.log(binarySearch([1, 3, 5, 7, 9], 1)); // Expected: 0
+console.log(binarySearch([1, 3, 5, 7, 9], 9)); // Expected: 4
+console.log(binarySearch([1, 3, 5, 7, 9], 4)); // Expected: -1
+console.log(binarySearch([], 5)); // Expected: -1
 
 /*
   2. LOWER BOUND (LeetCode 34 - Start Position)
@@ -76,26 +76,26 @@ console.log(binarySearch([], 5));                        // Expected: -1
   
   KEY INSIGHT: With lo < hi and exclusive hi, we ALWAYS converge to answer
 */
-function lowerBound(nums, target) {
-  let left = 0, right = nums.length;
-  while(left < right){
+function lowerBoundary(nums, target) {
+  let left = 0,
+    right = nums.length;
+  while (left < right) {
     let mid = Math.floor((left + right) / 2);
-    
-    if(nums[mid] >= target){
-        right = mid;
-    }else{
-        left = mid + 1;
+
+    if (nums[mid] >= target) {
+      right = mid;
+    } else {
+      left = mid + 1;
     }
   }
- return left;
+  return left;
 }
 
 console.log("\n=== TEST: LOWER BOUND ===");
-console.log(lowerBound([5, 7, 7, 8, 8, 10], 8));         // Expected: 3
-console.log(lowerBound([5, 7, 7, 8, 8, 10], 6));         // Expected: 3
-console.log(lowerBound([5, 7, 7, 8, 8, 10], 11));        // Expected: 6
-console.log(lowerBound([5, 7, 7, 8, 8, 10], 5));         // Expected: 0
-
+console.log(lowerBoundary([5, 7, 7, 8, 8, 10], 8)); // Expected: 3
+console.log(lowerBoundary([5, 7, 7, 8, 8, 10], 6)); // Expected: 3
+console.log(lowerBoundary([5, 7, 7, 8, 8, 10], 11)); // Expected: 6
+console.log(lowerBoundary([5, 7, 7, 8, 8, 10], 5)); // Expected: 0
 
 /*
   3. UPPER BOUND
@@ -114,25 +114,24 @@ console.log(lowerBound([5, 7, 7, 8, 8, 10], 5));         // Expected: 0
   
   TIME: O(log n)  SPACE: O(1)
 */
-function upperBound(nums, target) {
+function upperBoundary(nums, target) {
   let left = 0;
   let right = nums.length;
-  while(left < right){
+  while (left < right) {
     let mid = Math.floor((left + right) / 2);
-    if(nums[mid] > target){
-        right = mid;
-    }else{
-        left = mid + 1;
+    if (nums[mid] > target) {
+      right = mid;
+    } else {
+      left = mid + 1;
     }
   }
   return left;
 }
 
 console.log("\n=== TEST: UPPER BOUND ===");
-console.log(upperBound([5, 7, 7, 8, 8, 10], 8));         // Expected: 5
-console.log(upperBound([5, 7, 7, 8, 8, 10], 7));         // Expected: 3
-console.log(upperBound([5, 7, 7, 8, 8, 10], 5));         // Expected: 1
-
+console.log(upperBoundary([5, 7, 7, 8, 8, 10], 8)); // Expected: 5
+console.log(upperBoundary([5, 7, 7, 8, 8, 10], 7)); // Expected: 3
+console.log(upperBoundary([5, 7, 7, 8, 8, 10], 5)); // Expected: 1
 
 /*
   4. FIND RANGE (LeetCode 34)
@@ -157,32 +156,32 @@ console.log(upperBound([5, 7, 7, 8, 8, 10], 5));         // Expected: 1
 */
 
 function searchRange(nums, target) {
-  const lowerFn = function(nums, target){
+  const lowerFn = function (nums, target) {
     let left = 0;
     let right = nums.length;
-    while(left < right){
-        let mid = Math.floor((left + right) / 2);
-        if(nums[mid] >= target){
-            right = mid;
-        }else{
-            left = mid+1;
-        }
+    while (left < right) {
+      let mid = Math.floor((left + right) / 2);
+      if (nums[mid] >= target) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
     }
     return left;
-  }
-  const upperFn = (nums, target)=>{
+  };
+  const upperFn = (nums, target) => {
     let left = 0;
     let right = nums.length;
-    while(left < right){
-        let mid = Math.floor((left + right) / 2);
-        if(nums[mid] > target){
-            right = mid;
-        }else{
-            left = mid+1;
-        }
+    while (left < right) {
+      let mid = Math.floor((left + right) / 2);
+      if (nums[mid] > target) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
     }
     return left - 1;
-  }
+  };
   const first = lowerFn(nums, target);
   if (first >= nums.length || nums[first] !== target) return [-1, -1];
   const last = upperFn(nums, target);
@@ -190,11 +189,10 @@ function searchRange(nums, target) {
 }
 
 console.log("\n=== TEST: FIND RANGE ===");
-console.log(searchRange([5, 7, 7, 8, 8, 10], 8));        // Expected: [3, 4]
-console.log(searchRange([5, 7, 7, 8, 8, 10], 6));        // Expected: [-1, -1]
-console.log(searchRange([5, 7, 7, 8, 8, 10], 7));        // Expected: [1, 2]
-console.log(searchRange([1], 1));                        // Expected: [0, 0]
-
+console.log(searchRange([5, 7, 7, 8, 8, 10], 8)); // Expected: [3, 4]
+console.log(searchRange([5, 7, 7, 8, 8, 10], 6)); // Expected: [-1, -1]
+console.log(searchRange([5, 7, 7, 8, 8, 10], 7)); // Expected: [1, 2]
+console.log(searchRange([1], 1)); // Expected: [0, 0]
 
 // ═══════════════════════════════════════════════════════════════
 // LEVEL 2: INTERMEDIATE — Rotated & Modified Arrays
@@ -231,37 +229,37 @@ console.log(searchRange([1], 1));                        // Expected: [0, 0]
   
   TIME: O(log n)  SPACE: O(1)
 */
+
 function searchInRotatedArray(nums, target) {
   let left = 0;
-  let right = nums.length - 1;
-  while(left <= right){
-    let mid = Math.floor((left+right) / 2);
-    if(nums[mid] === target) return mid;
-    // The left half is sorted
-    if(nums[mid] >= nums[left]){
-        if(target >= nums[left] && target < nums[mid]){
-        right = mid - 1;
-        }else{
+  let right = nums.length; // exclusive
+
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+    if (nums[mid] === target) return mid;
+
+    if (nums[mid] >= nums[left]) {
+      if (target >= nums[left] && target < nums[mid]) {
+        right = mid;
+      } else {
         left = mid + 1;
-        }
-    }
-    // The right half is sorted.
-    else{
-        if(target > nums[mid] && target <= nums[right]){
+      }
+    } else {
+      if (target > nums[mid] && target <= nums[right - 1]) {
         left = mid + 1;
-        }else{
-        right = mid - 1;
-        }
+      } else {
+        right = mid;
+      }
     }
   }
+
   return -1;
 }
 
 console.log("\n=== TEST: SEARCH IN ROTATED SORTED ARRAY ===");
-console.log(searchInRotatedArray([4, 5, 6, 7, 0, 1, 2], 0));      // Expected: 4
-console.log(searchInRotatedArray([4, 5, 6, 7, 0, 1, 2], 3));      // Expected: -1
-console.log(searchInRotatedArray([1], 1));                        // Expected: 0
-
+console.log(searchInRotatedArray([4, 5, 6, 7, 0, 1, 2], 0)); // Expected: 4
+console.log(searchInRotatedArray([4, 5, 6, 7, 0, 1, 2], 3)); // Expected: -1
+console.log(searchInRotatedArray([1], 1)); // Expected: 0
 
 /*
   6. FIND MINIMUM IN ROTATED SORTED ARRAY (LeetCode 153)
@@ -292,24 +290,23 @@ console.log(searchInRotatedArray([1], 1));                        // Expected: 0
   TIME: O(log n)  SPACE: O(1)
 */
 function findMin(nums) {
-    let left = 0, right = nums.length - 1;
-    while(left < right){
-        let mid = Math.floor((left + right) / 2);
-        if(nums[mid] > nums[right]){
-            left = mid + 1;
-        }
-        else{
-            right = mid;
-        }
+  let left = 0,
+    right = nums.length - 1;
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+    if (nums[mid] > nums[right]) {
+      left = mid + 1;
+    } else {
+      right = mid;
     }
-    return nums[left];
+  }
+  return nums[left];
 }
 
 console.log("\n=== TEST: FIND MINIMUM IN ROTATED SORTED ARRAY ===");
-console.log(findMin([3, 4, 5, 1, 2]));                   // Expected: 1
-console.log(findMin([2, 1]));                            // Expected: 1
-console.log(findMin([1, 2]));                            // Expected: 1
-
+console.log(findMin([3, 4, 5, 1, 2])); // Expected: 1
+console.log(findMin([2, 1])); // Expected: 1
+console.log(findMin([1, 2])); // Expected: 1
 
 /*
   7. SEARCH IN SPARSE ARRAY (CTCI 9.5)
@@ -339,14 +336,63 @@ console.log(findMin([1, 2]));                            // Expected: 1
   SPACE: O(1)
 */
 function searchSparseArray(strings, target) {
-  // YOUR CODE HERE
+    
+    // find left and right
+    let left = 0; 
+    let right = strings.length;
+
+    // start the loop
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);   // find the mid.
+    if (strings[mid] === target) return mid;    // if mid is equal to target return mid.
+    
+    // If mid is empty string
+    if (strings[mid] === "") {
+        /*
+        left should be before mid.
+        right should be after mid.
+        */ 
+        let l = mid - 1; 
+        let r = mid + 1;
+        let found = -1;
+
+      while (l >= left || r < right) {
+        // 
+        if (l >= left && strings[l] !== "") {
+          found = l;
+          break;
+        }
+        if (r < right && strings[r] !== "") {
+          found = r;
+          break;
+        }
+        l--;
+        r++;
+      }
+      
+      if (found === -1) return -1; 
+      mid = found;
+    }
+    
+    if (strings[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid;
+    }
+  }
+  return -1;
 }
 
 console.log("\n=== TEST: SEARCH IN SPARSE ARRAY ===");
-console.log(searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "ball"));  // Expected: 4
-console.log(searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "car"));   // Expected: 7
-console.log(searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "ballcar")); // Expected: -1
-
+console.log(
+  searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "ball"),
+); // Expected: 4
+console.log(
+  searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "car"),
+); // Expected: 7
+console.log(
+  searchSparseArray(["at", "", "", "", "ball", "", "", "car"], "ballcar"),
+); // Expected: -1
 
 // ═══════════════════════════════════════════════════════════════
 // LEVEL 3: ADVANCED — Answer Space & 2D
@@ -386,10 +432,9 @@ function minEatingSpeed(piles, h) {
 }
 
 console.log("\n=== TEST: MINIMUM EATING SPEED ===");
-console.log(minEatingSpeed([1, 1, 1, 1], 4));            // Expected: 1
-console.log(minEatingSpeed([312884132, 968299470], 968299470));  // Expected: 1
-console.log(minEatingSpeed([1, 10, 1000000000], 2));     // Expected: 333333334
-
+console.log(minEatingSpeed([1, 1, 1, 1], 4)); // Expected: 1
+console.log(minEatingSpeed([312884132, 968299470], 968299470)); // Expected: 1
+console.log(minEatingSpeed([1, 10, 1000000000], 2)); // Expected: 333333334
 
 /*
   9. SEARCH A 2D MATRIX (LeetCode 74)
@@ -427,10 +472,27 @@ function searchMatrix(matrix, target) {
 }
 
 console.log("\n=== TEST: SEARCH 2D MATRIX ===");
-console.log(searchMatrix([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 13));  // Expected: false
-console.log(searchMatrix([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 3));   // Expected: true
-console.log(searchMatrix([[1]], 1));                     // Expected: true
-
+console.log(
+  searchMatrix(
+    [
+      [1, 3, 5, 7],
+      [10, 11, 16, 20],
+      [23, 30, 34, 60],
+    ],
+    13,
+  ),
+); // Expected: false
+console.log(
+  searchMatrix(
+    [
+      [1, 3, 5, 7],
+      [10, 11, 16, 20],
+      [23, 30, 34, 60],
+    ],
+    3,
+  ),
+); // Expected: true
+console.log(searchMatrix([[1]], 1)); // Expected: true
 
 /*
   10. TIME-BASED KEY-VALUE STORE (LeetCode 981)
@@ -480,12 +542,11 @@ class TimeMap {
 console.log("\n=== TEST: TIME-BASED KEY-VALUE STORE ===");
 const timeMap = new TimeMap();
 timeMap.set("foo", "bar", 1);
-console.log(timeMap.get("foo", 1));                      // Expected: "bar"
-console.log(timeMap.get("foo", 3));                      // Expected: "bar"
+console.log(timeMap.get("foo", 1)); // Expected: "bar"
+console.log(timeMap.get("foo", 3)); // Expected: "bar"
 timeMap.set("foo", "bar2", 4);
-console.log(timeMap.get("foo", 4));                      // Expected: "bar2"
-console.log(timeMap.get("foo", 5));                      // Expected: "bar2"
-
+console.log(timeMap.get("foo", 4)); // Expected: "bar2"
+console.log(timeMap.get("foo", 5)); // Expected: "bar2"
 
 /*
   11. MEDIAN OF TWO SORTED ARRAYS (LeetCode 4) ⭐ HARD
@@ -524,10 +585,9 @@ function findMedianSortedArrays(nums1, nums2) {
 }
 
 console.log("\n=== TEST: MEDIAN OF TWO SORTED ARRAYS ===");
-console.log(findMedianSortedArrays([1, 3], [2]));        // Expected: 2
-console.log(findMedianSortedArrays([1, 2], [3, 4]));     // Expected: 2.5
-console.log(findMedianSortedArrays([1], [2, 3, 4]));     // Expected: 2.5
-
+console.log(findMedianSortedArrays([1, 3], [2])); // Expected: 2
+console.log(findMedianSortedArrays([1, 2], [3, 4])); // Expected: 2.5
+console.log(findMedianSortedArrays([1], [2, 3, 4])); // Expected: 2.5
 
 // ═══════════════════════════════════════════════════════════════
 // BONUS: EDGE CASES & TRICKY PATTERNS
@@ -563,8 +623,7 @@ function firstBadVersion(n, isBadVersion) {
 
 console.log("\n=== TEST: FIRST BAD VERSION ===");
 const isBadVersion = (version) => version >= 4;
-console.log(firstBadVersion(5, isBadVersion));           // Expected: 4
-
+console.log(firstBadVersion(5, isBadVersion)); // Expected: 4
 
 /*
   13. CAPACITY TO SHIP PACKAGES (LeetCode 1011)
@@ -597,10 +656,11 @@ function shipWithinDays(weights, days) {
 }
 
 console.log("\n=== TEST: CAPACITY TO SHIP PACKAGES ===");
-console.log(shipWithinDays([1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10], 5));  // Expected: 15
-console.log(shipWithinDays([3, 2, 2, 4, 1, 4], 3));      // Expected: 6
+console.log(shipWithinDays([1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10], 5)); // Expected: 15
+console.log(shipWithinDays([3, 2, 2, 4, 1, 4], 3)); // Expected: 6
 
-
-console.log("\n═══════════════════════════════════════════════════════════════");
+console.log(
+  "\n═══════════════════════════════════════════════════════════════",
+);
 console.log("🚀 SOLVE EACH PROBLEM ABOVE AND VERIFY YOUR TESTS!");
 console.log("💡 Remember: Understand the pattern, not just memorize code");
