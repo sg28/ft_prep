@@ -123,3 +123,14 @@ If he won't even do this, **walk away**.
 **Whoever has more to lose should carry more risk — right now that's you, so shift some of it to him.**
 
 If he accepts even 60–70% of this, you've got a solid deal.
+
+
+
+Message to Ravi,
+
+
+I'm proposing to split across milestones
+payments — 
+$128 for profile setup, 
+$120 for proposal system,
+I will work on 10% partnership from the royalty received after deducting all the cost of production for the first 3 client we land togethr, the deal will be discussed in details in due time, when you agree to move ahead.
