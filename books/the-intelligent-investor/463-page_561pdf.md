@@ -1,0 +1,43 @@
+# Page_561.pdf
+
+<!-- Page 575 -->
+
+**2. Important Rules Concerning Taxability of Investment**
+**Income and Security Transactions (in 1972)**
+Editor’s note: Due to extensive changes in the rules governing such
+transactions, the following document is presented here for historical
+purposes only. When first written by Benjamin Graham in 1972, all the
+information therein was correct. However, intervening developments
+have rendered this document inaccurate for today’s purposes. Follow-
+ing Graham’s original Appendix 2 is a revised and updated version of
+“The Basics of Investment Taxation,” which brings the reader up-to-
+date on the relevant rules.
+*Rule 1—Interest and Dividends*
+Interest and dividends are taxable as ordinary income except (a)
+income received from state, municipal, and similar obligations,
+which are free from Federal tax but may be subject to state tax, (b)
+dividends representing a return of capital, (c) certain dividends
+paid by investment companies (see below), and (d) the first $100 of
+ordinary domestic-corporation dividends.
+*Rule 2—Capital Gains and Losses*
+Short-term capital gains and losses are merged to obtain net
+short-term capital gain or loss. Long-term capital gains and losses
+are merged to obtain the net long-term capital gain or loss. If the
+net short-term capital gain exceeds the net long-term capital loss,
+100 per cent of such excess shall be included in income. The maxi-
+mum tax thereon is 25% up to $50,000 of such gains and 35% on the
+balance.
+
+A net capital loss (the amount exceeding capital gains) is
+deductible from ordinary income to a maximum of $1,000 in the
+current year and in each of the next five years. Alternatively,
+unused losses may be applied at any time to offset capital gains.
+(Carry-overs of losses taken before 1970 are treated more liberally
+than later losses.)
+*Note Concerning “Regulated Investment Companies”*
+Most investment funds (“investment companies”) take advan-
+tage of special provisions of the tax law, which enable them to be
+*Appendixes*
+*561*
+www.fx1618.com
+
