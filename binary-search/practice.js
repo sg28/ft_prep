@@ -373,7 +373,7 @@ function searchSparseArray(strings, target) {
       if (found === -1) return -1; 
       mid = found;
     }
-    
+
     if (strings[mid] < target) {
       left = mid + 1;
     } else {
@@ -468,7 +468,30 @@ console.log(minEatingSpeed([1, 10, 1000000000], 2)); // Expected: 333333334
   TIME: O(log(m*n))  SPACE: O(1)
 */
 function searchMatrix(matrix, target) {
-  // YOUR CODE HERE
+  if (!matrix.length || !matrix[0].length) return false;
+  
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  let left = 0;
+  let right = rows * cols;
+  
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+    
+    // Convert 1D index to 2D coordinates
+    let row = Math.floor(mid / cols);
+    let col = mid % cols;
+    let value = matrix[row][col];
+    
+    if (value === target) return true;
+    if (value < target) {
+      left = mid + 1;
+    } else {
+      right = mid;
+    }
+  }
+  
+  return false;
 }
 
 console.log("\n=== TEST: SEARCH 2D MATRIX ===");
