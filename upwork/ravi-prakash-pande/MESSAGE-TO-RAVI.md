@@ -4,7 +4,7 @@ I've reviewed your profile and course materials — impressed with your track re
 
 The Proposal
 1. Setup Complete (profile + 30 proposals + first 10 sent) | $150 |
-2. First Client Landed (min $500 project) | $450 |
+2. First Client Landed (min $500 project) | $450 | 90%
 3. Revenue Hit $3,000 | $300 | 10% commision.
 
 Best,
