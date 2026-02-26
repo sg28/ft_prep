@@ -1,0 +1,1149 @@
+================================================================================
+                    WORLD-CLASS NOTIFICATION SYSTEM
+                          SYSTEM DESIGN DOCUMENT
+                              v1.0
+================================================================================
+
+DOCUMENT METADATA
+================================================================================
+Created By: Claude Code
+Version: 1.0
+Date: 2026-02-26
+Status: Ready for Development Team Review
+Audience: Backend Engineers, DevOps, Product Managers
+
+================================================================================
+REQUIREMENTS GATHERING SESSION
+================================================================================
+
+The following system design is based on a structured requirement gathering
+process with the stakeholder. Below are all clarifying questions asked and
+answers received:
+
+QUESTION 1: Which notification channels do you need?
+ANSWER: Email and in-app
+
+QUESTION 2: What are the main notification triggers/events?
+ANSWER:
+  - Welcome email when candidate is added
+  - Documents submitted confirmation
+  - Document approval/rejection
+  - Deadline reminders
+  - Onboarding completion
+
+QUESTION 3: What is your expected scale?
+ANSWER: 100 candidates/month, ~1 notification/second peak
+
+QUESTION 4: Delivery strategy - immediate or batched?
+ANSWER: Immediate delivery (as soon as event happens)
+
+QUESTION 5: User notification preferences?
+ANSWER: All of the above
+  - Can opt-out of specific notification types
+  - Can choose frequency (instant vs daily digest)
+  - Can choose channels (email only, in-app only, or both)
+
+QUESTION 6: Logging, retry, and failure handling?
+ANSWER: Yes, all of the above
+  - Log all notification attempts (sent, failed, read)
+  - Retry failed notifications
+  - Queue and retry if email service is down
+  - Track delivery status and read receipts
+
+QUESTION 7: Analytics requirements?
+ANSWER: Yes, all of the above
+  - Delivery success rate
+  - Open rates & click-through rates
+  - Failure reasons & trends
+  - Generate reports
+
+QUESTION 8: Who can trigger notifications?
+ANSWER: All of the above
+  - HR staff manually via admin panel
+  - Automated system triggers
+  - Manager actions
+
+QUESTION 9: Timezone requirement?
+ANSWER: Multiple timezones globally
+
+QUESTION 10: Real-time status updates?
+ANSWER: Real-time would be great
+
+ADDITIONAL CONTEXT:
+The stakeholder expressed that they want to build a "world-class, enterprise-grade
+notification system" that can eventually be sold as a SaaS product to other companies.
+This requires focus on:
+  - High availability & reliability (99.99% uptime)
+  - Scalability for 10x-100x growth
+  - Multi-tenant architecture
+  - Enterprise security & compliance
+
+MULTI-TENANCY MODEL: Shared infrastructure with isolated data per tenant
+
+EMAIL PROVIDER: Single provider (SendGrid - to be confirmed by stakeholder)
+
+================================================================================
+KNOWLEDGE SOURCES & INSPIRATIONS
+================================================================================
+
+This system design incorporates industry best practices from the following sources:
+
+1. RIDE-SHARING PLATFORMS (Uber, Lyft)
+   -----------------------------------
+   SOURCE: General knowledge of ride-sharing architecture
+
+   APPLICABLE CONCEPTS:
+   - Real-time notification system for location updates
+     * When driver accepts ride → immediate notification to rider
+     * Driver location streamed in real-time
+     * Multiple services consume same event (rider app, billing, analytics)
+
+   - Multi-consumer pattern
+     * Single event consumed by: Rider UI, Billing Service, Analytics, Support
+     * Decoupling of services using message queues
+     * No single service depends on others
+
+   - Fault tolerance
+     * Location updates continue even if one service fails
+     * Message queue prevents data loss
+     * Retry mechanism for failed deliveries
+
+   HOW WE APPLIED THIS:
+   - Event-driven architecture using Kafka
+   - Decoupled services (Email, In-app, Analytics)
+   - Fault-tolerant message queuing
+   - Real-time WebSocket updates to dashboard
+   - Multi-tenant consideration (different users/orgs)
+
+2. EMAIL SERVICE PROVIDERS (SendGrid, Mailgun, AWS SES)
+   ---------------------------------------------------
+   SOURCE: Industry knowledge of production email systems
+
+   APPLICABLE CONCEPTS:
+   - Email delivery tracking
+     * Open tracking via pixel
+     * Click tracking via links
+     * Bounce/complaint handling
+
+   - Webhook events for real-time updates
+     * Provider sends events back to our system
+     * Allows us to track delivery status without polling
+
+   - Retry logic for failed emails
+     * Exponential backoff strategy
+     * Dead letter queues for permanent failures
+
+   HOW WE APPLIED THIS:
+   - SendGrid integration with webhook handlers
+   - Tracking pixels for email open rates
+   - Exponential backoff retry strategy (5s, 25s, 2m, 10m, 50m, 4h)
+   - Dead Letter Queue for permanently failed notifications
+
+3. FIREBASE CLOUD MESSAGING (FCM)
+   --------------------------------
+   SOURCE: Google's notification system for Android/iOS
+
+   APPLICABLE CONCEPTS:
+   - In-app push notifications with real-time delivery
+   - Device token management
+   - Message targeting and filtering
+   - Analytics on notification engagement
+
+   HOW WE APPLIED THIS:
+   - In-app notification service with WebSocket for real-time delivery
+   - User preferences filtering before sending
+   - Tracking notification views and clicks
+   - Analytics dashboard showing engagement metrics
+
+4. SLACK NOTIFICATIONS
+   --------------------
+   SOURCE: Enterprise notification best practices
+
+   APPLICABLE CONCEPTS:
+   - User preference management
+     * Users can mute channels
+     * Do-not-disturb settings with time ranges
+     * Preference per notification type
+
+   - Real-time updates
+     * Instant notification delivery
+     * Unread badge counts
+
+   - Thread management (not applicable but shows notification grouping)
+
+   HOW WE APPLIED THIS:
+   - Comprehensive user preference system
+   - Do-not-disturb hours (time-based filtering)
+   - Per-notification-type opt-out capability
+   - Real-time delivery using WebSocket
+
+5. STRIPE WEBHOOKS
+   ----------------
+   SOURCE: Payment processing notification patterns
+
+   APPLICABLE CONCEPTS:
+   - Webhook security (signature verification)
+   - Idempotent request handling
+   - Retry mechanism for failed webhook deliveries
+   - Event versioning for API compatibility
+
+   HOW WE APPLIED THIS:
+   - SendGrid webhook signature verification
+   - Idempotent notification processing
+   - Logging all webhook events
+   - Error handling for webhook processing
+
+6. LINKEDIN NOTIFICATIONS
+   ----------------------
+   SOURCE: Professional network notification strategy
+
+   APPLICABLE CONCEPTS:
+   - Email digest notifications
+   - Frequency capping (not too many emails)
+   - Preference granularity (per notification type)
+   - Analytics on user engagement
+
+   HOW WE APPLIED THIS:
+   - Frequency options: instant vs daily digest
+   - Rate limiting per tenant
+   - Per-notification-type preferences
+   - Engagement metrics dashboard
+
+7. KUBERNETES/DOCKER INFRASTRUCTURE
+   ---------------------------------
+   SOURCE: Modern cloud-native applications
+
+   APPLICABLE CONCEPTS:
+   - Horizontal scaling of services
+   - Container orchestration
+   - Health checks and auto-recovery
+   - Resource management
+
+   HOW WE APPLIED THIS:
+   - Containerized notification service
+   - Kubernetes orchestration plan
+   - Multiple instances of processor for scaling
+   - Auto-scaling rules based on Kafka lag
+
+8. DATABASE MULTI-TENANCY PATTERNS
+   --------------------------------
+   SOURCE: Enterprise SaaS architectures
+
+   APPLICABLE CONCEPTS:
+   - Row-level security
+   - Tenant isolation
+   - Data segregation
+   - Shared infrastructure efficiency
+
+   HOW WE APPLIED THIS:
+   - tenant_id on all tables
+   - Where-clause inclusion in every query
+   - PostgreSQL Row-Level Security (optional)
+   - Redis key namespacing by tenant
+
+9. MESSAGE QUEUE PATTERNS (Apache Kafka, RabbitMQ)
+   -----------------------------------------------
+   SOURCE: Distributed system best practices
+
+   APPLICABLE CONCEPTS:
+   - Event streaming for high throughput
+   - Partitioning by key for ordered processing
+   - Consumer groups for parallel processing
+   - Offset management for reliability
+
+   HOW WE APPLIED THIS:
+   - Kafka for event ingestion
+   - Partitioned by tenant_id (ensures ordering per tenant)
+   - Consumer groups for parallel notification processing
+   - Offset tracking for failure recovery
+
+10. OBSERVABILITY (Prometheus, Grafana, ELK)
+    ----------------------------------------
+    SOURCE: Modern production systems
+
+    APPLICABLE CONCEPTS:
+    - Metrics collection and visualization
+    - Log aggregation
+    - Alerting on SLA violations
+    - Performance monitoring
+
+    HOW WE APPLIED THIS:
+    - Key metrics defined (delivery rate, latency, etc)
+    - Alerting thresholds (99% delivery target)
+    - Monitoring section with dashboard queries
+    - Error tracking with Sentry
+
+11. GDPR & DATA PRIVACY REGULATIONS
+    --------------------------------
+    SOURCE: EU General Data Protection Regulation
+
+    APPLICABLE CONCEPTS:
+    - Right to be forgotten (data deletion)
+    - Data export capability
+    - Consent management
+    - Data retention policies
+
+    HOW WE APPLIED THIS:
+    - DELETE cascading for candidate data
+    - Data export API endpoint
+    - Notification preferences = explicit consent
+    - 90-day retention policy for logs
+
+================================================================================
+COMPARISON WITH INDUSTRY STANDARDS
+================================================================================
+
+System Feature              | Our Design        | Industry Standard
+────────────────────────────────────────────────────────────────────────────
+Delivery Latency            | < 2 seconds       | Twilio: < 1 sec, SendGrid: < 1 sec
+Email Delivery Rate         | 99%               | Industry: 95-98%
+System Uptime               | 99.99%            | SendGrid: 99.99%, Stripe: 99.99%
+Retry Attempts              | 7 attempts        | Industry: 5-10 attempts
+Retry Total Duration        | ~5 hours          | Industry: 24 hours to 3 days
+Multi-tenant Support        | Yes (shared infra) | Twilio: Yes, SendGrid: No (per account)
+Real-time Updates           | WebSocket         | Firebase: WebSocket/long-polling
+Timezone Support            | Yes (global)      | Twilio: Yes, Slack: Yes
+Analytics Granularity       | Per notification  | Segment: Per event, Mixpanel: Per action
+Rate Limiting               | Per tenant        | Stripe: Per API key
+GDPR Compliance             | Full support      | Twilio: Full, SendGrid: Full
+────────────────────────────────────────────────────────────────────────────
+
+================================================================================
+ARCHITECTURAL DECISIONS & RATIONALE
+================================================================================
+
+DECISION 1: Event-Driven Architecture (Kafka)
+WHY:
+  - Decouples event producers from consumers
+  - Inspired by Uber's real-time location system
+  - Handles traffic bursts without losing messages
+  - Allows multiple services to consume same event
+ALTERNATIVE: RabbitMQ (more traditional), but Kafka better for streaming
+
+DECISION 2: Multi-tenant with Shared Infrastructure
+WHY:
+  - Reduces operational complexity
+  - Lowers costs (can be passed to customers)
+  - Inspired by SendGrid's architecture
+  - Easier to scale than separate databases per tenant
+ALTERNATIVE: Separate DB per tenant (higher security, more expensive)
+
+DECISION 3: WebSocket for Real-time Updates
+WHY:
+  - Immediate feedback to HR dashboard
+  - Inspired by Slack's architecture
+  - Better UX than polling
+  - Reduces server load vs polling
+ALTERNATIVE: Server-sent events (simpler but less efficient)
+
+DECISION 4: Exponential Backoff Retry (7 attempts, 5 hours)
+WHY:
+  - Inspired by SendGrid's retry logic
+  - Balances reliability with not overwhelming failed services
+  - Provides enough time for service recovery
+ALTERNATIVE: Immediate retry (can overwhelm), or 24-hour retry (too slow)
+
+DECISION 5: Single Email Provider (SendGrid)
+WHY:
+  - Market leader in email deliverability
+  - Excellent API and webhook support
+  - Competitive pricing
+  - Large customer base (LinkedIn, Uber use it)
+ALTERNATIVE: Multi-provider fallback (higher complexity, added later)
+
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+
+Product Name: NotifyHub (Candidate Onboarding Notification Platform)
+Purpose: Enterprise-grade, multi-tenant notification system for candidate
+         onboarding with real-time delivery, analytics, and preference management.
+
+Target: Sell as SaaS product to multiple organizations
+
+================================================================================
+REQUIREMENTS SUMMARY
+================================================================================
+
+FUNCTIONAL REQUIREMENTS:
+------------------------
+1. Notification Channels: Email + In-App Push
+2. Notification Triggers:
+   - Welcome email when candidate is added
+   - Documents submitted confirmation
+   - Document approval/rejection
+   - Deadline reminders
+   - Onboarding completion
+
+3. Delivery: Immediate (as soon as event triggers)
+
+4. User Preferences:
+   - Opt-out of specific notification types
+   - Choose frequency (instant vs daily digest)
+   - Choose channels (email only, in-app only, or both)
+
+5. Logging & Retry:
+   - Log all notification attempts (sent, failed, read)
+   - Retry failed notifications with configurable strategy
+   - Queue and retry if email service is down
+   - Track delivery status and read receipts
+
+6. Analytics:
+   - Delivery success rate
+   - Open rates & click-through rates
+   - Failure reasons & trends
+   - Generate reports
+
+7. Access Control:
+   - HR staff can trigger manually via admin panel
+   - Automated system triggers
+   - Manager actions
+   - All of the above
+
+8. Timezone Support: Multiple timezones globally
+
+9. Real-time Updates: Real-time notification status in UI
+
+NON-FUNCTIONAL REQUIREMENTS:
+----------------------------
+- Uptime: 99.99% availability
+- Scalability: Handle 100 candidates/month, ~1 notification/second peak
+  (Future growth to 10x-100x)
+- Multi-tenancy: Shared infrastructure, isolated data per tenant
+- Security: Enterprise-grade (GDPR compliant, data isolation)
+- Provider: Single email provider (SendGrid - TBD confirmation)
+- Latency: < 100ms for immediate notifications
+- Durability: No message loss even if system crashes
+
+================================================================================
+SYSTEM ARCHITECTURE
+================================================================================
+
+HIGH-LEVEL FLOW:
+================
+
+    Trigger Event                 Notification Service
+    (HR/System/Manager)                  |
+           |                             |
+           v                             v
+    Event Queue (Kafka)  -->  Notification Processor
+           |                        |
+           |                        v
+           |                   Preference Check
+           |                        |
+           |                   Delivery Service
+           |                   /    |    \
+           |                  /     |     \
+           v                 v      v      v
+        Email Service    SMS    In-App   Logs
+           |             Queue   Queue
+           |
+       SendGrid API
+           |
+        Candidate Email
+           |
+        Email Service Logs
+
+
+CORE COMPONENTS:
+================
+
+1. API Gateway
+   - REST API for creating notifications
+   - Webhook endpoints for events
+   - Authentication & tenant validation
+
+2. Event Queue (Kafka/RabbitMQ)
+   - Decouples event sources from processors
+   - Ensures no message loss
+   - Handles bursts in traffic
+
+3. Notification Service
+   - Core business logic
+   - Routes notifications based on preferences
+   - Manages templates and variables
+
+4. Preference Engine
+   - Validates user notification preferences
+   - Filters notifications based on settings
+   - Timezone handling
+
+5. Delivery Service
+   - Orchestrates channel-specific delivery
+   - Handles retries and failures
+   - Manages delivery state
+
+6. Email Processor
+   - Formats email content
+   - Integrates with SendGrid
+   - Tracks email-specific metrics
+
+7. In-App Notification Service
+   - Stores notifications in database
+   - WebSocket/polling for real-time updates
+   - Mark as read functionality
+
+8. Logging & Analytics Service
+   - Stores all notification events
+   - Calculates delivery metrics
+   - Generates reports
+
+9. Database (Multi-tenant)
+   - Tenant isolation via tenant_id
+   - Notification logs
+   - User preferences
+   - Analytics data
+
+10. Cache Layer (Redis)
+    - Cache user preferences
+    - Session management
+    - Rate limiting
+
+================================================================================
+DETAILED ARCHITECTURE DIAGRAM
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CLIENT LAYER                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  HR Dashboard     Mobile App      Admin Panel      Third-party API          │
+│       │               │                │                  │                 │
+│       └───────────────┼──────────────┬──────────────────┘                  │
+│                       │              │                                      │
+│                       v              v                                      │
+│                   ┌────────────────────────┐                               │
+│                   │    API GATEWAY         │                               │
+│                   │  (Auth + Rate Limit)   │                               │
+│                   └────────┬───────────────┘                               │
+│                            │                                              │
+└────────────────────────────┼──────────────────────────────────────────────┘
+                             │
+┌────────────────────────────v──────────────────────────────────────────────┐
+│                        EVENT INGESTION LAYER                               │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│              ┌──────────────────────────────────────┐                      │
+│              │     EVENT QUEUE (Kafka/RabbitMQ)     │                      │
+│              │  Topic: notification-events          │                      │
+│              │  Partitions: By tenant_id            │                      │
+│              └──────────────┬───────────────────────┘                      │
+│                             │                                              │
+└─────────────────────────────┼──────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────v──────────────────────────────────────────────┐
+│                      NOTIFICATION SERVICE LAYER                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌──────────────────────────────────────────────────────────────────┐      │
+│  │              Notification Processor                              │      │
+│  │  - Parse event                                                   │      │
+│  │  - Load notification template                                    │      │
+│  │  - Replace variables                                             │      │
+│  │  - Enrich with candidate data                                    │      │
+│  └──────────────────┬───────────────────────────────────────────────┘      │
+│                     │                                                       │
+│  ┌──────────────────v───────────────────────────────────────────────┐      │
+│  │           Preference & Filtering Engine                          │      │
+│  │  - Check user notification preferences (cached in Redis)         │      │
+│  │  - Check tenant settings                                         │      │
+│  │  - Apply timezone rules                                          │      │
+│  │  - Determine channels (Email, In-App, Both)                      │      │
+│  └──────────────────┬───────────────────────────────────────────────┘      │
+│                     │                                                       │
+│  ┌──────────────────v───────────────────────────────────────────────┐      │
+│  │              Delivery Service                                    │      │
+│  │  - Route to appropriate handlers                                 │      │
+│  │  - Manage retries & circuit breakers                             │      │
+│  │  - Handle failures gracefully                                    │      │
+│  └──────┬───────────────────────────────────────────────────┬───────┘      │
+│         │                                                   │                │
+└─────────┼───────────────────────────────────────────────────┼────────────────┘
+          │                                                   │
+          v                                                   v
+┌─────────────────────────┐                        ┌──────────────────────┐
+│  EMAIL DELIVERY LAYER   │                        │ IN-APP NOTIFICATION  │
+├─────────────────────────┤                        │      LAYER           │
+│                         │                        ├──────────────────────┤
+│ ┌─────────────────────┐ │                        │                      │
+│ │ Email Processor     │ │                        │ ┌──────────────────┐ │
+│ │ - Format content    │ │                        │ │ In-App Service   │ │
+│ │ - Build MIME        │ │                        │ │ - Store in DB    │ │
+│ │ - Add tracking link │ │                        │ │ - Send via Socket│ │
+│ └──────────┬──────────┘ │                        │ └────────┬─────────┘ │
+│            │            │                        │          │           │
+│ ┌──────────v──────────┐ │                        │ ┌────────v────────┐ │
+│ │ SendGrid API Client │ │                        │ │  WebSocket/Poll │ │
+│ │ - Auth              │ │                        │ │  for real-time  │ │
+│ │ - Send email        │ │                        │ │  updates        │ │
+│ │ - Track events      │ │                        │ └─────────────────┘ │
+│ └──────────┬──────────┘ │                        │                      │
+│            │            │                        └──────────┬───────────┘
+│            v            │                                   │
+│       ┌─────────┐       │                                   │
+│       │ SendGrid│       │                                   │
+│       │  Cloud  │       │                                   │
+│       └─────────┘       │                                   │
+└─────────────────────────┘                                   │
+                                                              │
+                    ┌─────────────────────────────────────────┘
+                    │
+┌───────────────────v───────────────────────────────────────────────────────┐
+│                       PERSISTENCE LAYER                                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │              Multi-tenant Database (PostgreSQL)                      │  │
+│  │                                                                       │  │
+│  │  Tables:                                                             │  │
+│  │  - tenants (tenant_id, name, settings)                              │  │
+│  │  - candidates (id, tenant_id, email, preferences)                   │  │
+│  │  - notification_logs (id, tenant_id, candidate_id, channel, ...)    │  │
+│  │  - notification_preferences (tenant_id, candidate_id, settings)     │  │
+│  │  - notification_templates (tenant_id, type, content)                │  │
+│  │  - delivery_events (id, tenant_id, status, timestamp)               │  │
+│  │  - analytics (tenant_id, metric, value, date)                       │  │
+│  │                                                                       │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │          Cache Layer (Redis)                                         │  │
+│  │                                                                       │  │
+│  │  - user_preferences:{tenant_id}:{candidate_id}                       │  │
+│  │  - tenant_settings:{tenant_id}                                       │  │
+│  │  - rate_limit:{tenant_id}:{ip}                                       │  │
+│  │  - session_tokens                                                    │  │
+│  │                                                                       │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+└────────────────────────────────────────────────────────────────────────────┘
+
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│                        SUPPORTING SERVICES                                  │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌──────────────────────┐      ┌──────────────────────┐                  │
+│  │ Logging Service      │      │ Analytics Service    │                  │
+│  │ - Event logs         │      │ - Track metrics      │                  │
+│  │ - Error logs         │      │ - Generate reports   │                  │
+│  │ - Audit trails       │      │ - Dashboard data     │                  │
+│  └──────────────────────┘      └──────────────────────┘                  │
+│                                                                             │
+│  ┌──────────────────────┐      ┌──────────────────────┐                  │
+│  │ Retry Service        │      │ Notification Manager │                  │
+│  │ - Exponential backoff│      │ - Template mgmt      │                  │
+│  │ - Max retries        │      │ - Preference mgmt    │                  │
+│  │ - Dead letter queue  │      │ - Schedule mgmt      │                  │
+│  └──────────────────────┘      └──────────────────────┘                  │
+│                                                                             │
+└────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+DATA MODEL (Multi-tenant Design)
+================================================================================
+
+TENANTS TABLE:
+--------------
+tenant_id (UUID, Primary Key)
+name (VARCHAR)
+email_provider (VARCHAR) - "sendgrid" / "aws-ses" / etc
+api_key (ENCRYPTED)
+settings (JSONB)
+  - max_notifications_per_day
+  - default_timezone
+  - do_not_disturb_hours
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+
+
+CANDIDATES TABLE:
+-----------------
+id (UUID, Primary Key)
+tenant_id (UUID, Foreign Key)
+email (VARCHAR)
+name (VARCHAR)
+timezone (VARCHAR)
+created_at (TIMESTAMP)
+INDEX: (tenant_id, id)
+
+
+NOTIFICATION_PREFERENCES TABLE:
+-------------------------------
+id (UUID, Primary Key)
+tenant_id (UUID, Foreign Key)
+candidate_id (UUID, Foreign Key)
+notification_type (VARCHAR) - "welcome", "doc_submitted", "doc_approved", etc
+enabled (BOOLEAN) - default: true
+channels (JSONB) - ["email", "in_app"]
+frequency (VARCHAR) - "instant", "daily_digest", "weekly"
+do_not_disturb_enabled (BOOLEAN)
+do_not_disturb_start (TIME)
+do_not_disturb_end (TIME)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+INDEX: (tenant_id, candidate_id)
+
+
+NOTIFICATION_LOGS TABLE:
+------------------------
+id (UUID, Primary Key)
+tenant_id (UUID, Foreign Key)
+candidate_id (UUID, Foreign Key)
+notification_type (VARCHAR)
+channels (JSONB)
+template_id (UUID)
+variables (JSONB) - template variables
+status (ENUM) - "queued", "sent", "delivered", "failed", "opened", "clicked"
+retry_count (INTEGER)
+error_message (TEXT)
+created_at (TIMESTAMP)
+sent_at (TIMESTAMP)
+delivered_at (TIMESTAMP)
+opened_at (TIMESTAMP)
+clicked_at (TIMESTAMP)
+INDEX: (tenant_id, candidate_id, created_at)
+INDEX: (tenant_id, status, created_at)
+
+
+DELIVERY_EVENTS TABLE:
+----------------------
+id (UUID, Primary Key)
+notification_log_id (UUID, Foreign Key)
+channel (VARCHAR) - "email", "in_app"
+provider_event_id (VARCHAR) - SendGrid event ID
+event_type (VARCHAR) - "bounce", "click", "open", "delivered", "failed"
+timestamp (TIMESTAMP)
+metadata (JSONB) - provider-specific data
+INDEX: (notification_log_id, timestamp)
+
+
+NOTIFICATION_TEMPLATES TABLE:
+-----------------------------
+id (UUID, Primary Key)
+tenant_id (UUID, Foreign Key)
+notification_type (VARCHAR)
+subject (VARCHAR)
+email_body (TEXT) - HTML
+in_app_body (TEXT) - JSON
+variables (JSONB) - list of variable names needed
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+INDEX: (tenant_id, notification_type)
+
+================================================================================
+API ENDPOINTS
+================================================================================
+
+1. NOTIFICATION TRIGGER ENDPOINT
+   POST /api/v1/notifications/send
+
+   Request Body:
+   {
+     "tenant_id": "org-123",
+     "candidate_id": "candidate-456",
+     "notification_type": "welcome",
+     "variables": {
+       "candidate_name": "John Doe",
+       "onboarding_link": "https://..."
+     }
+   }
+
+   Response:
+   {
+     "notification_id": "notif-789",
+     "status": "queued",
+     "channels": ["email", "in_app"],
+     "created_at": "2026-02-26T10:30:00Z"
+   }
+
+2. GET NOTIFICATION STATUS
+   GET /api/v1/notifications/{notification_id}
+
+   Response:
+   {
+     "notification_id": "notif-789",
+     "status": "delivered",
+     "channels": {
+       "email": {
+         "status": "delivered",
+         "delivered_at": "2026-02-26T10:31:00Z",
+         "opened_at": "2026-02-26T10:45:00Z"
+       },
+       "in_app": {
+         "status": "viewed",
+         "viewed_at": "2026-02-26T10:35:00Z"
+       }
+     }
+   }
+
+3. UPDATE USER PREFERENCES
+   PUT /api/v1/candidates/{candidate_id}/preferences
+
+   Request Body:
+   {
+     "notification_type": "document_submitted",
+     "enabled": true,
+     "channels": ["email"],
+     "frequency": "instant"
+   }
+
+4. GET ANALYTICS
+   GET /api/v1/tenants/{tenant_id}/analytics
+
+   Query Params:
+   - start_date
+   - end_date
+   - metric_type (delivery_rate, open_rate, click_rate, etc)
+
+   Response:
+   {
+     "delivery_rate": 0.98,
+     "open_rate": 0.65,
+     "click_rate": 0.12,
+     "failure_reasons": {
+       "invalid_email": 5,
+       "provider_error": 2,
+       "opt_out": 3
+     }
+   }
+
+================================================================================
+NOTIFICATION FLOW (Step-by-Step)
+================================================================================
+
+SCENARIO: Candidate submits document
+
+1. HR Dashboard triggers "document_submitted" event via API
+   POST /api/v1/notifications/send
+
+2. API Gateway validates request
+   - Check tenant_id exists
+   - Validate candidate_id
+   - Check rate limits
+
+3. Event is published to Kafka queue
+   Topic: notification-events
+   Key: tenant_id (ensures ordering per tenant)
+   Partition: hash(tenant_id)
+
+4. Notification Processor consumes event
+   - Parse event payload
+   - Load notification template for "document_submitted"
+   - Replace variables (candidate_name, document_name, etc)
+
+5. Preference Engine checks user preferences
+   - Query Redis cache for candidate's preferences
+   - If not in cache, fetch from DB and cache for 5 minutes
+   - Check if "document_submitted" is enabled
+   - Check if candidate opted-out of this notification type
+   - Check do-not-disturb hours
+   - Determine channels: email, in_app, or both
+
+6. Delivery Service orchestrates delivery
+
+   IF email channel:
+   └─> Email Processor formats email
+       ├─> Add tracking pixel for open tracking
+       ├─> Add unsubscribe link
+       ├─> Render template with variables
+       └─> Call SendGrid API
+           ├─> SendGrid queues email
+           ├─> Returns message_id
+           └─> Log in notification_logs table with status="sent"
+
+   IF in_app channel:
+   └─> In-App Service stores notification
+       ├─> Save to notifications table
+       ├─> Emit WebSocket event to candidate's open sessions
+       ├─> Candidate receives in real-time
+       └─> Log in notification_logs table with status="delivered"
+
+7. Email Sent Event (from SendGrid webhook)
+   - Webhook: POST /webhooks/sendgrid/events
+   - Update notification_logs: status="delivered"
+   - Record in delivery_events table
+
+8. Email Open Event (from SendGrid tracking pixel)
+   - Webhook: POST /webhooks/sendgrid/events (event_type="open")
+   - Update notification_logs: status="opened", opened_at=timestamp
+   - Trigger analytics service to update open_rate metrics
+
+9. Analytics Service aggregates data
+   - Count deliveries per notification_type
+   - Calculate open rates, click rates
+   - Store daily metrics in analytics table
+   - Update dashboard in real-time
+
+10. Real-time UI updates
+    - Candidate sees notification in-app immediately
+    - Dashboard shows delivery status in real-time
+    - HR can see analytics updated every 1 minute
+
+================================================================================
+RETRY STRATEGY
+================================================================================
+
+Failed notifications are retried with exponential backoff:
+
+Attempt 1: Immediate
+Attempt 2: 5 seconds later
+Attempt 3: 25 seconds later (5 * 5)
+Attempt 4: 2 minutes later (25 * 5)
+Attempt 5: 10 minutes later (2min * 5)
+Attempt 6: 50 minutes later (10min * 5)
+Attempt 7: ~4 hours later (50min * 5)
+
+Max Retries: 7 times
+Total time: ~5 hours
+
+If all retries fail:
+- Status: "failed"
+- Error logged with reason
+- Moved to Dead Letter Queue (DLQ)
+- Alert sent to ops team
+- Candidate can manually retry via admin panel
+
+If SendGrid is down (rate limit or service error):
+- Notification remains in queue
+- Retry mechanism kicks in automatically
+- No message loss
+
+================================================================================
+REAL-TIME UPDATES (WebSocket Implementation)
+================================================================================
+
+CLIENT CONNECTS:
+1. Candidate opens dashboard
+2. Establishes WebSocket connection: wss://api.notifyhub.com/ws
+3. Sends authentication with candidate_id and tenant_id
+4. Server subscribes client to channel: candidate:{tenant_id}:{candidate_id}
+
+REAL-TIME EVENTS:
+1. Notification sent
+   └─> Server publishes to Redis pub/sub
+   └─> All connected clients for that candidate receive update
+   └─> Client UI updates notification status immediately
+
+2. Email opened
+   └─> SendGrid webhook received
+   └─> Database updated
+   └─> Redis pub/sub publishes "opened" event
+   └─> Client sees "Email opened at 2:45 PM"
+
+3. Analytics updated
+   └─> Every minute, aggregate metrics
+   └─> Publish aggregated stats to dashboard channel
+   └─> All dashboards seeing analytics update in real-time
+
+IMPLEMENTATION:
+- Use Socket.io or native WebSocket
+- Subscribe to Redis pub/sub for scalability
+- Use heartbeat every 30 seconds to detect dead connections
+- Auto-reconnect with exponential backoff
+
+================================================================================
+SECURITY & COMPLIANCE
+================================================================================
+
+MULTI-TENANT ISOLATION:
+- Every query includes tenant_id in WHERE clause
+- Database row-level security (if using PostgreSQL RLS)
+- Separate Redis keys per tenant
+- Kafka topics partitioned by tenant_id
+
+DATA ENCRYPTION:
+- Email provider API keys: Encrypted at rest (AES-256)
+- Passwords: Bcrypt with salt
+- In-transit: TLS 1.3 for all API calls
+
+GDPR COMPLIANCE:
+- Right to be forgotten: DELETE candidate data cascades to all tables
+- Data export: GET /api/v1/candidates/{id}/export returns all data
+- Consent management: Notification preferences = consent
+- Data retention policy: Delete logs after 90 days (configurable)
+
+AUTHENTICATION:
+- OAuth 2.0 for admin panel
+- API Key + Signature for webhook verification
+- JWT tokens for mobile app
+
+AUDIT LOGGING:
+- Log all preference changes
+- Log all API access
+- Log all admin actions
+- Store in tamper-proof format
+
+RATE LIMITING:
+- Per tenant: 1000 notifications/minute
+- Per IP: 100 requests/minute
+- Redis-based sliding window
+
+================================================================================
+SCALABILITY & PERFORMANCE
+================================================================================
+
+CURRENT CAPACITY (100 candidates/month):
+- ~1 notification/second peak
+- Single instance of notification processor
+- One Kafka broker
+- PostgreSQL with basic indexing
+- Redis single node
+
+SCALING TO 1000 CANDIDATES/MONTH (10x growth):
+- Kafka: 3 broker cluster, 5 partitions per topic
+- Notification Processor: 3 instances with load balancer
+- Database: Read replicas for analytics queries
+- Redis: Redis Cluster or Sentinel for high availability
+
+SCALING TO 10000 CANDIDATES/MONTH (100x growth):
+- Kafka: 10 broker cluster, 20 partitions
+- Notification Processor: 10 instances
+- Database: Sharding by tenant_id (different DB per tenant tier)
+- Redis: Redis Cluster with multiple master nodes
+- Add CDN for static assets
+- Add message queue for bulk operations
+
+PERFORMANCE OPTIMIZATIONS:
+1. Database indexes on frequently queried columns
+2. Redis caching for user preferences (5 min TTL)
+3. Batch processing for analytics
+4. Connection pooling (pgBouncer)
+5. Async processing with workers
+6. Message compression in Kafka
+7. Lazy loading of templates
+
+EXPECTED LATENCIES:
+- API request to response: < 100ms
+- Event to queue: < 10ms
+- Queue to processor: < 500ms
+- Processor to delivery: < 1000ms
+- Total end-to-end: < 2000ms (2 seconds)
+
+================================================================================
+TECHNOLOGY STACK
+================================================================================
+
+SERVICE LAYER:
+- Language: Node.js / Python / Go (TBD)
+- API Framework: Express.js / FastAPI / Echo
+- Message Queue: Apache Kafka or RabbitMQ
+- Job Queue: Bull (Node.js) or Celery (Python)
+
+DATA LAYER:
+- Primary Database: PostgreSQL 13+
+- Cache: Redis 6.0+
+- Search: Elasticsearch (optional, for analytics)
+
+INFRASTRUCTURE:
+- Containerization: Docker
+- Orchestration: Kubernetes
+- Cloud: AWS / GCP / Azure (TBD)
+- CDN: CloudFront / Cloudflare
+
+EXTERNAL SERVICES:
+- Email Provider: SendGrid (TBD)
+- Monitoring: Prometheus + Grafana
+- Logging: ELK Stack or Datadog
+- Error Tracking: Sentry
+
+FRONTEND:
+- Web Dashboard: React
+- Mobile App: React Native
+
+================================================================================
+MONITORING & ALERTING
+================================================================================
+
+KEY METRICS TO MONITOR:
+
+1. Delivery Metrics:
+   - Email delivery rate (target: 99%)
+   - In-app delivery rate (target: 99.9%)
+   - Average delivery latency
+   - Failed notifications count
+
+2. Performance Metrics:
+   - API response time (p95, p99)
+   - Queue processing time
+   - Database query latency
+   - Cache hit rate
+
+3. System Health:
+   - Kafka lag per consumer group
+   - Database connection pool usage
+   - Redis memory usage
+   - Disk space
+
+4. Business Metrics:
+   - Email open rate
+   - Email click rate
+   - In-app notification views
+   - Opt-out rate
+
+ALERTING RULES:
+
+1. CRITICAL:
+   - Delivery rate < 95% for 5 minutes
+   - API response time > 1000ms (p95) for 10 minutes
+   - Database down
+   - Kafka lag > 1000 messages
+
+2. WARNING:
+   - Delivery rate < 98% for 15 minutes
+   - API response time > 500ms for 10 minutes
+   - High error rate in logs
+   - Redis memory > 80%
+
+================================================================================
+DEPLOYMENT PLAN
+================================================================================
+
+PHASE 1: MVP (v1.0)
+- Email + In-app notifications
+- Basic preference management
+- Single tenant (internal use)
+- Manual deployment
+
+PHASE 2: Multi-tenant (v1.1)
+- Multi-tenant architecture
+- Tenant management UI
+- Analytics dashboard
+- Automated deployment with CI/CD
+
+PHASE 3: Production Ready (v2.0)
+- High availability setup
+- Auto-scaling
+- Advanced analytics
+- Additional channels (SMS, Slack)
+- Public API + SDK
+
+PHASE 4: Enterprise Features (v3.0)
+- Advanced targeting
+- A/B testing
+- Custom templates
+- Integrations marketplace
+- SLA guarantees
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. Confirm email provider (SendGrid)
+2. Select technology stack (Node.js vs Python vs Go)
+3. Set up development environment
+4. Create detailed API specifications
+5. Design database schema (create SQL scripts)
+6. Set up Kafka cluster
+7. Implement core notification service
+8. Build admin dashboard
+9. Write comprehensive tests
+10. Set up CI/CD pipeline
+11. Deploy to staging environment
+12. Load testing and optimization
+13. Deploy to production
+
+================================================================================
+END OF DOCUMENT
+================================================================================
