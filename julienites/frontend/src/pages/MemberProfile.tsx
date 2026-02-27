@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getVersionDisplay } from '../config/version';
 
 const MemberProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,6 +89,9 @@ const MemberProfile: React.FC = () => {
             </button>
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="text-xl font-bold">Julienites</span>
+              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-full">
+                {getVersionDisplay()}
+              </span>
             </div>
             <div className="w-10"></div> {/* Spacer for alignment */}
           </div>

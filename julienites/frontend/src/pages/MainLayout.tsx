@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import ProfileCard from '../components/ProfileCard';
 import AdCard from '../components/AdCard';
+import { getVersionDisplay, getCopyrightText } from '../config/version';
 
 // Mock data for demonstration
 const mockMembers = [
@@ -84,8 +86,20 @@ const mockAds = [
 ];
 
 const MainLayout: React.FC = () => {
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<'members' | 'trending' | 'events'>('members');
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  // Get initials from user name
+  const getUserInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <div className="min-h-screen bg-background-primary text-text-primary">
@@ -97,7 +111,7 @@ const MainLayout: React.FC = () => {
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-twitter-blue to-twitter-pink"></div>
               <h1 className="text-xl font-bold">Julienites</h1>
               <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-full">
-                Alumni Network
+                {getVersionDisplay()}
               </span>
             </div>
             
@@ -110,9 +124,68 @@ const MainLayout: React.FC = () => {
                 {isDark ? '🌙' : '☀️'}
               </button>
               
-              <button className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors">
-                Sign In
-              </button>
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center gap-2 p-1 rounded-full hover:bg-background-secondary transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-twitter-blue flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">
+                        {getUserInitials(user.name)}
+                      </span>
+                    </div>
+                    <span className="font-medium text-sm hidden md:inline">
+                      {user.name.split(' ')[0]}
+                    </span>
+                  </button>
+                  
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-background-secondary rounded-xl border border-border shadow-lg z-50">
+                      <div className="p-4 border-b border-border">
+                        <div className="font-bold">{user.name}</div>
+                        <div className="text-text-tertiary text-sm">@{user.username}</div>
+                      </div>
+                      <div className="p-2">
+                        <button
+                          onClick={() => {
+                            // Navigate to user profile
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                        >
+                          👤 Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            // Navigate to settings
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                        >
+                          ⚙️ Settings
+                        </button>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary text-red-500 transition-colors"
+                        >
+                          🚪 Log out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button 
+                  onClick={() => window.location.href = '/login'}
+                  className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -164,7 +237,9 @@ const MainLayout: React.FC = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-twitter-blue/20 to-twitter-pink/20 rounded-2xl p-6 border border-border">
-              <h1 className="text-2xl font-bold mb-2">Welcome to Julienites Network</h1>
+              <h1 className="text-2xl font-bold mb-2">
+                {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to Julienites Network'}
+              </h1>
               <p className="text-text-secondary mb-4">
                 Connect with fellow alumni, discover career opportunities, and stay updated with community events.
               </p>
@@ -274,11 +349,19 @@ const MainLayout: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <div>© 2024 Julienites Alumni Network</div>
+              <div>{getCopyrightText()}</div>
             </div>
           </aside>
         </div>
       </main>
+      
+      {/* Close user menu when clicking outside */}
+      {showUserMenu && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowUserMenu(false)}
+        />
+      )}
     </div>
   );
 };
