@@ -6,8 +6,8 @@ const urlsToCache = [
   '/static/js/bundle.js',
   '/static/css/main.chunk.css',
   '/manifest.json',
-  '/logo192.png',
-  '/logo512.png',
+  '/julienites-logo-192.png',
+  '/julienites-logo-512.png',
   '/favicon.ico'
 ];
 

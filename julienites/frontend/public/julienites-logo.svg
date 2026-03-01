@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 24 24" fill="none" stroke="#1DA1F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Graduation Cap -->
+  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+  <path d="M6 12v5c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-5" />
+  
+  <!-- Network/Connection dots -->
+  <circle cx="12" cy="7" r="1" fill="#1DA1F2" />
+  <circle cx="8" cy="12" r="1" fill="#1DA1F2" />
+  <circle cx="16" cy="12" r="1" fill="#1DA1F2" />
+  <circle cx="12" cy="17" r="1" fill="#1DA1F2" />
+  
+  <!-- Connection lines -->
+  <path d="M12 7l-4 5" stroke="#1DA1F2" stroke-width="1" stroke-dasharray="2,2" />
+  <path d="M12 7l4 5" stroke="#1DA1F2" stroke-width="1" stroke-dasharray="2,2" />
+  <path d="M8 12l4 5" stroke="#1DA1F2" stroke-width="1" stroke-dasharray="2,2" />
+  <path d="M16 12l-4 5" stroke="#1DA1F2" stroke-width="1" stroke-dasharray="2,2" />
+</svg>
