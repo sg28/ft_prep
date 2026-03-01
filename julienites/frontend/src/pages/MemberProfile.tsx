@@ -1,5 +1,19 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { 
+  GraduationCap, 
+  Briefcase, 
+  MapPin, 
+  Mail, 
+  Phone, 
+  Linkedin, 
+  Github, 
+  Twitter, 
+  MessageCircle, 
+  Repeat, 
+  Heart,
+  ArrowLeft
+} from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
 
 const MemberProfile: React.FC = () => {
@@ -82,10 +96,11 @@ const MemberProfile: React.FC = () => {
           <div className="h-[53px] flex items-center justify-between">
             <button 
               onClick={() => navigate(-1)}
-              className="p-2 rounded-full hover:bg-background-tertiary transition-colors"
+              className="p-2 rounded-full hover:bg-background-tertiary transition-colors flex items-center gap-2"
               aria-label="Go back"
             >
-              ← Back
+              <ArrowLeft size={20} />
+              Back
             </button>
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="text-xl font-bold">Julienites</span>
@@ -122,7 +137,10 @@ const MemberProfile: React.FC = () => {
                   <h1 className="text-3xl font-bold mb-2">{member.name}</h1>
                   <p className="text-text-tertiary text-lg mb-1">@{member.username}</p>
                   {member.graduationYear && (
-                    <p className="text-text-secondary mb-2">🎓 Class of {member.graduationYear}</p>
+                    <div className="flex items-center gap-2 text-text-secondary mb-2">
+                      <GraduationCap size={18} />
+                      <span>Class of {member.graduationYear}</span>
+                    </div>
                   )}
                 </div>
                 <div className="flex gap-3 mt-4 md:mt-0">
@@ -142,13 +160,13 @@ const MemberProfile: React.FC = () => {
               <div className="flex flex-wrap gap-4 mb-6">
                 {member.location && (
                   <div className="flex items-center gap-2 text-text-secondary">
-                    <span className="text-xl">📍</span>
+                    <MapPin size={18} />
                     <span>{member.location}</span>
                   </div>
                 )}
                 {member.currentRole && (
                   <div className="flex items-center gap-2 text-text-secondary">
-                    <span className="text-xl">💼</span>
+                    <Briefcase size={18} />
                     <span>{member.currentRole}</span>
                   </div>
                 )}
@@ -246,19 +264,19 @@ const MemberProfile: React.FC = () => {
                 <div className="space-y-3">
                   {member.email && (
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">📧</span>
+                      <Mail size={18} />
                       <span>{member.email}</span>
                     </div>
                   )}
                   {member.phone && (
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">📱</span>
+                      <Phone size={18} />
                       <span>{member.phone}</span>
                     </div>
                   )}
                   {member.linkedin && (
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">💼</span>
+                      <Linkedin size={18} />
                       <a href={`https://${member.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
                         LinkedIn Profile
                       </a>
@@ -266,7 +284,7 @@ const MemberProfile: React.FC = () => {
                   )}
                   {member.github && (
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">🐙</span>
+                      <Github size={18} />
                       <a href={`https://${member.github}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
                         GitHub Profile
                       </a>
@@ -274,7 +292,7 @@ const MemberProfile: React.FC = () => {
                   )}
                   {member.twitter && (
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">🐦</span>
+                      <Twitter size={18} />
                       <a href={`https://twitter.com/${member.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
                         {member.twitter}
                       </a>
@@ -307,15 +325,15 @@ const MemberProfile: React.FC = () => {
               </div>
               <div className="flex gap-6">
                 <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue">
-                  <span className="text-xl">💬</span>
+                  <MessageCircle size={18} />
                   <span>24</span>
                 </button>
                 <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue">
-                  <span className="text-xl">🔄</span>
+                  <Repeat size={18} />
                   <span>8</span>
                 </button>
                 <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-pink">
-                  <span className="text-xl">❤️</span>
+                  <Heart size={18} />
                   <span>142</span>
                 </button>
               </div>

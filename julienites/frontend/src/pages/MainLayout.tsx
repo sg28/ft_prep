@@ -3,6 +3,18 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileCard from '../components/ProfileCard';
 import AdCard from '../components/AdCard';
+import Navigation from '../components/Navigation';
+import { 
+  Moon, 
+  Sun, 
+  Search, 
+  Users, 
+  Flame, 
+  Calendar,
+  User,
+  Settings,
+  LogOut
+} from 'lucide-react';
 import { getVersionDisplay, getCopyrightText } from '../config/version';
 
 // Mock data for demonstration
@@ -14,7 +26,6 @@ const mockMembers = [
     graduationYear: 2022,
     currentRole: 'Software Engineer @ Google',
     location: 'San Francisco, CA',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
     isOnline: true
   },
   {
@@ -24,7 +35,6 @@ const mockMembers = [
     graduationYear: 2021,
     currentRole: 'Product Manager @ Meta',
     location: 'New York, NY',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
     isOnline: false
   },
   {
@@ -34,7 +44,6 @@ const mockMembers = [
     graduationYear: 2023,
     currentRole: 'Data Scientist @ Amazon',
     location: 'Seattle, WA',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus',
     isOnline: true
   },
   {
@@ -44,7 +53,6 @@ const mockMembers = [
     graduationYear: 2020,
     currentRole: 'UX Designer @ Apple',
     location: 'Austin, TX',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya',
     isOnline: false
   },
   {
@@ -54,7 +62,6 @@ const mockMembers = [
     graduationYear: 2022,
     currentRole: 'DevOps Engineer @ Microsoft',
     location: 'Remote',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David',
     isOnline: true
   },
   {
@@ -64,7 +71,6 @@ const mockMembers = [
     graduationYear: 2021,
     currentRole: 'Frontend Developer @ Netflix',
     location: 'Los Angeles, CA',
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma',
     isOnline: false
   }
 ];
@@ -74,8 +80,7 @@ const mockAds = [
     title: 'Join Our Alumni Network',
     description: 'Connect with fellow Julienites worldwide and unlock exclusive career opportunities.',
     ctaText: 'Learn More',
-    sponsor: 'Julienites Alumni Association',
-    imageUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&auto=format&fit=crop'
+    sponsor: 'Julienites Alumni Association'
   },
   {
     title: 'Career Coaching Sessions',
@@ -88,8 +93,8 @@ const mockAds = [
 const MainLayout: React.FC = () => {
   const { toggleTheme, isDark } = useTheme();
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState<'members' | 'trending' | 'events'>('members');
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [activeNavItem, setActiveNavItem] = useState('Home');
 
   // Get initials from user name
   const getUserInitials = (name: string) => {
@@ -99,6 +104,202 @@ const MainLayout: React.FC = () => {
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const handleNavigationClick = (itemName: string) => {
+    setActiveNavItem(itemName);
+  };
+
+  const renderMainContent = () => {
+    // Welcome banner is shown for both Home and Julienties
+    const welcomeBanner = (
+      <div className="bg-gradient-to-r from-twitter-blue/20 to-twitter-pink/20 rounded-2xl p-6 border border-border">
+        <h1 className="text-2xl font-bold mb-2">
+          {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to Julienites Network'}
+        </h1>
+        <p className="text-text-secondary mb-4">
+          Connect with fellow alumni, discover career opportunities, and stay updated with community events.
+        </p>
+        <div className="flex gap-3">
+          <button className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors">
+            Complete Profile
+          </button>
+          <button className="bg-transparent border border-border text-text-primary px-4 py-2 rounded-full font-bold hover:bg-background-tertiary transition-colors">
+            Explore Features
+          </button>
+        </div>
+      </div>
+    );
+
+    // Members section is shown for both Home and Julienties
+    const membersSection = (
+      <>
+        {/* Members Section Header */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold">
+            {activeNavItem === 'Julienties' ? 'Julienties Members' : 'Members'}
+          </h2>
+        </div>
+
+        {/* Members Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {mockMembers.map((member) => (
+            <ProfileCard key={member.id} {...member} />
+          ))}
+        </div>
+
+        {/* Load More */}
+        <div className="text-center py-6">
+          <button className="bg-background-secondary hover:bg-background-tertiary text-text-primary px-6 py-3 rounded-full font-bold border border-border transition-colors">
+            Load More Members
+          </button>
+        </div>
+      </>
+    );
+
+    // Mock posts from members (inlined for simplicity)
+    const mockPosts = [
+      {
+        id: 1,
+        author: 'Alex Johnson',
+        username: 'alexj',
+        role: 'Software Engineer @ Google',
+        time: '2h ago',
+        content: 'Just wrapped up an amazing project at Google! We built a new ML pipeline that reduces inference time by 40%. So proud of the team! #Tech #MachineLearning',
+        likes: 42,
+        comments: 8,
+        shares: 3
+      },
+      {
+        id: 2,
+        author: 'Sarah Chen',
+        username: 'sarahc',
+        role: 'Product Manager @ Meta',
+        time: '4h ago',
+        content: 'Excited to share that our new feature at Meta just hit 1M daily active users in its first week! The team worked incredibly hard on this launch. #ProductManagement #Tech',
+        likes: 89,
+        comments: 12,
+        shares: 5
+      },
+      {
+        id: 3,
+        author: 'Marcus Rodriguez',
+        username: 'marcusr',
+        role: 'Data Scientist @ Amazon',
+        time: '6h ago',
+        content: 'Just published a research paper on anomaly detection in time-series data. Would love to connect with others working in this space! #DataScience #Research',
+        likes: 31,
+        comments: 5,
+        shares: 2
+      },
+      {
+        id: 4,
+        author: 'Priya Patel',
+        username: 'priyap',
+        role: 'UX Designer @ Apple',
+        time: '1d ago',
+        content: 'Designing for accessibility isn\'t just about compliance - it\'s about creating better experiences for everyone. Some insights from our latest project at Apple. #UXDesign #Accessibility',
+        likes: 67,
+        comments: 9,
+        shares: 4
+      },
+      {
+        id: 5,
+        author: 'David Kim',
+        username: 'davidk',
+        role: 'DevOps Engineer @ Microsoft',
+        time: '1d ago',
+        content: 'Migrated our entire infrastructure to Kubernetes this quarter. The scalability improvements are incredible! #DevOps #Kubernetes #Cloud',
+        likes: 53,
+        comments: 7,
+        shares: 3
+      },
+      {
+        id: 6,
+        author: 'Emma Wilson',
+        username: 'emmaw',
+        role: 'Frontend Developer @ Netflix',
+        time: '2d ago',
+        content: 'Just open-sourced a React component library we\'ve been using internally at Netflix. Check it out on GitHub! #OpenSource #React #Frontend',
+        likes: 78,
+        comments: 15,
+        shares: 6
+      }
+    ];
+
+    switch (activeNavItem) {
+      case 'Julienties':
+        return (
+          <>
+            {welcomeBanner}
+            {membersSection}
+          </>
+        );
+      case 'Home':
+      default:
+        // Posts section for Home
+        const postsSection = (
+          <>
+            {/* Posts Section Header */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">Latest Posts from Members</h2>
+            </div>
+
+            {/* Posts List */}
+            <div className="space-y-4">
+              {mockPosts.map((post) => (
+                <div key={post.id} className="bg-background-secondary rounded-2xl p-6 border border-border">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-twitter-blue flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">
+                        {post.author.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold">{post.author}</span>
+                        <span className="text-text-tertiary text-sm">@{post.username}</span>
+                        <span className="text-text-tertiary text-sm">•</span>
+                        <span className="text-text-tertiary text-sm">{post.time}</span>
+                      </div>
+                      <div className="text-text-tertiary text-sm">{post.role}</div>
+                    </div>
+                  </div>
+                  <p className="text-text-primary mb-4">{post.content}</p>
+                  <div className="flex items-center gap-6 text-text-tertiary">
+                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
+                      <span>❤️</span>
+                      <span>{post.likes}</span>
+                    </button>
+                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
+                      <span>💬</span>
+                      <span>{post.comments}</span>
+                    </button>
+                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
+                      <span>↪️</span>
+                      <span>{post.shares}</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Load More Posts */}
+            <div className="text-center py-6">
+              <button className="bg-background-secondary hover:bg-background-tertiary text-text-primary px-6 py-3 rounded-full font-bold border border-border transition-colors">
+                Load More Posts
+              </button>
+            </div>
+          </>
+        );
+        
+        return (
+          <>
+            {welcomeBanner}
+            {postsSection}
+          </>
+        );
+    }
   };
 
   return (
@@ -121,7 +322,7 @@ const MainLayout: React.FC = () => {
                 className="p-2 rounded-full hover:bg-background-secondary transition-colors"
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
               >
-                {isDark ? '🌙' : '☀️'}
+                {isDark ? <Moon size={20} /> : <Sun size={20} />}
               </button>
               
               {user ? (
@@ -152,27 +353,30 @@ const MainLayout: React.FC = () => {
                             // Navigate to user profile
                             setShowUserMenu(false);
                           }}
-                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
                         >
-                          👤 Profile
+                          <User size={16} />
+                          Profile
                         </button>
                         <button
                           onClick={() => {
                             // Navigate to settings
                             setShowUserMenu(false);
                           }}
-                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
                         >
-                          ⚙️ Settings
+                          <Settings size={16} />
+                          Settings
                         </button>
                         <button
                           onClick={() => {
                             logout();
                             setShowUserMenu(false);
                           }}
-                          className="w-full text-left px-4 py-2 rounded-lg hover:bg-background-tertiary text-red-500 transition-colors"
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary text-red-500 transition-colors"
                         >
-                          🚪 Log out
+                          <LogOut size={16} />
+                          Log out
                         </button>
                       </div>
                     </div>
@@ -195,28 +399,7 @@ const MainLayout: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar */}
           <aside className="lg:col-span-1 space-y-6">
-            <div className="bg-background-secondary rounded-2xl p-4 border border-border">
-              <h2 className="font-bold text-lg mb-4">Navigation</h2>
-              <nav className="space-y-2">
-                {[
-                  { name: 'Home', icon: '🏠' },
-                  { name: 'Explore', icon: '🔍' },
-                  { name: 'Notifications', icon: '🔔' },
-                  { name: 'Messages', icon: '✉️' },
-                  { name: 'Bookmarks', icon: '📌' },
-                  { name: 'Lists', icon: '📋' },
-                  { name: 'Profile', icon: '👤' }
-                ].map((item) => (
-                  <button
-                    key={item.name}
-                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-background-tertiary w-full text-left transition-colors"
-                  >
-                    <span className="text-xl">{item.icon}</span>
-                    <span className="font-medium">{item.name}</span>
-                  </button>
-                ))}
-              </nav>
-            </div>
+            <Navigation onItemClick={handleNavigationClick} />
 
             {/* Trends/Who to follow */}
             <div className="bg-background-secondary rounded-2xl p-4 border border-border">
@@ -235,61 +418,7 @@ const MainLayout: React.FC = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Welcome Banner */}
-            <div className="bg-gradient-to-r from-twitter-blue/20 to-twitter-pink/20 rounded-2xl p-6 border border-border">
-              <h1 className="text-2xl font-bold mb-2">
-                {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to Julienites Network'}
-              </h1>
-              <p className="text-text-secondary mb-4">
-                Connect with fellow alumni, discover career opportunities, and stay updated with community events.
-              </p>
-              <div className="flex gap-3">
-                <button className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors">
-                  Complete Profile
-                </button>
-                <button className="bg-transparent border border-border text-text-primary px-4 py-2 rounded-full font-bold hover:bg-background-tertiary transition-colors">
-                  Explore Features
-                </button>
-              </div>
-            </div>
-
-            {/* Tab Navigation */}
-            <div className="border-b border-border">
-              <div className="flex">
-                {[
-                  { id: 'members', label: 'Members', icon: '👥' },
-                  { id: 'trending', label: 'Trending', icon: '🔥' },
-                  { id: 'events', label: 'Events', icon: '📅' }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-4 font-bold border-b-2 transition-colors ${
-                      activeTab === tab.id
-                        ? 'border-twitter-blue text-twitter-blue'
-                        : 'border-transparent text-text-tertiary hover:text-text-primary'
-                    }`}
-                  >
-                    <span>{tab.icon}</span>
-                    <span>{tab.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Members Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {mockMembers.map((member) => (
-                <ProfileCard key={member.id} {...member} />
-              ))}
-            </div>
-
-            {/* Load More */}
-            <div className="text-center py-6">
-              <button className="bg-background-secondary hover:bg-background-tertiary text-text-primary px-6 py-3 rounded-full font-bold border border-border transition-colors">
-                Load More Members
-              </button>
-            </div>
+            {renderMainContent()}
           </div>
 
           {/* Right Sidebar */}
@@ -302,7 +431,9 @@ const MainLayout: React.FC = () => {
                   placeholder="Search Julienites..."
                   className="w-full bg-background-tertiary border border-border rounded-full py-3 px-4 pl-10 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
                 />
-                <span className="absolute left-3 top-3 text-text-tertiary">🔍</span>
+                <span className="absolute left-3 top-3 text-text-tertiary">
+                  <Search size={18} />
+                </span>
               </div>
             </div>
 

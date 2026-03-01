@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GraduationCap, Briefcase, MapPin, User } from 'lucide-react';
 
 interface ProfileCardProps {
   id: number;
@@ -62,7 +63,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   };
   
   // Check if we should show fallback avatar
-  const showFallback = !profileImage || profileImage.includes('placeholder');
+  const showFallback = !profileImage;
   
   const initials = getInitials(name);
   const avatarColor = getAvatarColor(name);
@@ -76,9 +77,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="relative w-14 h-14 sm:w-17 sm:h-17">
           {showFallback ? (
             <div className={`w-full h-full rounded-full border-4 border-background-secondary ${avatarColor} flex items-center justify-center`}>
-              <span className="text-white font-bold text-lg sm:text-xl">
-                {initials}
-              </span>
+              <User className="text-white" size={24} />
             </div>
           ) : (
             <img 
@@ -93,7 +92,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 if (parent) {
                   const fallbackDiv = document.createElement('div');
                   fallbackDiv.className = `w-full h-full rounded-full border-4 border-background-secondary ${avatarColor} flex items-center justify-center`;
-                  fallbackDiv.innerHTML = `<span class="text-white font-bold text-lg sm:text-xl">${initials}</span>`;
+                  const userIcon = document.createElement('div');
+                  userIcon.innerHTML = '<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>';
+                  fallbackDiv.appendChild(userIcon);
                   parent.appendChild(fallbackDiv);
                 }
               }}
@@ -125,21 +126,27 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         
         {graduationYear && (
           <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 text-text-secondary text-xs sm:text-sm">
-            <span className="text-base sm:text-lg opacity-80">🎓</span>
+            <span className="text-text-primary">
+              <GraduationCap size={16} />
+            </span>
             <span>Class of {graduationYear}</span>
           </div>
         )}
         
         {currentRole && (
           <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 text-text-secondary text-xs sm:text-sm">
-            <span className="text-base sm:text-lg opacity-80">💼</span>
+            <span className="text-text-primary">
+              <Briefcase size={16} />
+            </span>
             <span>{currentRole}</span>
           </div>
         )}
         
         {location && (
           <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 text-text-secondary text-xs sm:text-sm">
-            <span className="text-base sm:text-lg opacity-80">📍</span>
+            <span className="text-text-primary">
+              <MapPin size={16} />
+            </span>
             <span>{location}</span>
           </div>
         )}

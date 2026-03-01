@@ -1,4 +1,5 @@
 import React from 'react';
+import { Megaphone } from 'lucide-react';
 
 interface AdCardProps {
   title: string;
@@ -28,7 +29,9 @@ const AdCard: React.FC<AdCardProps> = ({
       ) : (
         <div className="w-full h-32 bg-gradient-to-r from-twitter-blue/20 to-twitter-pink/20 flex items-center justify-center">
           <div className="text-center">
-            <span className="text-4xl">📢</span>
+            <span className="text-text-primary">
+              <Megaphone size={32} />
+            </span>
             <p className="text-text-tertiary text-xs mt-1">Advertisement</p>
           </div>
         </div>

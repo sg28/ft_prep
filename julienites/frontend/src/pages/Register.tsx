@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { Moon, Sun } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
 
 const Register: React.FC = () => {
@@ -95,7 +96,7 @@ const Register: React.FC = () => {
                 className="p-2 rounded-full hover:bg-background-secondary transition-colors"
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
               >
-                {isDark ? '🌙' : '☀️'}
+                {isDark ? <Moon size={20} /> : <Sun size={20} />}
               </button>
               
               <Link 
