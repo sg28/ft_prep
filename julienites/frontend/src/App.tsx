@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 import MainLayout from './pages/MainLayout';
 import MemberProfile from './pages/MemberProfile';
+import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
@@ -66,6 +67,11 @@ function AppRoutes() {
       <Route path="/member/:id" element={
         <ProtectedRoute>
           <MemberProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <UserProfile />
         </ProtectedRoute>
       } />
     </Routes>

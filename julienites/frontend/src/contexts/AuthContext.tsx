@@ -7,6 +7,30 @@ interface User {
   username: string;
   graduationYear?: number;
   profileImage?: string;
+  bio?: string;
+  location?: string;
+  currentRole?: string;
+  phone?: string;
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
+  skills?: string[];
+  education?: Array<{
+    id: number;
+    institution: string;
+    degree: string;
+    field: string;
+    year: number;
+  }>;
+  experience?: Array<{
+    id: number;
+    company: string;
+    position: string;
+    duration: string;
+    description?: string;
+  }>;
+  followingCount?: number;
+  followersCount?: number;
 }
 
 interface AuthContextType {
@@ -68,7 +92,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           email: email,
           username: email.split('@')[0],
           graduationYear: 2020,
-          profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
+          profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
+          bio: 'Passionate software engineer with experience in building scalable applications.',
+          location: 'San Francisco, CA',
+          currentRole: 'Software Engineer',
+          phone: '+1 (555) 123-4567',
+          linkedin: 'linkedin.com/in/demouser',
+          github: 'github.com/demouser',
+          twitter: '@demouser',
+          skills: ['JavaScript', 'React', 'Node.js', 'TypeScript'],
+          education: [
+            { id: 1, institution: 'Stanford University', degree: 'M.S.', field: 'Computer Science', year: 2020 },
+            { id: 2, institution: 'Julien Day School', degree: 'High School', field: 'Science', year: 2016 }
+          ],
+          experience: [
+            { id: 1, company: 'Tech Corp', position: 'Senior Software Engineer', duration: '2022-Present', description: 'Leading frontend development team' },
+            { id: 2, company: 'Startup Inc', position: 'Software Engineer', duration: '2020-2022', description: 'Full stack development' }
+          ],
+          followingCount: 342,
+          followersCount: 1200
         };
         
         setUser(mockUser);
@@ -98,7 +140,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         email: userData.email,
         username: userData.username,
         graduationYear: userData.graduationYear,
-        profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.email}`
+        profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.email}`,
+        bio: '',
+        location: '',
+        currentRole: '',
+        phone: '',
+        linkedin: '',
+        github: '',
+        twitter: '',
+        skills: [],
+        education: [],
+        experience: [],
+        followingCount: 0,
+        followersCount: 0
       };
       
       setUser(newUser);

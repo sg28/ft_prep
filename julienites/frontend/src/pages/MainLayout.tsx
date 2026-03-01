@@ -121,9 +121,12 @@ const MainLayout: React.FC = () => {
           Connect with fellow alumni, discover career opportunities, and stay updated with community events.
         </p>
         <div className="flex gap-3">
-          <button className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors">
-            Complete Profile
-          </button>
+                  <button 
+          onClick={() => window.location.href = '/profile'}
+          className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors"
+        >
+          Complete Profile
+        </button>
           <button className="bg-transparent border border-border text-text-primary px-4 py-2 rounded-full font-bold hover:bg-background-tertiary transition-colors">
             Explore Features
           </button>
@@ -351,12 +354,13 @@ const MainLayout: React.FC = () => {
                         <button
                           onClick={() => {
                             // Navigate to user profile
+                            window.location.href = '/profile';
                             setShowUserMenu(false);
                           }}
                           className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
                         >
                           <User size={16} />
-                          Profile
+                          My Profile
                         </button>
                         <button
                           onClick={() => {
