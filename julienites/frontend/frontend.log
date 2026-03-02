@@ -1,0 +1,140 @@
+
+> frontend@0.1.1 start
+> react-scripts start
+
+(node:52808) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:52808) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+[36mStarting the development server...[39m
+[36m[39m
+[33mCompiled with warnings.[39m
+[33m[39m
+Warning
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+Warning
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+[eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
+To ignore, add [36m// eslint-disable-next-line[39m to the line before.
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+webpack compiled with [1m[33m3 warnings[39m[22m
+[32mNo issues found.[39m
+Compiling...
+[33mCompiled with warnings.[39m
+[33m[39m
+Warning
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+Warning
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+[eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
+To ignore, add [36m// eslint-disable-next-line[39m to the line before.
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+webpack compiled with [1m[33m3 warnings[39m[22m
+[32mNo issues found.[39m
+Compiling...
+[33mCompiled with warnings.[39m
+[33m[39m
+Warning
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+Warning
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
+
+[eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
+To ignore, add [36m// eslint-disable-next-line[39m to the line before.
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(160:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
+[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
+Warning
+
+(166:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
+
+[1m[33mWARNING[39m[22m in [eslint] 
+src/components/ProfileCard.tsx
+  [1mLine 68:9:[22m  'initials' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+src/pages/MainLayout.tsx
+  [1mLine 11:3:[22m  'Users' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 12:3:[22m  'Flame' is defined but never used     [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 13:3:[22m  'Calendar' is defined but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+
+webpack compiled with [1m[33m3 warnings[39m[22m
+[32mNo issues found.[39m

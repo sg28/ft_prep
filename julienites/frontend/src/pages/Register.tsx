@@ -39,8 +39,8 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return;
     }
 
@@ -204,7 +204,7 @@ const Register: React.FC = () => {
                   onChange={handleChange}
                   required
                   className="w-full bg-background-tertiary border border-border rounded-xl py-3 px-4 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-twitter-blue focus:border-transparent transition-all"
-                  placeholder="At least 6 characters"
+                  placeholder="At least 8 characters"
                   disabled={isLoading}
                 />
               </div>

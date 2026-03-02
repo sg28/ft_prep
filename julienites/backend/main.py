@@ -2,7 +2,9 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from typing import List, Optional
+from datetime import datetime
 import uvicorn
 
 from app.database import get_db, engine
@@ -55,11 +57,11 @@ async def health_check(db: Session = Depends(get_db)):
     """Health check endpoint"""
     try:
         # Try to execute a simple query
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         return {
             "status": "healthy",
             "database": "connected",
-            "timestamp": "2024-01-01T00:00:00Z"  # You can use datetime.utcnow() here
+            "timestamp": datetime.utcnow().isoformat() + "Z"
         }
     except Exception as e:
         raise HTTPException(

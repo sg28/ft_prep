@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
     
     # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/julienites"
+    DATABASE_URL: str = "postgresql://snehashisghosh@localhost:5432/julienites"
     
     # Security
     SECRET_KEY: str = "your-secret-key-here-change-in-production"
