@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  GraduationCap, 
-  Briefcase, 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Linkedin, 
-  Github, 
-  Twitter, 
-  MessageCircle, 
-  Repeat, 
+import {
+  GraduationCap,
+  Briefcase,
+  MapPin,
+  Mail,
+  Phone,
+  Linkedin,
+  Github,
+  Twitter,
+  MessageCircle,
+  Repeat,
   Heart,
   ArrowLeft,
   Edit,
@@ -21,12 +21,15 @@ import {
   Image,
   Smile,
   Calendar,
-  Send
+  Send,
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
+import { postApi } from '../services/api';
 
 const UserProfile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
   
   // Mock user data for demonstration
@@ -65,58 +68,100 @@ const UserProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState('About');
   
   // Posts state
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      content: 'Excited to connect with fellow Julienites on this platform! Looking forward to networking and sharing experiences. #Julienites #AlumniNetwork',
-      timestamp: '2 days ago',
-      likes: 24,
-      comments: 5,
-      reposts: 2
-    }
-  ]);
-  
+  const [posts, setPosts] = useState<any[]>([]);
   const [newPostContent, setNewPostContent] = useState('');
   const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+  const [isSubmittingPost, setIsSubmittingPost] = useState(false);
+  const [postError, setPostError] = useState<string | null>(null);
+  const [postSuccess, setPostSuccess] = useState<string | null>(null);
+
+  // Load posts on component mount
+  useEffect(() => {
+    // Only load posts if user is logged in (token exists) and has a valid ID
+    if (token && user?.id && user.id !== 'temp-id' && user.id !== '1') {
+      loadUserPosts();
+    }
+  }, [token, user?.id]);
   
+  // Load user posts from API
+  const loadUserPosts = async () => {
+    if (!token || !user?.id) return;
+
+    // Don't load posts if using mock ID
+    if (user.id === 'temp-id' || user.id === '1') return;
+
+    setIsLoadingPosts(true);
+    const response = await postApi.getUserPosts(token, user.id);
+
+    if (response.data) {
+      setPosts(response.data);
+    } else if (response.error) {
+      console.error('Failed to load posts:', response.error);
+    }
+    setIsLoadingPosts(false);
+  };
+
   // Handle creating a new post
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (newPostContent.trim() === '') return;
-    
-    const newPost = {
-      id: posts.length + 1,
+    if (!token) {
+      setPostError('Authentication required. Please log in.');
+      return;
+    }
+
+    setIsSubmittingPost(true);
+    setPostError(null);
+    setPostSuccess(null);
+
+    const response = await postApi.createPost(token, {
       content: newPostContent,
-      timestamp: 'Just now',
-      likes: 0,
-      comments: 0,
-      reposts: 0
-    };
-    
-    setPosts([newPost, ...posts]);
-    setNewPostContent('');
-    setIsCreatingPost(false);
-    console.log('New post created:', newPost);
+      is_public: true,
+      media_urls: []
+    });
+
+    if (response.data) {
+      // Add new post to the beginning of the list
+      setPosts([response.data, ...posts]);
+      setNewPostContent('');
+      setIsCreatingPost(false);
+      setPostSuccess('Post created successfully!');
+      setTimeout(() => setPostSuccess(null), 3000);
+    } else {
+      setPostError(response.error || 'Failed to create post. Please try again.');
+    }
+
+    setIsSubmittingPost(false);
   };
-  
+
   // Handle like post
-  const handleLikePost = (postId: number) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, likes: post.likes + 1 } : post
-    ));
+  const handleLikePost = async (postId: string) => {
+    if (!token) {
+      setPostError('Authentication required. Please log in.');
+      return;
+    }
+
+    const response = await postApi.likePost(token, postId);
+
+    if (response.data || response.status === 200) {
+      setPosts(posts.map(post =>
+        post.id === postId ? { ...post, likes_count: post.likes_count + 1 } : post
+      ));
+    } else {
+      console.error('Failed to like post:', response.error);
+    }
   };
-  
+
   // Handle add comment
-  const handleAddComment = (postId: number) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, comments: post.comments + 1 } : post
-    ));
+  const handleAddComment = (postId: string) => {
+    console.log('Comment feature coming soon for post:', postId);
+    // TODO: Implement comment functionality
   };
-  
+
   // Handle repost
-  const handleRepost = (postId: number) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, reposts: post.reposts + 1 } : post
-    ));
+  const handleRepost = (postId: string) => {
+    console.log('Repost feature coming soon for post:', postId);
+    // TODO: Implement repost functionality
   };
   
   const handleSave = () => {
@@ -531,7 +576,7 @@ const UserProfile: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">My Recent Posts</h2>
-              <button 
+              <button
                 onClick={() => setIsCreatingPost(true)}
                 className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
               >
@@ -539,7 +584,26 @@ const UserProfile: React.FC = () => {
                 Create New Post
               </button>
             </div>
-            
+
+            {/* Error Alert */}
+            {postError && (
+              <div className="mb-6 bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
+                <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
+                <div>
+                  <p className="font-medium text-red-500">Error</p>
+                  <p className="text-red-500/80 text-sm">{postError}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Success Alert */}
+            {postSuccess && (
+              <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-xl p-4 flex items-start gap-3">
+                <CheckCircle className="text-green-500 flex-shrink-0 mt-0.5" size={20} />
+                <p className="text-green-500/90 text-sm">{postSuccess}</p>
+              </div>
+            )}
+
             {/* Create Post Form */}
             {isCreatingPost && (
               <div className="mb-6 bg-background-secondary rounded-xl border border-border p-6">
@@ -575,26 +639,37 @@ const UserProfile: React.FC = () => {
                   </div>
                   
                   <div className="flex gap-2">
-                    <button 
+                    <button
                       onClick={() => {
                         setNewPostContent('');
                         setIsCreatingPost(false);
+                        setPostError(null);
                       }}
-                      className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors"
+                      disabled={isSubmittingPost}
+                      className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors disabled:opacity-50"
                     >
                       Cancel
                     </button>
-                    <button 
+                    <button
                       onClick={handleCreatePost}
-                      disabled={!newPostContent.trim()}
+                      disabled={!newPostContent.trim() || isSubmittingPost}
                       className={`px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2 ${
-                        newPostContent.trim() 
-                          ? 'bg-twitter-blue text-white hover:bg-twitter-blueHover' 
-                          : 'bg-background-tertiary text-text-tertiary cursor-not-allowed'
+                        newPostContent.trim() && !isSubmittingPost
+                          ? 'bg-twitter-blue text-white hover:bg-twitter-blueHover'
+                          : 'bg-background-tertiary text-text-tertiary cursor-not-allowed opacity-50'
                       }`}
                     >
-                      <Send size={18} />
-                      Post
+                      {isSubmittingPost ? (
+                        <>
+                          <span className="animate-spin">⏳</span>
+                          Posting...
+                        </>
+                      ) : (
+                        <>
+                          <Send size={18} />
+                          Post
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -603,50 +678,77 @@ const UserProfile: React.FC = () => {
             
             {/* Posts List */}
             <div className="space-y-4">
-              {posts.length === 0 ? (
+              {isLoadingPosts ? (
+                <div className="text-center py-8 text-text-tertiary">
+                  <p>Loading posts...</p>
+                </div>
+              ) : posts.length === 0 ? (
                 <div className="text-center py-8 text-text-tertiary">
                   <p>No posts yet. Create your first post!</p>
                 </div>
               ) : (
-                posts.map((post) => (
-                  <div key={post.id} className="bg-background-secondary rounded-xl border border-border p-6">
-                    <div className="flex gap-3 mb-4">
-                      <div className="w-12 h-12 bg-twitter-blue rounded-full flex items-center justify-center text-white font-semibold">
-                        {initials}
+                posts.map((post) => {
+                  // Extract user initials
+                  const userInitials = post.user?.name
+                    ?.split(' ')
+                    .map((word: string) => word[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2) || 'U';
+
+                  // Format timestamp
+                  const postDate = new Date(post.created_at);
+                  const now = new Date();
+                  const diffMs = now.getTime() - postDate.getTime();
+                  const diffMins = Math.floor(diffMs / 60000);
+                  const diffHours = Math.floor(diffMs / 3600000);
+                  const diffDays = Math.floor(diffMs / 86400000);
+
+                  let timestamp = 'just now';
+                  if (diffMins > 0 && diffMins < 60) timestamp = `${diffMins}m ago`;
+                  else if (diffHours > 0 && diffHours < 24) timestamp = `${diffHours}h ago`;
+                  else if (diffDays > 0) timestamp = `${diffDays}d ago`;
+
+                  return (
+                    <div key={post.id} className="bg-background-secondary rounded-xl border border-border p-6">
+                      <div className="flex gap-3 mb-4">
+                        <div className="w-12 h-12 bg-twitter-blue rounded-full flex items-center justify-center text-white font-semibold">
+                          {userInitials}
+                        </div>
+                        <div>
+                          <div className="font-bold">{post.user?.name || 'Unknown User'}</div>
+                          <div className="text-text-tertiary text-sm">@{post.user?.username || 'user'} • {timestamp}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold">{currentUser.name}</div>
-                        <div className="text-text-tertiary text-sm">@{currentUser.username} • {post.timestamp}</div>
+                      <div className="mb-4">
+                        {post.content}
+                      </div>
+                      <div className="flex gap-6">
+                        <button
+                          onClick={() => handleAddComment(post.id)}
+                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
+                        >
+                          <MessageCircle size={18} />
+                          <span>{post.comments_count || 0}</span>
+                        </button>
+                        <button
+                          onClick={() => handleRepost(post.id)}
+                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
+                        >
+                          <Repeat size={18} />
+                          <span>{post.reposts_count || 0}</span>
+                        </button>
+                        <button
+                          onClick={() => handleLikePost(post.id)}
+                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-pink"
+                        >
+                          <Heart size={18} />
+                          <span>{post.likes_count || 0}</span>
+                        </button>
                       </div>
                     </div>
-                    <div className="mb-4">
-                      {post.content}
-                    </div>
-                    <div className="flex gap-6">
-                      <button 
-                        onClick={() => handleAddComment(post.id)}
-                        className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
-                      >
-                        <MessageCircle size={18} />
-                        <span>{post.comments}</span>
-                      </button>
-                      <button 
-                        onClick={() => handleRepost(post.id)}
-                        className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
-                      >
-                        <Repeat size={18} />
-                        <span>{post.reposts}</span>
-                      </button>
-                      <button 
-                        onClick={() => handleLikePost(post.id)}
-                        className="flex items-center gap-2 text-text-tertiary hover:text-twitter-pink"
-                      >
-                        <Heart size={18} />
-                        <span>{post.likes}</span>
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>

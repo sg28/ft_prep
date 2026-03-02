@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authApi } from '../services/api';
+import { authApi, userApi } from '../services/api';
 import { useToast } from './ToastContext';
 
 // User interface matching backend response
@@ -72,6 +72,7 @@ interface FrontendUser {
 
 interface AuthContextType {
   user: FrontendUser | null;
+  token: string | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   register: (userData: RegisterData) => Promise<boolean>;
@@ -149,6 +150,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<FrontendUser | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { success, error: showError, loading: showLoading, dismiss } = useToast();
 
@@ -156,10 +158,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const storedUser = localStorage.getItem('julienites-user');
     const storedToken = localStorage.getItem('julienites-token');
-    
+
     if (storedUser && storedToken) {
       try {
         setUser(JSON.parse(storedUser));
+        setToken(storedToken);
       } catch (err) {
         console.error('Failed to parse stored user:', err);
         localStorage.removeItem('julienites-user');
@@ -178,22 +181,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       if (response.data && response.data.access_token) {
         const { access_token, refresh_token } = response.data;
-        
+
         // Store tokens
         localStorage.setItem('julienites-token', access_token);
         localStorage.setItem('julienites-refresh-token', refresh_token);
-        
-        // Create temporary user object
-        const tempUser: FrontendUser = {
-          id: 'temp-id',
-          name: email.split('@')[0],
-          email,
-          username: email.split('@')[0],
-        };
-        
-        setUser(tempUser);
-        localStorage.setItem('julienites-user', JSON.stringify(tempUser));
-        
+
+        // Fetch current user data to get real user ID
+        const userResponse = await userApi.getCurrentUser(access_token);
+
+        if (userResponse.data) {
+          const frontendUser = convertToFrontendUser(userResponse.data);
+          setUser(frontendUser);
+          setToken(access_token);
+          localStorage.setItem('julienites-user', JSON.stringify(frontendUser));
+          dismiss(loadingId);
+          success('Successfully signed in!');
+          setIsLoading(false);
+          return true;
+        } else {
+          // If fetching user fails, log error and create temporary user
+          console.error('Failed to fetch user data:', userResponse.error);
+          const tempUser: FrontendUser = {
+            id: 'temp-id',
+            name: email.split('@')[0],
+            email,
+            username: email.split('@')[0],
+          };
+          setUser(tempUser);
+          setToken(access_token);
+          localStorage.setItem('julienites-user', JSON.stringify(tempUser));
+        }
+
         dismiss(loadingId);
         success('Successfully signed in!');
         setIsLoading(false);
@@ -249,6 +267,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem('julienites-user');
     localStorage.removeItem('julienites-token');
     localStorage.removeItem('julienites-refresh-token');
@@ -257,6 +276,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const value = {
     user,
+    token,
     isAuthenticated: !!user,
     login,
     register,

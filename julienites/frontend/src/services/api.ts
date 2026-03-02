@@ -120,9 +120,19 @@ export const userApi = {
     
   searchUsers: (query: string) =>
     apiRequest<UserResponse[]>(`/users/search?q=${encodeURIComponent(query)}`),
-    
-  getCurrentUser: () =>
-    apiRequest<UserResponse>('/users/me'),
+
+  getCurrentUser: (token?: string) => {
+    const headers: any = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return apiRequest<UserResponse>('/users/me', {
+      method: 'GET',
+      headers,
+    });
+  },
 };
 
 export const authApi = {
@@ -145,10 +155,115 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify(userData),
     }),
-    
+
   logout: () =>
     apiRequest('/auth/logout', {
       method: 'POST',
+    }),
+};
+
+interface PostResponse {
+  id: string;
+  user_id: string;
+  content: string;
+  media_urls?: string[];
+  is_public: boolean;
+  likes_count: number;
+  comments_count: number;
+  reposts_count: number;
+  created_at: string;
+  updated_at?: string;
+  user: UserResponse;
+}
+
+interface PostCreateRequest {
+  content: string;
+  media_urls?: string[];
+  is_public?: boolean;
+}
+
+export const postApi = {
+  getFeedPosts: (token: string, skip: number = 0, limit: number = 50) =>
+    apiRequest<PostResponse[]>(`/posts/?skip=${skip}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  getUserPosts: (token: string, userId: string, skip: number = 0, limit: number = 50) =>
+    apiRequest<PostResponse[]>(`/posts/user/${userId}?skip=${skip}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  getPost: (token: string, postId: string) =>
+    apiRequest<PostResponse>(`/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  createPost: (token: string, postData: PostCreateRequest) =>
+    apiRequest<PostResponse>('/posts/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    }),
+
+  updatePost: (token: string, postId: string, postData: Partial<PostCreateRequest>) =>
+    apiRequest<PostResponse>(`/posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    }),
+
+  deletePost: (token: string, postId: string) =>
+    apiRequest(`/posts/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  likePost: (token: string, postId: string) =>
+    apiRequest(`/posts/${postId}/like`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  unlikePost: (token: string, postId: string) =>
+    apiRequest(`/posts/${postId}/like`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  getPostComments: (token: string, postId: string, skip: number = 0, limit: number = 50) =>
+    apiRequest(`/posts/${postId}/comments?skip=${skip}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }),
+
+  createComment: (token: string, postId: string, commentData: any) =>
+    apiRequest(`/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(commentData),
     }),
 };
 
