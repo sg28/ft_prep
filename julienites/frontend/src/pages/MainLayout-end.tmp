@@ -1,0 +1,30 @@
+                ))}
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+              </div>
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+              <div>{getCopyrightText()}</div>
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+            </div>
+          </aside>
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+        </div>
+      </main>
+      
+      {/* Close user menu when clicking outside */}
+      {showUserMenu && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowUserMenu(false)}
+        />
+      )}
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+    </div>
+  );
+};
+
+export default MainLayout;
