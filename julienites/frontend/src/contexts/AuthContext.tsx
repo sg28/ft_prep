@@ -161,8 +161,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     if (storedUser && storedToken) {
       try {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
+        const parsed = JSON.parse(storedUser);
+        // Clear stale temp-id sessions
+        if (parsed.id === 'temp-id') {
+          localStorage.removeItem('julienites-user');
+          localStorage.removeItem('julienites-token');
+          localStorage.removeItem('julienites-refresh-token');
+        } else {
+          setUser(parsed);
+          setToken(storedToken);
+        }
       } catch (err) {
         console.error('Failed to parse stored user:', err);
         localStorage.removeItem('julienites-user');
@@ -199,23 +207,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setIsLoading(false);
           return true;
         } else {
-          // If fetching user fails, log error and create temporary user
           console.error('Failed to fetch user data:', userResponse.error);
-          const tempUser: FrontendUser = {
-            id: 'temp-id',
-            name: email.split('@')[0],
-            email,
-            username: email.split('@')[0],
-          };
-          setUser(tempUser);
-          setToken(access_token);
-          localStorage.setItem('julienites-user', JSON.stringify(tempUser));
+          dismiss(loadingId);
+          showError('Login succeeded but failed to load user profile. Please try again.');
+          localStorage.removeItem('julienites-token');
+          localStorage.removeItem('julienites-refresh-token');
+          setIsLoading(false);
+          return false;
         }
-
-        dismiss(loadingId);
-        success('Successfully signed in!');
-        setIsLoading(false);
-        return true;
       } else {
         dismiss(loadingId);
         showError(extractErrorMessage(response.error) || 'Login failed');

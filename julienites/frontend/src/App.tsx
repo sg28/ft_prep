@@ -65,12 +65,17 @@ function AppRoutes() {
           <MainLayout />
         </ProtectedRoute>
       } />
+      <Route path="/julienties" element={
+        <ProtectedRoute>
+          <MainLayout />
+        </ProtectedRoute>
+      } />
       <Route path="/member/:id" element={
         <ProtectedRoute>
           <MemberProfile />
         </ProtectedRoute>
       } />
-      <Route path="/profile" element={
+      <Route path="/profile/:id" element={
         <ProtectedRoute>
           <UserProfile />
         </ProtectedRoute>

@@ -226,16 +226,8 @@ class PostCRUD:
     
     @staticmethod
     def get_feed_posts(db: Session, user_id: UUID, skip: int = 0, limit: int = 50) -> List[models.Post]:
-        # Get posts from users that the current user follows
-        following_ids = db.query(models.UserConnection.following_id).filter(
-            models.UserConnection.follower_id == user_id
-        ).subquery()
-        
+        # Get all public posts from all users (community feed)
         return db.query(models.Post).filter(
-            or_(
-                models.Post.user_id == user_id,  # User's own posts
-                models.Post.user_id.in_(following_ids)  # Posts from followed users
-            ),
             models.Post.is_public == True
         ).order_by(desc(models.Post.created_at)).offset(skip).limit(limit).all()
     

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Briefcase, MapPin, User } from 'lucide-react';
 
 interface ProfileCardProps {
-  id: number;
+  id: string;
   name: string;
   graduationYear?: number;
   currentRole?: string;

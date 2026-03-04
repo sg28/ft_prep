@@ -1,6 +1,7 @@
 import React from 'react';
-import { 
-  Home, 
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  Home,
   Users,
   DollarSign,
   Bookmark
@@ -10,56 +11,57 @@ import RocketWithProgress from './RocketWithProgress';
 interface NavigationItem {
   name: string;
   icon: React.ReactNode;
+  path: string;
 }
 
 interface NavigationProps {
-  items?: NavigationItem[];
   className?: string;
-  onItemClick?: (itemName: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ 
-  items = [
-    { name: 'Home', icon: <Home size={20} /> },
-    { name: 'Julienties', icon: <Users size={20} /> },
-    { name: 'Fund Raising', icon: <DollarSign size={20} /> },
-    { name: 'Bookmark', icon: <Bookmark size={20} /> }
-  ],
-  className = '',
-  onItemClick = () => {}
-}) => {
-  // Define which items should be disabled
-  const disabledItems = ['Fund Raising', 'Bookmark'];
-  
+const navItems: NavigationItem[] = [
+  { name: 'Home', icon: <Home size={20} />, path: '/' },
+  { name: 'Julienties', icon: <Users size={20} />, path: '/julienties' },
+  { name: 'Fund Raising', icon: <DollarSign size={20} />, path: '/fund-raising' },
+  { name: 'Bookmark', icon: <Bookmark size={20} />, path: '/bookmarks' },
+];
+
+const disabledItems = ['Fund Raising', 'Bookmark'];
+
+const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <div className={`bg-background-secondary rounded-2xl p-4 border border-border ${className}`}>
       <h2 className="font-bold text-lg mb-4">Navigation</h2>
       <nav className="space-y-2">
-        {items.map((item) => {
+        {navItems.map((item) => {
           const isDisabled = disabledItems.includes(item.name);
-          
+          const isActive = !isDisabled && location.pathname === item.path;
+
           return (
             <button
               key={item.name}
-              onClick={() => !isDisabled && onItemClick(item.name)}
+              onClick={() => !isDisabled && navigate(item.path)}
               disabled={isDisabled}
               className={`relative flex items-center gap-3 p-3 rounded-xl w-full text-left transition-colors ${
-                isDisabled 
-                  ? 'opacity-50 cursor-not-allowed text-text-tertiary' 
+                isDisabled
+                  ? 'opacity-50 cursor-not-allowed text-text-tertiary'
+                  : isActive
+                  ? 'bg-twitter-blue/10 text-twitter-blue'
                   : 'hover:bg-background-tertiary text-text-primary'
               }`}
             >
-              <span className={isDisabled ? 'text-text-tertiary' : 'text-text-primary'}>
+              <span className={isDisabled ? 'text-text-tertiary' : isActive ? 'text-twitter-blue' : 'text-text-primary'}>
                 {item.icon}
               </span>
-              <span className={`font-medium ${isDisabled ? 'text-text-tertiary' : ''}`}>
+              <span className={`font-medium ${isDisabled ? 'text-text-tertiary' : isActive ? 'text-twitter-blue font-bold' : ''}`}>
                 {item.name}
               </span>
-              
-              {/* Rocket with progress indicator for upcoming features */}
+
               {isDisabled && (
                 <span className="ml-2">
-                  <RocketWithProgress 
+                  <RocketWithProgress
                     progress={10}
                     size={20}
                     progressColor="#22c55e"

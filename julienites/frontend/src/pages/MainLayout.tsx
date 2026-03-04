@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileCard from '../components/ProfileCard';
 import AdCard from '../components/AdCard';
 import Navigation from '../components/Navigation';
+import { postApi, userApi } from '../services/api';
 import { 
   Moon, 
   Sun, 
@@ -17,63 +19,6 @@ import {
 } from 'lucide-react';
 import { getVersionDisplay, getCopyrightText } from '../config/version';
 
-// Mock data for demonstration
-const mockMembers = [
-  {
-    id: 1,
-    name: 'Alex Johnson',
-    username: 'alexj',
-    graduationYear: 2022,
-    currentRole: 'Software Engineer @ Google',
-    location: 'San Francisco, CA',
-    isOnline: true
-  },
-  {
-    id: 2,
-    name: 'Sarah Chen',
-    username: 'sarahc',
-    graduationYear: 2021,
-    currentRole: 'Product Manager @ Meta',
-    location: 'New York, NY',
-    isOnline: false
-  },
-  {
-    id: 3,
-    name: 'Marcus Rodriguez',
-    username: 'marcusr',
-    graduationYear: 2023,
-    currentRole: 'Data Scientist @ Amazon',
-    location: 'Seattle, WA',
-    isOnline: true
-  },
-  {
-    id: 4,
-    name: 'Priya Patel',
-    username: 'priyap',
-    graduationYear: 2020,
-    currentRole: 'UX Designer @ Apple',
-    location: 'Austin, TX',
-    isOnline: false
-  },
-  {
-    id: 5,
-    name: 'David Kim',
-    username: 'davidk',
-    graduationYear: 2022,
-    currentRole: 'DevOps Engineer @ Microsoft',
-    location: 'Remote',
-    isOnline: true
-  },
-  {
-    id: 6,
-    name: 'Emma Wilson',
-    username: 'emmaw',
-    graduationYear: 2021,
-    currentRole: 'Frontend Developer @ Netflix',
-    location: 'Los Angeles, CA',
-    isOnline: false
-  }
-];
 
 const mockAds = [
   {
@@ -93,8 +38,61 @@ const mockAds = [
 const MainLayout: React.FC = () => {
   const { toggleTheme, isDark } = useTheme();
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState('Home');
+  const [feedPosts, setFeedPosts] = useState<any[]>([]);
+  const [feedLoading, setFeedLoading] = useState(false);
+  const [members, setMembers] = useState<any[]>([]);
+  const [membersLoading, setMembersLoading] = useState(false);
+
+  // Derive active nav item from current URL path
+  const activeNavItem = location.pathname === '/julienties' ? 'Julienties' : 'Home';
+
+  useEffect(() => {
+    if (activeNavItem !== 'Julienties') return;
+    const token = localStorage.getItem('julienites-token');
+    if (!token) return;
+
+    const fetchMembers = async () => {
+      setMembersLoading(true);
+      const response = await userApi.getUsers(0, 100);
+      if (response.data) {
+        setMembers(response.data);
+      }
+      setMembersLoading(false);
+    };
+
+    fetchMembers();
+  }, [activeNavItem]);
+
+  useEffect(() => {
+    if (activeNavItem !== 'Home') return;
+    const token = localStorage.getItem('julienites-token');
+    if (!token) return;
+
+    const fetchFeed = async () => {
+      setFeedLoading(true);
+      const response = await postApi.getFeedPosts(token, 0, 100);
+      if (response.data) {
+        // Keep only the latest post per user, sorted by most recent activity
+        const latestByUser = new Map<string, any>();
+        for (const post of response.data) {
+          const existing = latestByUser.get(post.user_id);
+          if (!existing || new Date(post.created_at) > new Date(existing.created_at)) {
+            latestByUser.set(post.user_id, post);
+          }
+        }
+        const sorted = Array.from(latestByUser.values()).sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+        setFeedPosts(sorted);
+      }
+      setFeedLoading(false);
+    };
+
+    fetchFeed();
+  }, [activeNavItem]);
 
   // Get initials from user name
   const getUserInitials = (name: string) => {
@@ -106,9 +104,6 @@ const MainLayout: React.FC = () => {
       .slice(0, 2);
   };
 
-  const handleNavigationClick = (itemName: string) => {
-    setActiveNavItem(itemName);
-  };
 
   const renderMainContent = () => {
     // Welcome banner is shown for both Home and Julienties
@@ -121,8 +116,8 @@ const MainLayout: React.FC = () => {
           Connect with fellow alumni, discover career opportunities, and stay updated with community events.
         </p>
         <div className="flex gap-3">
-                  <button 
-          onClick={() => window.location.href = '/profile'}
+                  <button
+          onClick={() => window.location.href = `/profile/${user?.id}`}
           className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors"
         >
           Complete Profile
@@ -134,175 +129,117 @@ const MainLayout: React.FC = () => {
       </div>
     );
 
-    // Members section is shown for both Home and Julienties
+    // Members section is shown for Julienties
     const membersSection = (
       <>
-        {/* Members Section Header */}
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">
-            {activeNavItem === 'Julienties' ? 'Julienties Members' : 'Members'}
-          </h2>
+          <h2 className="text-xl font-bold">Julienties Members</h2>
         </div>
 
-        {/* Members Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {mockMembers.map((member) => (
-            <ProfileCard key={member.id} {...member} />
-          ))}
-        </div>
-
-        {/* Load More */}
-        <div className="text-center py-6">
-          <button className="bg-background-secondary hover:bg-background-tertiary text-text-primary px-6 py-3 rounded-full font-bold border border-border transition-colors">
-            Load More Members
-          </button>
-        </div>
+        {membersLoading ? (
+          <div className="text-text-tertiary text-center py-8">Loading members...</div>
+        ) : members.length === 0 ? (
+          <div className="text-text-tertiary text-center py-8">No members found.</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {members.map((member) => (
+              <ProfileCard
+                key={member.id}
+                id={member.id}
+                name={member.name}
+                username={member.username}
+                graduationYear={member.graduation_year}
+                currentRole={member.current_role}
+                location={member.location}
+                profileImage={member.profile_image_url}
+              />
+            ))}
+          </div>
+        )}
       </>
     );
 
-    // Mock posts from members (inlined for simplicity)
-    const mockPosts = [
-      {
-        id: 1,
-        author: 'Alex Johnson',
-        username: 'alexj',
-        role: 'Software Engineer @ Google',
-        time: '2h ago',
-        content: 'Just wrapped up an amazing project at Google! We built a new ML pipeline that reduces inference time by 40%. So proud of the team! #Tech #MachineLearning',
-        likes: 42,
-        comments: 8,
-        shares: 3
-      },
-      {
-        id: 2,
-        author: 'Sarah Chen',
-        username: 'sarahc',
-        role: 'Product Manager @ Meta',
-        time: '4h ago',
-        content: 'Excited to share that our new feature at Meta just hit 1M daily active users in its first week! The team worked incredibly hard on this launch. #ProductManagement #Tech',
-        likes: 89,
-        comments: 12,
-        shares: 5
-      },
-      {
-        id: 3,
-        author: 'Marcus Rodriguez',
-        username: 'marcusr',
-        role: 'Data Scientist @ Amazon',
-        time: '6h ago',
-        content: 'Just published a research paper on anomaly detection in time-series data. Would love to connect with others working in this space! #DataScience #Research',
-        likes: 31,
-        comments: 5,
-        shares: 2
-      },
-      {
-        id: 4,
-        author: 'Priya Patel',
-        username: 'priyap',
-        role: 'UX Designer @ Apple',
-        time: '1d ago',
-        content: 'Designing for accessibility isn\'t just about compliance - it\'s about creating better experiences for everyone. Some insights from our latest project at Apple. #UXDesign #Accessibility',
-        likes: 67,
-        comments: 9,
-        shares: 4
-      },
-      {
-        id: 5,
-        author: 'David Kim',
-        username: 'davidk',
-        role: 'DevOps Engineer @ Microsoft',
-        time: '1d ago',
-        content: 'Migrated our entire infrastructure to Kubernetes this quarter. The scalability improvements are incredible! #DevOps #Kubernetes #Cloud',
-        likes: 53,
-        comments: 7,
-        shares: 3
-      },
-      {
-        id: 6,
-        author: 'Emma Wilson',
-        username: 'emmaw',
-        role: 'Frontend Developer @ Netflix',
-        time: '2d ago',
-        content: 'Just open-sourced a React component library we\'ve been using internally at Netflix. Check it out on GitHub! #OpenSource #React #Frontend',
-        likes: 78,
-        comments: 15,
-        shares: 6
-      }
-    ];
+    if (activeNavItem === 'Julienties') {
+      return (
+        <>
+          {welcomeBanner}
+          {membersSection}
+        </>
+      );
+    }
 
-    switch (activeNavItem) {
-      case 'Julienties':
-        return (
-          <>
-            {welcomeBanner}
-            {membersSection}
-          </>
-        );
-      case 'Home':
-      default:
-        // Posts section for Home
-        const postsSection = (
-          <>
-            {/* Posts Section Header */}
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Latest Posts from Members</h2>
-            </div>
+    // Home (default)
+    return (
+      <>
+        {welcomeBanner}
+        {/* Latest post per member */}
+        {feedLoading ? (
+          <div className="text-text-tertiary text-center py-8">Loading posts...</div>
+        ) : feedPosts.length === 0 ? (
+          <div className="text-text-tertiary text-center py-8">No posts yet. Be the first to post!</div>
+        ) : (
+          <div className="space-y-4">
+            {feedPosts.map((post) => {
+              const author = post.user;
+              const initials = author?.name
+                ? author.name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
+                : '?';
+              const postDate = new Date(post.created_at);
+              const now = new Date();
+              const diffMs = now.getTime() - postDate.getTime();
+              const diffMins = Math.floor(diffMs / 60000);
+              const diffHours = Math.floor(diffMins / 60);
+              const diffDays = Math.floor(diffHours / 24);
+              const timeAgo = diffMins < 1 ? 'just now'
+                : diffMins < 60 ? `${diffMins}m ago`
+                : diffHours < 24 ? `${diffHours}h ago`
+                : diffDays < 7 ? `${diffDays}d ago`
+                : postDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-            {/* Posts List */}
-            <div className="space-y-4">
-              {mockPosts.map((post) => (
+              return (
                 <div key={post.id} className="bg-background-secondary rounded-2xl p-6 border border-border">
                   <div className="flex items-start gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-twitter-blue flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">
-                        {post.author.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}
-                      </span>
+                    <div className="w-10 h-10 rounded-full bg-twitter-blue flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-sm">{initials}</span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold">{post.author}</span>
-                        <span className="text-text-tertiary text-sm">@{post.username}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold">{author?.name || 'Unknown'}</span>
+                        <span className="text-text-tertiary text-sm">@{author?.username || ''}</span>
                         <span className="text-text-tertiary text-sm">•</span>
-                        <span className="text-text-tertiary text-sm">{post.time}</span>
+                        <span className="text-text-tertiary text-sm">{timeAgo}</span>
                       </div>
-                      <div className="text-text-tertiary text-sm">{post.role}</div>
+                      {author?.current_role && (
+                        <div className="text-text-tertiary text-sm">{author.current_role}</div>
+                      )}
                     </div>
                   </div>
                   <p className="text-text-primary mb-4">{post.content}</p>
-                  <div className="flex items-center gap-6 text-text-tertiary">
-                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
-                      <span>❤️</span>
-                      <span>{post.likes}</span>
-                    </button>
-                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
-                      <span>💬</span>
-                      <span>{post.comments}</span>
-                    </button>
-                    <button className="flex items-center gap-2 hover:text-twitter-blue transition-colors">
-                      <span>↪️</span>
-                      <span>{post.shares}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-6 text-text-tertiary">
+                      <span className="flex items-center gap-1">
+                        <span>❤️</span>
+                        <span>{post.likes_count}</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span>💬</span>
+                        <span>{post.comments_count}</span>
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => navigate(`/profile/${post.user_id}?tab=Posts`)}
+                      className="text-twitter-blue text-sm font-bold hover:underline"
+                    >
+                      View More
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Load More Posts */}
-            <div className="text-center py-6">
-              <button className="bg-background-secondary hover:bg-background-tertiary text-text-primary px-6 py-3 rounded-full font-bold border border-border transition-colors">
-                Load More Posts
-              </button>
-            </div>
-          </>
-        );
-        
-        return (
-          <>
-            {welcomeBanner}
-            {postsSection}
-          </>
-        );
-    }
+              );
+            })}
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
@@ -353,8 +290,7 @@ const MainLayout: React.FC = () => {
                       <div className="p-2">
                         <button
                           onClick={() => {
-                            // Navigate to user profile
-                            window.location.href = '/profile';
+                            window.location.href = `/profile/${user?.id}`;
                             setShowUserMenu(false);
                           }}
                           className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
@@ -403,7 +339,7 @@ const MainLayout: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar */}
           <aside className="lg:col-span-1 space-y-6">
-            <Navigation onItemClick={handleNavigationClick} />
+            <Navigation />
 
             {/* Trends/Who to follow */}
             <div className="bg-background-secondary rounded-2xl p-4 border border-border">

@@ -66,12 +66,12 @@ class UserInDB(UserBase):
     linkedin_url: Optional[str] = None
     github_url: Optional[str] = None
     twitter_handle: Optional[str] = None
-    following_count: int = 0
-    followers_count: int = 0
-    post_count: int = 0
-    is_active: bool = True
-    is_verified: bool = False
-    role: UserRole = UserRole.USER
+    following_count: Optional[int] = 0
+    followers_count: Optional[int] = 0
+    post_count: Optional[int] = 0
+    is_active: Optional[bool] = True
+    is_verified: Optional[bool] = False
+    role: Optional[UserRole] = UserRole.USER
     created_at: datetime
     updated_at: Optional[datetime] = None
     last_login_at: Optional[datetime] = None
@@ -176,9 +176,9 @@ class PostUpdate(BaseSchema):
 class PostInDB(PostBase):
     id: UUID
     user_id: UUID
-    likes_count: int = 0
-    comments_count: int = 0
-    reposts_count: int = 0
+    likes_count: Optional[int] = 0
+    comments_count: Optional[int] = 0
+    reposts_count: Optional[int] = 0
     created_at: datetime
     updated_at: Optional[datetime] = None
     user: UserPublic

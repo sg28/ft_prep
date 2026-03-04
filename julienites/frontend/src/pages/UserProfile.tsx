@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { userApi, postApi } from '../services/api';
 import {
   GraduationCap,
   Briefcase,
@@ -16,174 +17,114 @@ import {
   ArrowLeft,
   Edit,
   Save,
-  X,
-  Plus,
-  Image,
-  Smile,
-  Calendar,
-  Send,
-  AlertCircle,
-  CheckCircle
+  X
 } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
-import { postApi } from '../services/api';
 
 const UserProfile: React.FC = () => {
-  const { user, token } = useAuth();
+  const { id } = useParams<{ id: string }>();
+  const { user: authUser } = useAuth();
   const navigate = useNavigate();
-  
-  // Mock user data for demonstration
-  const mockUserData = {
-    id: '1',
-    name: 'Demo User',
-    email: 'demo@example.com',
-    username: 'demouser',
-    graduationYear: 2020,
-    profileImage: 'https://api.dicebear.com/7.x/avataaars/svg?seed=demo',
-    bio: 'Passionate software engineer with experience in building scalable applications.',
-    location: 'San Francisco, CA',
-    currentRole: 'Software Engineer',
-    phone: '+1 (555) 123-4567',
-    linkedin: 'linkedin.com/in/demouser',
-    github: 'github.com/demouser',
-    twitter: '@demouser',
-    skills: ['JavaScript', 'React', 'Node.js', 'TypeScript'],
-    education: [
-      { id: 1, institution: 'Stanford University', degree: 'M.S.', field: 'Computer Science', year: 2020 },
-      { id: 2, institution: 'Julien Day School', degree: 'High School', field: 'Science', year: 2016 }
-    ],
-    experience: [
-      { id: 1, company: 'Tech Corp', position: 'Senior Software Engineer', duration: '2022-Present', description: 'Leading frontend development team' },
-      { id: 2, company: 'Startup Inc', position: 'Software Engineer', duration: '2020-2022', description: 'Full stack development' }
-    ],
-    followingCount: 342,
-    followersCount: 1200
-  };
-  
-  // Use mock data if no real user
-  const currentUser = user || mockUserData;
-  
+  const location = useLocation();
+
+  const initialTab = new URLSearchParams(location.search).get('tab') || 'About';
+
+  const [profileData, setProfileData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState(currentUser);
-  const [activeTab, setActiveTab] = useState('About');
-  
-  // Posts state
+  const [editedUser, setEditedUser] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [posts, setPosts] = useState<any[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
-  const [isCreatingPost, setIsCreatingPost] = useState(false);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
   const [isSubmittingPost, setIsSubmittingPost] = useState(false);
-  const [postError, setPostError] = useState<string | null>(null);
-  const [postSuccess, setPostSuccess] = useState<string | null>(null);
 
-  // Load posts on component mount
+  const isOwnProfile = authUser?.id === id;
+
   useEffect(() => {
-    // Only load posts if user is logged in (token exists) and has a valid ID
-    if (token && user?.id && user.id !== 'temp-id' && user.id !== '1') {
-      loadUserPosts();
-    }
-  }, [token, user?.id]);
-  
-  // Load user posts from API
-  const loadUserPosts = async () => {
-    if (!token || !user?.id) return;
+    if (!id || activeTab !== 'Posts') return;
+    const token = localStorage.getItem('julienites-token');
+    if (!token) return;
 
-    // Don't load posts if using mock ID
-    if (user.id === 'temp-id' || user.id === '1') return;
+    const fetchPosts = async () => {
+      setPostsLoading(true);
+      const response = await postApi.getUserPosts(token, id);
+      if (response.data) {
+        setPosts(response.data);
+      }
+      setPostsLoading(false);
+    };
 
-    setIsLoadingPosts(true);
-    const response = await postApi.getUserPosts(token, user.id);
+    fetchPosts();
+  }, [id, activeTab]);
 
-    if (response.data) {
-      setPosts(response.data);
-    } else if (response.error) {
-      console.error('Failed to load posts:', response.error);
-    }
-    setIsLoadingPosts(false);
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchProfile = async () => {
+      setIsLoading(true);
+      setError(null);
+      const response = await userApi.getProfile(id);
+      if (response.data) {
+        const data = response.data;
+        const mapped = {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          username: data.username,
+          graduationYear: data.graduation_year,
+          bio: data.bio,
+          location: data.location,
+          currentRole: data.current_role,
+          profileImage: data.profile_image_url,
+          phone: data.phone,
+          linkedin: data.linkedin_url,
+          github: data.github_url,
+          twitter: data.twitter_handle,
+          followingCount: data.following_count ?? 0,
+          followersCount: data.followers_count ?? 0,
+        };
+        setProfileData(mapped);
+        setEditedUser(mapped);
+      } else {
+        setError(response.error || 'Failed to load profile');
+      }
+      setIsLoading(false);
+    };
+
+    fetchProfile();
+  }, [id]);
+
+  const handleSave = () => {
+    // TODO: call update API
+    console.log('Saving user data:', editedUser);
+    setProfileData(editedUser);
+    setIsEditing(false);
   };
 
-  // Handle creating a new post
+  const handleCancel = () => {
+    setEditedUser(profileData);
+    setIsEditing(false);
+  };
+
   const handleCreatePost = async () => {
-    if (newPostContent.trim() === '') return;
-    if (!token) {
-      setPostError('Authentication required. Please log in.');
-      return;
-    }
-
+    if (!newPostContent.trim()) return;
+    const token = localStorage.getItem('julienites-token');
+    if (!token) return;
     setIsSubmittingPost(true);
-    setPostError(null);
-    setPostSuccess(null);
-
-    const response = await postApi.createPost(token, {
-      content: newPostContent,
-      is_public: true,
-      media_urls: []
-    });
-
+    const response = await postApi.createPost(token, { content: newPostContent.trim() });
     if (response.data) {
-      // Add new post to the beginning of the list
-      setPosts([response.data, ...posts]);
+      setPosts((prev) => [response.data!, ...prev]);
       setNewPostContent('');
-      setIsCreatingPost(false);
-      setPostSuccess('Post created successfully!');
-      setTimeout(() => setPostSuccess(null), 3000);
-    } else {
-      setPostError(response.error || 'Failed to create post. Please try again.');
     }
-
     setIsSubmittingPost(false);
   };
 
-  // Handle like post
-  const handleLikePost = async (postId: string) => {
-    if (!token) {
-      setPostError('Authentication required. Please log in.');
-      return;
-    }
-
-    const response = await postApi.likePost(token, postId);
-
-    if (response.data || response.status === 200) {
-      setPosts(posts.map(post =>
-        post.id === postId ? { ...post, likes_count: post.likes_count + 1 } : post
-      ));
-    } else {
-      console.error('Failed to like post:', response.error);
-    }
-  };
-
-  // Handle add comment
-  const handleAddComment = (postId: string) => {
-    console.log('Comment feature coming soon for post:', postId);
-    // TODO: Implement comment functionality
-  };
-
-  // Handle repost
-  const handleRepost = (postId: string) => {
-    console.log('Repost feature coming soon for post:', postId);
-    // TODO: Implement repost functionality
-  };
-  
-  const handleSave = () => {
-    // In a real app, this would save to backend
-    console.log('Saving user data:', editedUser);
-    // Update user context here
-    setIsEditing(false);
-  };
-  
-  const handleCancel = () => {
-    setEditedUser(currentUser);
-    setIsEditing(false);
-  };
-  
   const handleInputChange = (field: string, value: string) => {
-    setEditedUser(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setEditedUser((prev: any) => ({ ...prev, [field]: value }));
   };
-  
-  // Generate initials from name
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -192,16 +133,33 @@ const UserProfile: React.FC = () => {
       .toUpperCase()
       .slice(0, 2);
   };
-  
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-primary">Loading profile...</div>
+      </div>
+    );
+  }
+
+  if (error || !profileData) {
+    return (
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-primary">{error || 'Profile not found'}</div>
+      </div>
+    );
+  }
+
+  const currentUser = isEditing ? editedUser : profileData;
   const initials = getInitials(currentUser.name);
-  
+
   return (
     <div className="min-h-screen bg-background-primary text-text-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-lg border-b border-border">
         <div className="max-w-[1265px] mx-auto px-4">
           <div className="h-[53px] flex items-center justify-between">
-            <button 
+            <button
               onClick={() => navigate(-1)}
               className="p-2 rounded-full hover:bg-background-tertiary transition-colors flex items-center gap-2"
               aria-label="Go back"
@@ -215,45 +173,47 @@ const UserProfile: React.FC = () => {
                 {getVersionDisplay()}
               </span>
             </div>
-            <div className="w-10"></div> {/* Spacer for alignment */}
+            <div className="w-10"></div>
           </div>
         </div>
       </header>
-      
+
       {/* Profile Content */}
       <div className="max-w-[1265px] mx-auto px-4 py-6">
         <div className="bg-background-secondary rounded-2xl border border-border p-6">
           {/* Profile Header with Edit Button */}
           <div className="flex justify-between items-start mb-6">
-            <h1 className="text-2xl font-bold">My Profile</h1>
-            {!isEditing ? (
-              <button 
-                onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
-              >
-                <Edit size={18} />
-                Edit Profile
-              </button>
-            ) : (
-              <div className="flex gap-2">
-                <button 
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-success-color text-white rounded-full font-bold hover:bg-green-700 transition-colors flex items-center gap-2"
+            <h1 className="text-2xl font-bold">{isOwnProfile ? 'My Profile' : profileData.name}</h1>
+            {isOwnProfile && (
+              !isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
                 >
-                  <Save size={18} />
-                  Save Changes
+                  <Edit size={18} />
+                  Edit Profile
                 </button>
-                <button 
-                  onClick={handleCancel}
-                  className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors flex items-center gap-2"
-                >
-                  <X size={18} />
-                  Cancel
-                </button>
-              </div>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSave}
+                    className="px-4 py-2 bg-success-color text-white rounded-full font-bold hover:bg-green-700 transition-colors flex items-center gap-2"
+                  >
+                    <Save size={18} />
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors flex items-center gap-2"
+                  >
+                    <X size={18} />
+                    Cancel
+                  </button>
+                </div>
+              )
             )}
           </div>
-          
+
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row gap-6 mb-8">
             <div className="flex-shrink-0">
@@ -271,7 +231,7 @@ const UserProfile: React.FC = () => {
                 </button>
               )}
             </div>
-            
+
             <div className="flex-1">
               <div className="mb-6">
                 {isEditing ? (
@@ -312,7 +272,7 @@ const UserProfile: React.FC = () => {
                   </>
                 )}
               </div>
-              
+
               <div className="flex flex-wrap gap-4 mb-6">
                 {isEditing ? (
                   <>
@@ -370,7 +330,7 @@ const UserProfile: React.FC = () => {
                   </>
                 )}
               </div>
-              
+
               <div className="flex gap-8">
                 <div>
                   <span className="font-bold text-xl">{currentUser.followingCount || 0}</span>
@@ -383,17 +343,17 @@ const UserProfile: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Tabs */}
           <div className="border-b border-border mb-6">
             <div className="flex gap-8">
               {['About', 'Posts', 'Media', 'Connections'].map((tab) => (
-                <button 
+                <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`py-3 font-medium transition-colors border-b-2 ${
-                    activeTab === tab 
-                      ? 'text-text-primary border-twitter-blue' 
+                    activeTab === tab
+                      ? 'text-text-primary border-twitter-blue'
                       : 'text-text-tertiary border-transparent hover:text-text-primary hover:border-twitter-blue'
                   }`}
                 >
@@ -402,375 +362,189 @@ const UserProfile: React.FC = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Tab Content */}
           <div className="min-h-[400px]">
             {activeTab === 'About' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Column */}
-            <div className="space-y-6">
-              {/* Skills */}
-              <div>
-                <h3 className="text-xl font-bold mb-3">Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {currentUser.skills && currentUser.skills.length > 0 ? (
-                    currentUser.skills.map((skill, index) => (
-                      <span 
-                        key={index}
-                        className="px-3 py-1 bg-background-tertiary rounded-full text-sm"
-                      >
-                        {skill}
-                      </span>
-                    ))
-                  ) : (
-                    <p className="text-text-tertiary text-sm">No skills added yet</p>
-                  )}
-                </div>
-              </div>
-              
-              {/* Education */}
-              <div>
-                <h3 className="text-xl font-bold mb-3">Education</h3>
-                <div className="space-y-4">
-                  {currentUser.education && currentUser.education.length > 0 ? (
-                    currentUser.education.map((edu) => (
-                      <div key={edu.id} className="p-4 bg-background-tertiary/50 rounded-xl">
-                        <div className="font-bold">{edu.institution}</div>
-                        <div className="text-text-secondary">{edu.degree} in {edu.field}</div>
-                        <div className="text-text-tertiary text-sm">Graduated {edu.year}</div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-text-tertiary text-sm">No education information added yet</p>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* Experience */}
-              <div>
-                <h3 className="text-xl font-bold mb-3">Experience</h3>
-                <div className="space-y-4">
-                  {currentUser.experience && currentUser.experience.length > 0 ? (
-                    currentUser.experience.map((exp) => (
-                      <div key={exp.id} className="p-4 bg-background-tertiary/50 rounded-xl">
-                        <div className="font-bold">{exp.position}</div>
-                        <div className="text-text-secondary">{exp.company}</div>
-                        <div className="text-text-tertiary text-sm">{exp.duration}</div>
-                        {exp.description && (
-                          <div className="mt-2 text-text-primary">{exp.description}</div>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-text-tertiary text-sm">No experience information added yet</p>
-                  )}
-                </div>
-              </div>
-              
-              {/* Contact Information */}
-              <div>
-                <h3 className="text-xl font-bold mb-3">Contact Information</h3>
-                <div className="space-y-3">
-                  {isEditing ? (
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-1">Email</label>
-                        <input
-                          type="email"
-                          value={editedUser.email || ''}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-1">Phone</label>
-                        <input
-                          type="tel"
-                          value={editedUser.phone || ''}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
-                          placeholder="+1 (555) 123-4567"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-1">LinkedIn</label>
-                        <input
-                          type="text"
-                          value={editedUser.linkedin || ''}
-                          onChange={(e) => handleInputChange('linkedin', e.target.value)}
-                          className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
-                          placeholder="linkedin.com/in/username"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-1">GitHub</label>
-                        <input
-                          type="text"
-                          value={editedUser.github || ''}
-                          onChange={(e) => handleInputChange('github', e.target.value)}
-                          className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
-                          placeholder="github.com/username"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-1">Twitter</label>
-                        <input
-                          type="text"
-                          value={editedUser.twitter || ''}
-                          onChange={(e) => handleInputChange('twitter', e.target.value)}
-                          className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
-                          placeholder="@username"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      {currentUser.email && (
-                        <div className="flex items-center gap-3">
-                          <Mail size={18} />
-                          <span>{currentUser.email}</span>
+                {/* Left Column */}
+                <div className="space-y-6">
+                  {/* Contact Information */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-3">Contact Information</h3>
+                    <div className="space-y-3">
+                      {isEditing ? (
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-text-secondary mb-1">Email</label>
+                            <input
+                              type="email"
+                              value={editedUser.email || ''}
+                              onChange={(e) => handleInputChange('email', e.target.value)}
+                              className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-text-secondary mb-1">Phone</label>
+                            <input
+                              type="tel"
+                              value={editedUser.phone || ''}
+                              onChange={(e) => handleInputChange('phone', e.target.value)}
+                              className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
+                              placeholder="+1 (555) 123-4567"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-text-secondary mb-1">LinkedIn</label>
+                            <input
+                              type="text"
+                              value={editedUser.linkedin || ''}
+                              onChange={(e) => handleInputChange('linkedin', e.target.value)}
+                              className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
+                              placeholder="linkedin.com/in/username"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-text-secondary mb-1">GitHub</label>
+                            <input
+                              type="text"
+                              value={editedUser.github || ''}
+                              onChange={(e) => handleInputChange('github', e.target.value)}
+                              className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
+                              placeholder="github.com/username"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-text-secondary mb-1">Twitter</label>
+                            <input
+                              type="text"
+                              value={editedUser.twitter || ''}
+                              onChange={(e) => handleInputChange('twitter', e.target.value)}
+                              className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue"
+                              placeholder="@username"
+                            />
+                          </div>
                         </div>
-                      )}
-                      {currentUser.phone && (
-                        <div className="flex items-center gap-3">
-                          <Phone size={18} />
-                          <span>{currentUser.phone}</span>
-                        </div>
-                      )}
-                      {currentUser.linkedin && (
-                        <div className="flex items-center gap-3">
-                          <Linkedin size={18} />
-                          <a href={`https://${currentUser.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                            LinkedIn Profile
-                          </a>
-                        </div>
-                      )}
-                      {currentUser.github && (
-                        <div className="flex items-center gap-3">
-                          <Github size={18} />
-                          <a href={`https://${currentUser.github}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                            GitHub Profile
-                          </a>
-                        </div>
-                      )}
-                      {currentUser.twitter && (
-                        <div className="flex items-center gap-3">
-                          <Twitter size={18} />
-                          <a href={`https://twitter.com/${currentUser.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                            {currentUser.twitter}
-                          </a>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-      )}
-      
-      {activeTab === 'Posts' && (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">My Recent Posts</h2>
-              <button
-                onClick={() => setIsCreatingPost(true)}
-                className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
-              >
-                <Plus size={18} />
-                Create New Post
-              </button>
-            </div>
-
-            {/* Error Alert */}
-            {postError && (
-              <div className="mb-6 bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
-                <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
-                <div>
-                  <p className="font-medium text-red-500">Error</p>
-                  <p className="text-red-500/80 text-sm">{postError}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Success Alert */}
-            {postSuccess && (
-              <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-xl p-4 flex items-start gap-3">
-                <CheckCircle className="text-green-500 flex-shrink-0 mt-0.5" size={20} />
-                <p className="text-green-500/90 text-sm">{postSuccess}</p>
-              </div>
-            )}
-
-            {/* Create Post Form */}
-            {isCreatingPost && (
-              <div className="mb-6 bg-background-secondary rounded-xl border border-border p-6">
-                <div className="flex gap-3 mb-4">
-                  <div className="w-12 h-12 bg-twitter-blue rounded-full flex items-center justify-center text-white font-semibold">
-                    {initials}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold">{currentUser.name}</div>
-                    <div className="text-text-tertiary text-sm">@{currentUser.username}</div>
-                  </div>
-                </div>
-                
-                <textarea
-                  value={newPostContent}
-                  onChange={(e) => setNewPostContent(e.target.value)}
-                  placeholder="What's on your mind?"
-                  rows={4}
-                  className="w-full bg-background-tertiary border border-border rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-twitter-blue resize-none mb-4"
-                />
-                
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <button className="p-2 text-text-tertiary hover:text-twitter-blue hover:bg-background-tertiary rounded-full">
-                      <Image size={20} />
-                    </button>
-                    <button className="p-2 text-text-tertiary hover:text-twitter-blue hover:bg-background-tertiary rounded-full">
-                      <Smile size={20} />
-                    </button>
-                    <button className="p-2 text-text-tertiary hover:text-twitter-blue hover:bg-background-tertiary rounded-full">
-                      <Calendar size={20} />
-                    </button>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setNewPostContent('');
-                        setIsCreatingPost(false);
-                        setPostError(null);
-                      }}
-                      disabled={isSubmittingPost}
-                      className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors disabled:opacity-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleCreatePost}
-                      disabled={!newPostContent.trim() || isSubmittingPost}
-                      className={`px-4 py-2 rounded-full font-bold transition-colors flex items-center gap-2 ${
-                        newPostContent.trim() && !isSubmittingPost
-                          ? 'bg-twitter-blue text-white hover:bg-twitter-blueHover'
-                          : 'bg-background-tertiary text-text-tertiary cursor-not-allowed opacity-50'
-                      }`}
-                    >
-                      {isSubmittingPost ? (
-                        <>
-                          <span className="animate-spin">⏳</span>
-                          Posting...
-                        </>
                       ) : (
                         <>
-                          <Send size={18} />
-                          Post
+                          <div className="flex items-center gap-3">
+                            <Mail size={18} />
+                            <span>{currentUser.email}</span>
+                          </div>
+                          {currentUser.phone && (
+                            <div className="flex items-center gap-3">
+                              <Phone size={18} />
+                              <span>{currentUser.phone}</span>
+                            </div>
+                          )}
+                          {currentUser.linkedin && (
+                            <div className="flex items-center gap-3">
+                              <Linkedin size={18} />
+                              <a href={`https://${currentUser.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                                LinkedIn Profile
+                              </a>
+                            </div>
+                          )}
+                          {currentUser.github && (
+                            <div className="flex items-center gap-3">
+                              <Github size={18} />
+                              <a href={`https://${currentUser.github}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                                GitHub Profile
+                              </a>
+                            </div>
+                          )}
+                          {currentUser.twitter && (
+                            <div className="flex items-center gap-3">
+                              <Twitter size={18} />
+                              <a href={`https://twitter.com/${currentUser.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                                {currentUser.twitter}
+                              </a>
+                            </div>
+                          )}
+                          {isOwnProfile && !currentUser.phone && !currentUser.linkedin && !currentUser.github && !currentUser.twitter && (
+                            <p className="text-text-tertiary text-sm">Click "Edit Profile" to add more contact details.</p>
+                          )}
                         </>
                       )}
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
-            
-            {/* Posts List */}
-            <div className="space-y-4">
-              {isLoadingPosts ? (
-                <div className="text-center py-8 text-text-tertiary">
-                  <p>Loading posts...</p>
-                </div>
-              ) : posts.length === 0 ? (
-                <div className="text-center py-8 text-text-tertiary">
-                  <p>No posts yet. Create your first post!</p>
-                </div>
-              ) : (
-                posts.map((post) => {
-                  // Extract user initials
-                  const userInitials = post.user?.name
-                    ?.split(' ')
-                    .map((word: string) => word[0])
-                    .join('')
-                    .toUpperCase()
-                    .slice(0, 2) || 'U';
 
-                  // Format timestamp
-                  const postDate = new Date(post.created_at);
-                  const now = new Date();
-                  const diffMs = now.getTime() - postDate.getTime();
-                  const diffMins = Math.floor(diffMs / 60000);
-                  const diffHours = Math.floor(diffMs / 3600000);
-                  const diffDays = Math.floor(diffMs / 86400000);
-
-                  let timestamp = 'just now';
-                  if (diffMins > 0 && diffMins < 60) timestamp = `${diffMins}m ago`;
-                  else if (diffHours > 0 && diffHours < 24) timestamp = `${diffHours}h ago`;
-                  else if (diffDays > 0) timestamp = `${diffDays}d ago`;
-
-                  return (
-                    <div key={post.id} className="bg-background-secondary rounded-xl border border-border p-6">
-                      <div className="flex gap-3 mb-4">
-                        <div className="w-12 h-12 bg-twitter-blue rounded-full flex items-center justify-center text-white font-semibold">
-                          {userInitials}
-                        </div>
-                        <div>
-                          <div className="font-bold">{post.user?.name || 'Unknown User'}</div>
-                          <div className="text-text-tertiary text-sm">@{post.user?.username || 'user'} • {timestamp}</div>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        {post.content}
-                      </div>
-                      <div className="flex gap-6">
-                        <button
-                          onClick={() => handleAddComment(post.id)}
-                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
-                        >
-                          <MessageCircle size={18} />
-                          <span>{post.comments_count || 0}</span>
-                        </button>
-                        <button
-                          onClick={() => handleRepost(post.id)}
-                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue"
-                        >
-                          <Repeat size={18} />
-                          <span>{post.reposts_count || 0}</span>
-                        </button>
-                        <button
-                          onClick={() => handleLikePost(post.id)}
-                          className="flex items-center gap-2 text-text-tertiary hover:text-twitter-pink"
-                        >
-                          <Heart size={18} />
-                          <span>{post.likes_count || 0}</span>
-                        </button>
-                      </div>
+            {activeTab === 'Posts' && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">{isOwnProfile ? 'My Posts' : `${profileData.name}'s Posts`}</h2>
+                {isOwnProfile && (
+                  <div className="border border-border rounded-xl p-4 mb-6">
+                    <textarea
+                      value={newPostContent}
+                      onChange={(e) => setNewPostContent(e.target.value)}
+                      placeholder="What's on your mind?"
+                      rows={3}
+                      className="w-full bg-transparent text-text-primary placeholder-text-tertiary resize-none focus:outline-none"
+                    />
+                    <div className="flex justify-end mt-2">
+                      <button
+                        onClick={handleCreatePost}
+                        disabled={!newPostContent.trim() || isSubmittingPost}
+                        className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmittingPost ? 'Posting...' : 'Post'}
+                      </button>
                     </div>
-                  );
-                })
-              )}
-            </div>
+                  </div>
+                )}
+                {postsLoading ? (
+                  <p className="text-text-tertiary">Loading posts...</p>
+                ) : posts.length === 0 ? (
+                  <p className="text-text-tertiary">No posts yet.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {posts.map((post) => (
+                      <div key={post.id} className="border border-border rounded-xl p-4">
+                        <p className="text-text-primary whitespace-pre-wrap">{post.content}</p>
+                        <div className="flex items-center gap-6 mt-3 text-text-tertiary text-sm">
+                          <span className="flex items-center gap-1">
+                            <Heart size={16} />
+                            {post.likes_count ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MessageCircle size={16} />
+                            {post.comments_count ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Repeat size={16} />
+                            {post.reposts_count ?? 0}
+                          </span>
+                          <span className="ml-auto">
+                            {new Date(post.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'Media' && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Media</h2>
+                <p className="text-text-tertiary">No media uploaded yet.</p>
+              </div>
+            )}
+
+            {activeTab === 'Connections' && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Connections</h2>
+                <p className="text-text-tertiary">No connections to display yet.</p>
+              </div>
+            )}
           </div>
-        )}
-        
-        {activeTab === 'Media' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Media</h2>
-            <p className="text-text-tertiary">No media uploaded yet.</p>
-          </div>
-        )}
-        
-        {activeTab === 'Connections' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Connections</h2>
-            <p className="text-text-tertiary">No connections to display yet.</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
-  </div>
-</div>
   );
 };
 

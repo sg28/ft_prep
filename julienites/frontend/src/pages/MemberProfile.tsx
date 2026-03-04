@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  GraduationCap, 
-  Briefcase, 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Linkedin, 
-  Github, 
-  Twitter, 
-  MessageCircle, 
-  Repeat, 
+import { userApi } from '../services/api';
+import {
+  GraduationCap,
+  Briefcase,
+  MapPin,
+  Mail,
+  Phone,
+  Linkedin,
+  Github,
+  Twitter,
+  MessageCircle,
+  Repeat,
   Heart,
   ArrowLeft
 } from 'lucide-react';
@@ -19,62 +20,62 @@ import { getVersionDisplay } from '../config/version';
 const MemberProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
-  // Mock member data - in a real app, this would come from an API
-  const mockMembers = [
-    {
-      id: 1,
-      name: 'Alex Johnson',
-      graduationYear: 2015,
-      currentRole: 'Software Engineer',
-      location: 'San Francisco, CA',
-      isOnline: true,
-      username: 'alexj',
-      bio: 'Passionate software engineer with 8+ years of experience. Love building scalable applications and mentoring junior developers.',
-      email: 'alex.johnson@example.com',
-      phone: '+1 (555) 123-4567',
-      linkedin: 'linkedin.com/in/alexjohnson',
-      github: 'github.com/alexj',
-      twitter: '@alexj',
-      skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'AWS', 'Docker'],
-      education: [
-        { id: 1, institution: 'Stanford University', degree: 'M.S.', field: 'Computer Science', year: 2015 },
-        { id: 2, institution: 'Julien Day School', degree: 'High School', field: 'Science', year: 2011 }
-      ],
-      experience: [
-        { id: 1, company: 'Tech Corp', position: 'Senior Software Engineer', duration: '2020-Present', description: 'Leading frontend development team' },
-        { id: 2, company: 'Startup Inc', position: 'Software Engineer', duration: '2017-2020', description: 'Full stack development' }
-      ],
-      followingCount: 342,
-      followersCount: 1200
-    },
-    {
-      id: 2,
-      name: 'Sarah Williams',
-      graduationYear: 2018,
-      currentRole: 'Marketing Director',
-      location: 'New York, NY',
-      isOnline: false,
-      username: 'sarahw',
-      bio: 'Marketing professional with expertise in digital marketing and brand strategy.',
-      email: 'sarah.williams@example.com',
-      linkedin: 'linkedin.com/in/sarahwilliams',
-      skills: ['Digital Marketing', 'Brand Strategy', 'Social Media', 'SEO', 'Analytics'],
-      education: [
-        { id: 1, institution: 'NYU Stern', degree: 'MBA', field: 'Marketing', year: 2018 },
-        { id: 2, institution: 'Julien Day School', degree: 'High School', field: 'Commerce', year: 2014 }
-      ],
-      experience: [
-        { id: 1, company: 'Global Brands', position: 'Marketing Director', duration: '2021-Present', description: 'Leading marketing campaigns' },
-        { id: 2, company: 'Ad Agency', position: 'Marketing Manager', duration: '2018-2021', description: 'Client management and strategy' }
-      ],
-      followingCount: 289,
-      followersCount: 850
-    }
-  ];
-  
-  const memberId = parseInt(id || '1');
-  const member = mockMembers.find(m => m.id === memberId) || mockMembers[0];
+
+  const [member, setMember] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchMember = async () => {
+      setIsLoading(true);
+      setError(null);
+      const response = await userApi.getProfile(id);
+      if (response.data) {
+        const data = response.data;
+        setMember({
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          username: data.username,
+          graduationYear: data.graduation_year,
+          bio: data.bio,
+          location: data.location,
+          currentRole: data.current_role,
+          profileImage: data.profile_image_url,
+          phone: data.phone,
+          linkedin: data.linkedin_url,
+          github: data.github_url,
+          twitter: data.twitter_handle,
+          followingCount: data.following_count ?? 0,
+          followersCount: data.followers_count ?? 0,
+          isOnline: false,
+        });
+      } else {
+        setError(response.error || 'Failed to load profile');
+      }
+      setIsLoading(false);
+    };
+
+    fetchMember();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-primary">Loading profile...</div>
+      </div>
+    );
+  }
+
+  if (error || !member) {
+    return (
+      <div className="min-h-screen bg-background-primary flex items-center justify-center">
+        <div className="text-text-primary">{error || 'Profile not found'}</div>
+      </div>
+    );
+  }
   
   // Generate initials from name
   const getInitials = (name: string) => {
@@ -208,7 +209,7 @@ const MemberProfile: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-bold mb-3">Skills</h3>
                   <div className="flex flex-wrap gap-2">
-                    {member.skills.map((skill, index) => (
+                    {member.skills.map((skill: string, index: number) => (
                       <span 
                         key={index}
                         className="px-3 py-1 bg-background-tertiary rounded-full text-sm"
@@ -225,7 +226,7 @@ const MemberProfile: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-bold mb-3">Education</h3>
                   <div className="space-y-4">
-                    {member.education.map((edu) => (
+                    {member.education.map((edu: any) => (
                       <div key={edu.id} className="p-4 bg-background-tertiary/50 rounded-xl">
                         <div className="font-bold">{edu.institution}</div>
                         <div className="text-text-secondary">{edu.degree} in {edu.field}</div>
@@ -244,7 +245,7 @@ const MemberProfile: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-bold mb-3">Experience</h3>
                   <div className="space-y-4">
-                    {member.experience.map((exp) => (
+                    {member.experience.map((exp: any) => (
                       <div key={exp.id} className="p-4 bg-background-tertiary/50 rounded-xl">
                         <div className="font-bold">{exp.position}</div>
                         <div className="text-text-secondary">{exp.company}</div>

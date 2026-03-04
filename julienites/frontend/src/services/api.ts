@@ -91,9 +91,18 @@ async function apiRequest<T>(
     });
     
     const data = await response.json().catch(() => ({}));
-    
+
     // Log response
     logApiCall(method, url, undefined, data, response.status);
+
+    // On 401, clear stored session and redirect to login
+    if (response.status === 401) {
+      localStorage.removeItem('julienites-token');
+      localStorage.removeItem('julienites-refresh-token');
+      localStorage.removeItem('julienites-user');
+      window.location.href = '/login';
+    }
+
     return {
       data: response.ok ? data : undefined,
       error: response.ok ? undefined : data.detail || data.message || `HTTP ${response.status}`,
@@ -108,18 +117,33 @@ async function apiRequest<T>(
   }
 }
 
+const getAuthHeaders = (): Record<string, string> => {
+  const token = localStorage.getItem('julienites-token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
+
 export const userApi = {
-  getProfile: (userId: string) => 
-    apiRequest<UserResponse>(`/users/${userId}`),
-    
+  getUsers: (skip: number = 0, limit: number = 100) =>
+    apiRequest<UserResponse[]>(`/users/?skip=${skip}&limit=${limit}`, {
+      headers: getAuthHeaders(),
+    }),
+
+  getProfile: (userId: string) =>
+    apiRequest<UserResponse>(`/users/${userId}`, {
+      headers: getAuthHeaders(),
+    }),
+
   updateProfile: (userId: string, profileData: any) =>
     apiRequest<UserResponse>(`/users/${userId}`, {
       method: 'PUT',
+      headers: getAuthHeaders(),
       body: JSON.stringify(profileData),
     }),
     
   searchUsers: (query: string) =>
-    apiRequest<UserResponse[]>(`/users/search?q=${encodeURIComponent(query)}`),
+    apiRequest<UserResponse[]>(`/users/search?q=${encodeURIComponent(query)}`, {
+      headers: getAuthHeaders(),
+    }),
 
   getCurrentUser: (token?: string) => {
     const headers: any = {
