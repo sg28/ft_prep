@@ -138,7 +138,8 @@ class Post(Base):
     
     content = Column(Text, nullable=False)
     media_urls = Column(JSON, nullable=True)  # Array of media URLs
-    
+    tag = Column(String(50), nullable=True)  # e.g., 'Questions', 'Celebration', 'Alert', 'Social', 'Post Truth'
+
     # Stats
     likes_count = Column(Integer, default=0)
     comments_count = Column(Integer, default=0)

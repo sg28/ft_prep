@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { userApi, postApi } from '../services/api';
+import { userApi, postApi, POST_TAGS, PostTag } from '../services/api';
 import {
   GraduationCap,
   Briefcase,
@@ -21,6 +21,14 @@ import {
 } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
 
+const TAG_STYLES: Record<string, { active: string; badge: string }> = {
+  'Questions':   { active: 'bg-blue-500/20 border-blue-500 text-blue-400',   badge: 'bg-blue-500/20 text-blue-400' },
+  'Celebration': { active: 'bg-yellow-500/20 border-yellow-500 text-yellow-400', badge: 'bg-yellow-500/20 text-yellow-400' },
+  'Alert':       { active: 'bg-red-500/20 border-red-500 text-red-400',       badge: 'bg-red-500/20 text-red-400' },
+  'Social':      { active: 'bg-green-500/20 border-green-500 text-green-400', badge: 'bg-green-500/20 text-green-400' },
+  'Post Truth':  { active: 'bg-purple-500/20 border-purple-500 text-purple-400', badge: 'bg-purple-500/20 text-purple-400' },
+};
+
 const UserProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user: authUser } = useAuth();
@@ -38,6 +46,7 @@ const UserProfile: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]);
   const [postsLoading, setPostsLoading] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
+  const [newPostTag, setNewPostTag] = useState<PostTag | null>(null);
   const [isSubmittingPost, setIsSubmittingPost] = useState(false);
 
   const isOwnProfile = authUser?.id === id;
@@ -113,10 +122,14 @@ const UserProfile: React.FC = () => {
     const token = localStorage.getItem('julienites-token');
     if (!token) return;
     setIsSubmittingPost(true);
-    const response = await postApi.createPost(token, { content: newPostContent.trim() });
+    const response = await postApi.createPost(token, {
+      content: newPostContent.trim(),
+      tag: newPostTag,
+    });
     if (response.data) {
       setPosts((prev) => [response.data!, ...prev]);
       setNewPostContent('');
+      setNewPostTag(null);
     }
     setIsSubmittingPost(false);
   };
@@ -484,6 +497,22 @@ const UserProfile: React.FC = () => {
                       rows={3}
                       className="w-full bg-transparent text-text-primary placeholder-text-tertiary resize-none focus:outline-none"
                     />
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {POST_TAGS.map((tag) => (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => setNewPostTag(newPostTag === tag ? null : tag)}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
+                            newPostTag === tag
+                              ? TAG_STYLES[tag].active
+                              : 'border-border text-text-tertiary hover:border-text-secondary'
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
                     <div className="flex justify-end mt-2">
                       <button
                         onClick={handleCreatePost}
@@ -503,6 +532,11 @@ const UserProfile: React.FC = () => {
                   <div className="space-y-4">
                     {posts.map((post) => (
                       <div key={post.id} className="border border-border rounded-xl p-4">
+                        {post.tag && (
+                          <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${TAG_STYLES[post.tag]?.badge || 'bg-border text-text-tertiary'}`}>
+                            {post.tag}
+                          </span>
+                        )}
                         <p className="text-text-primary whitespace-pre-wrap">{post.content}</p>
                         <div className="flex items-center gap-6 mt-3 text-text-tertiary text-sm">
                           <span className="flex items-center gap-1">

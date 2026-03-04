@@ -6,18 +6,26 @@ import ProfileCard from '../components/ProfileCard';
 import AdCard from '../components/AdCard';
 import Navigation from '../components/Navigation';
 import { postApi, userApi } from '../services/api';
-import { 
-  Moon, 
-  Sun, 
-  Search, 
-  Users, 
-  Flame, 
+import {
+  Moon,
+  Sun,
+  Search,
+  Users,
+  Flame,
   Calendar,
   User,
   Settings,
   LogOut
 } from 'lucide-react';
 import { getVersionDisplay, getCopyrightText } from '../config/version';
+
+const TAG_STYLES: Record<string, string> = {
+  'Questions':   'bg-blue-500/20 text-blue-400',
+  'Celebration': 'bg-yellow-500/20 text-yellow-400',
+  'Alert':       'bg-red-500/20 text-red-400',
+  'Social':      'bg-green-500/20 text-green-400',
+  'Post Truth':  'bg-purple-500/20 text-purple-400',
+};
 
 
 const mockAds = [
@@ -214,6 +222,11 @@ const MainLayout: React.FC = () => {
                       )}
                     </div>
                   </div>
+                  {post.tag && (
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${TAG_STYLES[post.tag] || 'bg-border text-text-tertiary'}`}>
+                      {post.tag}
+                    </span>
+                  )}
                   <p className="text-text-primary mb-4">{post.content}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6 text-text-tertiary">

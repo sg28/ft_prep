@@ -157,11 +157,22 @@ class UserSkillInDB(UserSkillBase):
     skill: SkillInDB
 
 
+# Post tag enum
+POST_TAGS = ["Questions", "Celebration", "Alert", "Social", "Post Truth"]
+
+
 # Post schemas
 class PostBase(BaseSchema):
     content: str = Field(..., min_length=1, max_length=10000)
     media_urls: Optional[List[str]] = None
     is_public: bool = True
+    tag: Optional[str] = None
+
+    @validator('tag')
+    def validate_tag(cls, v):
+        if v is not None and v not in POST_TAGS:
+            raise ValueError(f'tag must be one of {POST_TAGS}')
+        return v
 
 
 class PostCreate(PostBase):
@@ -171,11 +182,19 @@ class PostCreate(PostBase):
 class PostUpdate(BaseSchema):
     content: Optional[str] = Field(None, min_length=1, max_length=10000)
     is_public: Optional[bool] = None
+    tag: Optional[str] = None
+
+    @validator('tag')
+    def validate_tag(cls, v):
+        if v is not None and v not in POST_TAGS:
+            raise ValueError(f'tag must be one of {POST_TAGS}')
+        return v
 
 
 class PostInDB(PostBase):
     id: UUID
     user_id: UUID
+    tag: Optional[str] = None
     likes_count: Optional[int] = 0
     comments_count: Optional[int] = 0
     reposts_count: Optional[int] = 0

@@ -186,12 +186,16 @@ export const authApi = {
     }),
 };
 
+export const POST_TAGS = ['Questions', 'Celebration', 'Alert', 'Social', 'Post Truth'] as const;
+export type PostTag = typeof POST_TAGS[number];
+
 interface PostResponse {
   id: string;
   user_id: string;
   content: string;
   media_urls?: string[];
   is_public: boolean;
+  tag?: PostTag | null;
   likes_count: number;
   comments_count: number;
   reposts_count: number;
@@ -204,6 +208,7 @@ interface PostCreateRequest {
   content: string;
   media_urls?: string[];
   is_public?: boolean;
+  tag?: PostTag | null;
 }
 
 export const postApi = {
