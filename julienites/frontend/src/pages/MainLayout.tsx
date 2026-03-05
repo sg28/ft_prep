@@ -571,7 +571,8 @@ const MainLayout: React.FC = () => {
       <main className="container mx-auto px-4 py-3 pb-safe">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
           {/* Left Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 space-y-3">
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-16 space-y-3">
             <Navigation />
 
             {/* Trends/Who to follow */}
@@ -587,6 +588,7 @@ const MainLayout: React.FC = () => {
                 ))}
               </div>
             </div>
+            </div>
           </aside>
 
           {/* Main Content */}
@@ -595,7 +597,8 @@ const MainLayout: React.FC = () => {
           </div>
 
           {/* Right Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 space-y-3">
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-16 space-y-3">
             {/* Ad Cards */}
             <div className="space-y-3">
               {mockAds.map((ad, index) => (
@@ -640,6 +643,7 @@ const MainLayout: React.FC = () => {
                 ))}
               </div>
               <div>{getCopyrightText()}</div>
+            </div>
             </div>
           </aside>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { userApi } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
+import { userApi, postApi, connectionApi } from '../services/api';
 import {
   GraduationCap,
   Briefcase,
@@ -17,13 +18,27 @@ import {
 } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
 
+const TAG_STYLES: Record<string, string> = {
+  'Questions':   'bg-blue-500/20 text-blue-400',
+  'Celebration': 'bg-yellow-500/20 text-yellow-400',
+  'Alert':       'bg-red-500/20 text-red-400',
+  'Social':      'bg-green-500/20 text-green-400',
+  'Post Truth':  'bg-purple-500/20 text-purple-400',
+};
+
 const MemberProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { user: authUser } = useAuth();
   const navigate = useNavigate();
 
   const [member, setMember] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('About');
+  const [posts, setPosts] = useState<any[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -43,14 +58,13 @@ const MemberProfile: React.FC = () => {
           bio: data.bio,
           location: data.location,
           currentRole: data.current_role,
-          profileImage: data.profile_image_url ? `http://localhost:8000${data.profile_image_url}` : undefined,
+          profileImage: data.profile_image_url ? `http://localhost:8000${data.profile_image_url}` : null,
           phone: data.phone,
           linkedin: data.linkedin_url,
           github: data.github_url,
           twitter: data.twitter_handle,
           followingCount: data.following_count ?? 0,
           followersCount: data.followers_count ?? 0,
-          isOnline: false,
         });
       } else {
         setError(response.error || 'Failed to load profile');
@@ -58,8 +72,51 @@ const MemberProfile: React.FC = () => {
       setIsLoading(false);
     };
 
+    const fetchConnectionStatus = async () => {
+      const response = await connectionApi.getStatus(id);
+      if (response.data) setIsFollowing(response.data.is_following);
+    };
+
     fetchMember();
-  }, [id]);
+    if (authUser?.id !== id) fetchConnectionStatus();
+  }, [id, authUser?.id]);
+
+  useEffect(() => {
+    if (!id || activeTab !== 'Posts') return;
+    const token = localStorage.getItem('julienites-token');
+    if (!token) return;
+
+    const fetchPosts = async () => {
+      setPostsLoading(true);
+      const response = await postApi.getUserPosts(token, id);
+      if (response.data) setPosts(response.data);
+      setPostsLoading(false);
+    };
+
+    fetchPosts();
+  }, [id, activeTab]);
+
+  const handleFollow = async () => {
+    if (!id || followLoading) return;
+    setFollowLoading(true);
+    if (isFollowing) {
+      const response = await connectionApi.unfollow(id);
+      if (response.data) {
+        setIsFollowing(false);
+        setMember((prev: any) => ({ ...prev, followersCount: prev.followersCount - 1 }));
+      }
+    } else {
+      const response = await connectionApi.follow(id);
+      if (response.data) {
+        setIsFollowing(true);
+        setMember((prev: any) => ({ ...prev, followersCount: prev.followersCount + 1 }));
+      }
+    }
+    setFollowLoading(false);
+  };
+
+  const getInitials = (name: string) =>
+    name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2);
 
   if (isLoading) {
     return (
@@ -76,28 +133,19 @@ const MemberProfile: React.FC = () => {
       </div>
     );
   }
-  
-  // Generate initials from name
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-  
+
   const initials = getInitials(member.name);
-  
+  const isOwnProfile = authUser?.id === id;
+
   return (
     <div className="min-h-screen bg-background-primary text-text-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-lg border-b border-border">
         <div className="max-w-[1265px] mx-auto px-4">
           <div className="h-[53px] flex items-center justify-between">
-            <button 
+            <button
               onClick={() => navigate(-1)}
-              className="p-2 rounded-full hover:bg-background-tertiary transition-colors flex items-center gap-2"
+              className="p-2 rounded-lg hover:bg-background-tertiary transition-colors flex items-center gap-2"
               aria-label="Go back"
             >
               <ArrowLeft size={20} />
@@ -105,60 +153,64 @@ const MemberProfile: React.FC = () => {
             </button>
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="text-xl font-bold">Julienites</span>
-              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-full">
+              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-md">
                 {getVersionDisplay()}
               </span>
             </div>
-            <div className="w-10"></div> {/* Spacer for alignment */}
+            <div className="w-10"></div>
           </div>
         </div>
       </header>
-      
+
       {/* Profile Content */}
-      <div className="max-w-[1265px] mx-auto px-4 py-6">
-        <div className="bg-background-secondary rounded-2xl border border-border p-6">
+      <div className="max-w-[1265px] mx-auto px-4 py-3">
+        <div className="bg-background-secondary rounded-2xl border border-border p-4">
           {/* Profile Header */}
-          <div className="flex flex-col md:flex-row gap-6 mb-8">
+          <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex-shrink-0">
               <div className="relative w-32 h-32 md:w-40 md:h-40">
-                <div className="w-full h-full rounded-full bg-twitter-blue flex items-center justify-center">
-                  <span className="text-white font-bold text-4xl md:text-5xl">
-                    {initials}
-                  </span>
-                </div>
-                {member.isOnline && (
-                  <div className="absolute bottom-2 right-2 w-6 h-6 bg-success-color rounded-full border-4 border-background-secondary"></div>
+                {member.profileImage ? (
+                  <img
+                    src={member.profileImage}
+                    alt={`${member.name}'s profile`}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-twitter-blue flex items-center justify-center">
+                    <span className="text-white font-bold text-4xl md:text-5xl">{initials}</span>
+                  </div>
                 )}
+                <div className="absolute bottom-2 right-2 w-6 h-6 bg-success-color rounded-full border-4 border-background-secondary"></div>
               </div>
             </div>
-            
+
             <div className="flex-1">
-              <div className="flex flex-col md:flex-row md:items-start justify-between mb-4">
-                <div>
-                  <h1 className="text-3xl font-bold mb-2">{member.name}</h1>
-                  <p className="text-text-tertiary text-lg mb-1">@{member.username}</p>
-                  {member.graduationYear && (
-                    <div className="flex items-center gap-2 text-text-secondary mb-2">
-                      <GraduationCap size={18} />
-                      <span>Class of {member.graduationYear}</span>
+              <div className="mb-4">
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-3 mb-2">
+                  <div>
+                    <h1 className="text-3xl font-bold mb-1">{member.name}</h1>
+                    <p className="text-text-tertiary text-lg">@{member.username}</p>
+                  </div>
+                  {!isOwnProfile && (
+                    <div className="flex gap-3 mt-4 md:mt-0">
+                      <button
+                        onClick={handleFollow}
+                        disabled={followLoading}
+                        className={`px-6 py-2 rounded-full font-bold transition-colors disabled:opacity-50 ${
+                          isFollowing
+                            ? 'border border-border hover:bg-background-tertiary'
+                            : 'bg-twitter-blue text-white hover:bg-twitter-blueHover'
+                        }`}
+                      >
+                        {followLoading ? '...' : isFollowing ? 'Unfollow' : 'Follow'}
+                      </button>
                     </div>
                   )}
                 </div>
-                <div className="flex gap-3 mt-4 md:mt-0">
-                  <button className="px-6 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors">
-                    Follow
-                  </button>
-                  <button className="px-6 py-2 border border-border rounded-full font-bold hover:bg-background-tertiary transition-colors">
-                    Message
-                  </button>
-                </div>
+                {member.bio && <p className="text-text-primary text-base mt-2">{member.bio}</p>}
               </div>
-              
-              <div className="mb-6">
-                <p className="text-text-primary text-lg">{member.bio}</p>
-              </div>
-              
-              <div className="flex flex-wrap gap-4 mb-6">
+
+              <div className="flex flex-wrap gap-4 mb-4">
                 {member.location && (
                   <div className="flex items-center gap-2 text-text-secondary">
                     <MapPin size={18} />
@@ -171,8 +223,14 @@ const MemberProfile: React.FC = () => {
                     <span>{member.currentRole}</span>
                   </div>
                 )}
+                {member.graduationYear && (
+                  <div className="flex items-center gap-2 text-text-secondary">
+                    <GraduationCap size={18} />
+                    <span>Class of {member.graduationYear}</span>
+                  </div>
+                )}
               </div>
-              
+
               <div className="flex gap-8">
                 <div>
                   <span className="font-bold text-xl">{member.followingCount}</span>
@@ -185,160 +243,140 @@ const MemberProfile: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Tabs */}
-          <div className="border-b border-border mb-6">
+          <div className="border-b border-border mb-4">
             <div className="flex gap-8">
               {['About', 'Posts', 'Media', 'Connections'].map((tab) => (
-                <button 
+                <button
                   key={tab}
-                  className="py-3 font-medium text-text-tertiary hover:text-text-primary transition-colors border-b-2 border-transparent hover:border-twitter-blue"
+                  onClick={() => setActiveTab(tab)}
+                  className={`py-3 font-medium transition-colors border-b-2 ${
+                    activeTab === tab
+                      ? 'text-text-primary border-twitter-blue'
+                      : 'text-text-tertiary border-transparent hover:text-text-primary hover:border-twitter-blue'
+                  }`}
                 >
                   {tab}
                 </button>
               ))}
             </div>
           </div>
-          
-          {/* About Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Column */}
-            <div className="space-y-6">
-              {/* Skills */}
-              {member.skills && member.skills.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-bold mb-3">Skills</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {member.skills.map((skill: string, index: number) => (
-                      <span 
-                        key={index}
-                        className="px-3 py-1 bg-background-tertiary rounded-full text-sm"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+
+          {/* Tab Content */}
+          <div className="min-h-[400px]">
+            {activeTab === 'About' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-xl font-bold mb-3">Contact Information</h3>
+                    <div className="space-y-3">
+                      {member.email && (
+                        <div className="flex items-center gap-3">
+                          <Mail size={18} />
+                          <span>{member.email}</span>
+                        </div>
+                      )}
+                      {member.phone && (
+                        <div className="flex items-center gap-3">
+                          <Phone size={18} />
+                          <span>{member.phone}</span>
+                        </div>
+                      )}
+                      {member.linkedin && (
+                        <div className="flex items-center gap-3">
+                          <Linkedin size={18} />
+                          <a href={`https://${member.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                            LinkedIn Profile
+                          </a>
+                        </div>
+                      )}
+                      {member.github && (
+                        <div className="flex items-center gap-3">
+                          <Github size={18} />
+                          <a href={`https://${member.github}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                            GitHub Profile
+                          </a>
+                        </div>
+                      )}
+                      {member.twitter && (
+                        <div className="flex items-center gap-3">
+                          <Twitter size={18} />
+                          <a href={`https://twitter.com/${member.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
+                            {member.twitter}
+                          </a>
+                        </div>
+                      )}
+                      {!member.phone && !member.linkedin && !member.github && !member.twitter && (
+                        <p className="text-text-tertiary text-sm">No contact details provided.</p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              )}
-              
-              {/* Education */}
-              {member.education && member.education.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-bold mb-3">Education</h3>
-                  <div className="space-y-4">
-                    {member.education.map((edu: any) => (
-                      <div key={edu.id} className="p-4 bg-background-tertiary/50 rounded-xl">
-                        <div className="font-bold">{edu.institution}</div>
-                        <div className="text-text-secondary">{edu.degree} in {edu.field}</div>
-                        <div className="text-text-tertiary text-sm">Graduated {edu.year}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* Experience */}
-              {member.experience && member.experience.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-bold mb-3">Experience</h3>
-                  <div className="space-y-4">
-                    {member.experience.map((exp: any) => (
-                      <div key={exp.id} className="p-4 bg-background-tertiary/50 rounded-xl">
-                        <div className="font-bold">{exp.position}</div>
-                        <div className="text-text-secondary">{exp.company}</div>
-                        <div className="text-text-tertiary text-sm">{exp.duration}</div>
-                        {exp.description && (
-                          <div className="mt-2 text-text-primary">{exp.description}</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Contact Info */}
+              </div>
+            )}
+
+            {activeTab === 'Posts' && (
               <div>
-                <h3 className="text-xl font-bold mb-3">Contact Information</h3>
-                <div className="space-y-3">
-                  {member.email && (
-                    <div className="flex items-center gap-3">
-                      <Mail size={18} />
-                      <span>{member.email}</span>
-                    </div>
-                  )}
-                  {member.phone && (
-                    <div className="flex items-center gap-3">
-                      <Phone size={18} />
-                      <span>{member.phone}</span>
-                    </div>
-                  )}
-                  {member.linkedin && (
-                    <div className="flex items-center gap-3">
-                      <Linkedin size={18} />
-                      <a href={`https://${member.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                        LinkedIn Profile
-                      </a>
-                    </div>
-                  )}
-                  {member.github && (
-                    <div className="flex items-center gap-3">
-                      <Github size={18} />
-                      <a href={`https://${member.github}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                        GitHub Profile
-                      </a>
-                    </div>
-                  )}
-                  {member.twitter && (
-                    <div className="flex items-center gap-3">
-                      <Twitter size={18} />
-                      <a href={`https://twitter.com/${member.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-twitter-blue hover:underline">
-                        {member.twitter}
-                      </a>
-                    </div>
-                  )}
-                </div>
+                <h2 className="text-lg font-bold mb-3">{member.name}'s Posts</h2>
+                {postsLoading ? (
+                  <p className="text-text-tertiary">Loading posts...</p>
+                ) : posts.length === 0 ? (
+                  <p className="text-text-tertiary">No posts yet.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {posts.map((post) => (
+                      <div key={post.id} className="border border-border rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          {post.tag && (
+                            <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${TAG_STYLES[post.tag] || 'bg-border text-text-tertiary'}`}>
+                              {post.tag}
+                            </span>
+                          )}
+                          {post.is_anonymous && (
+                            <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-background-tertiary text-text-tertiary border border-border">
+                              Anonymous
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-text-primary whitespace-pre-wrap text-sm">{post.content}</p>
+                        <div className="flex items-center gap-4 mt-2 text-text-tertiary text-xs">
+                          <span className="flex items-center gap-1">
+                            <Heart size={16} />
+                            {post.likes_count ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MessageCircle size={16} />
+                            {post.comments_count ?? 0}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Repeat size={16} />
+                            {post.reposts_count ?? 0}
+                          </span>
+                          <span className="ml-auto">
+                            {new Date(post.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Recent Posts */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
-          <div className="space-y-4">
-            {/* Sample Post 1 */}
-            <div className="bg-background-secondary rounded-xl border border-border p-6">
-              <div className="flex gap-3 mb-4">
-                <div className="w-12 h-12 bg-twitter-blue rounded-full flex items-center justify-center text-white font-semibold">
-                  {initials}
-                </div>
-                <div>
-                  <div className="font-bold">{member.name}</div>
-                  <div className="text-text-tertiary text-sm">@{member.username} • 2 days ago</div>
-                </div>
+            )}
+
+            {activeTab === 'Media' && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Media</h2>
+                <p className="text-text-tertiary">No media uploaded yet.</p>
               </div>
-              <div className="mb-4">
-                Just had an amazing reunion with Julien Day School batch of {member.graduationYear}! 
-                Can't believe how time flies. Great catching up with everyone! #Julienites #AlumniReunion
+            )}
+
+            {activeTab === 'Connections' && (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Connections</h2>
+                <p className="text-text-tertiary">No connections to display yet.</p>
               </div>
-              <div className="flex gap-6">
-                <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue">
-                  <MessageCircle size={18} />
-                  <span>24</span>
-                </button>
-                <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-blue">
-                  <Repeat size={18} />
-                  <span>8</span>
-                </button>
-                <button className="flex items-center gap-2 text-text-tertiary hover:text-twitter-pink">
-                  <Heart size={18} />
-                  <span>142</span>
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
