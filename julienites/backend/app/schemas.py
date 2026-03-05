@@ -166,6 +166,7 @@ class PostBase(BaseSchema):
     content: str = Field(..., min_length=1, max_length=10000)
     media_urls: Optional[List[str]] = None
     is_public: bool = True
+    is_anonymous: bool = False
     tag: Optional[str] = None
 
     @validator('tag')

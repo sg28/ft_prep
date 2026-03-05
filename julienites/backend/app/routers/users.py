@@ -1,7 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+import os
+import uuid as uuid_lib
+from fastapi import APIRouter, Depends, HTTPException, status, Query, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
+from app.config import settings
 
 from app.database import get_db
 from app import schemas, crud, models
@@ -101,6 +104,56 @@ async def delete_user(
         )
     
     return {"message": "User deleted successfully"}
+
+
+@router.post("/{user_id}/avatar", response_model=schemas.UserInDB)
+async def upload_avatar(
+    user_id: UUID,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_active_user)
+):
+    """Upload or replace a user's profile picture"""
+    if current_user.id != user_id and current_user.role not in ["admin", "moderator"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+
+    if file.content_type not in settings.ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File type not allowed. Accepted: {', '.join(settings.ALLOWED_IMAGE_TYPES)}"
+        )
+
+    contents = await file.read()
+    if len(contents) > settings.MAX_UPLOAD_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"File too large. Max {settings.MAX_UPLOAD_SIZE // (1024 * 1024)} MB"
+        )
+
+    ext_map = {"image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif"}
+    extension = ext_map.get(file.content_type, ".jpg")
+
+    user_dir = os.path.join("uploads", str(user_id))
+    os.makedirs(user_dir, exist_ok=True)
+    filename = f"avatar_{uuid_lib.uuid4().hex}{extension}"
+    file_path = os.path.join(user_dir, filename)
+
+    with open(file_path, "wb") as f:
+        f.write(contents)
+
+    profile_image_url = f"/uploads/{user_id}/{filename}"
+    user_update = schemas.UserUpdate(profile_image_url=profile_image_url)
+    updated_user = crud.user_crud.update_user(db, user_id, user_update)
+    if not updated_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    return updated_user
 
 
 # Education endpoints

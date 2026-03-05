@@ -43,7 +43,7 @@ const MemberProfile: React.FC = () => {
           bio: data.bio,
           location: data.location,
           currentRole: data.current_role,
-          profileImage: data.profile_image_url,
+          profileImage: data.profile_image_url ? `http://localhost:8000${data.profile_image_url}` : undefined,
           phone: data.phone,
           linkedin: data.linkedin_url,
           github: data.github_url,

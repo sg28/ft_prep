@@ -32,9 +32,9 @@ const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
   const location = useLocation();
 
   return (
-    <div className={`bg-background-secondary rounded-2xl p-4 border border-border ${className}`}>
-      <h2 className="font-bold text-lg mb-4">Navigation</h2>
-      <nav className="space-y-2">
+    <div className={`bg-background-secondary rounded-2xl p-3 border border-border ${className}`}>
+      <h2 className="font-bold text-sm mb-2">Navigation</h2>
+      <nav className="space-y-0.5">
         {navItems.map((item) => {
           const isDisabled = disabledItems.includes(item.name);
           const isActive = !isDisabled && location.pathname === item.path;
@@ -44,7 +44,7 @@ const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
               key={item.name}
               onClick={() => !isDisabled && navigate(item.path)}
               disabled={isDisabled}
-              className={`relative flex items-center gap-3 p-3 rounded-xl w-full text-left transition-colors ${
+              className={`relative flex items-center gap-2 px-2 py-2 rounded-lg w-full text-left transition-colors text-sm ${
                 isDisabled
                   ? 'opacity-50 cursor-not-allowed text-text-tertiary'
                   : isActive

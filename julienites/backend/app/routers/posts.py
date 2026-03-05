@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from typing import List, Optional
 from uuid import UUID
+from datetime import datetime, timedelta
 
 from app.database import get_db
 from app import schemas, crud, models
@@ -14,11 +16,22 @@ router = APIRouter()
 async def get_feed_posts(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
+    tag: Optional[str] = Query(None, description="Filter by post tag"),
+    days: Optional[int] = Query(None, ge=1, le=365, description="Only include posts from the last N days"),
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_active_user)
 ):
-    """Get feed posts (posts from followed users and own posts)"""
-    posts = crud.post_crud.get_feed_posts(db, current_user.id, skip=skip, limit=limit)
+    """Get feed posts with optional tag and date range filters"""
+    query = db.query(models.Post).filter(models.Post.is_public == True)
+
+    if tag:
+        query = query.filter(models.Post.tag == tag)
+
+    if days:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        query = query.filter(models.Post.created_at >= cutoff)
+
+    posts = query.order_by(desc(models.Post.created_at)).offset(skip).limit(limit).all()
     return posts
 
 

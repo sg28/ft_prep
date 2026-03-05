@@ -117,7 +117,7 @@ const convertToFrontendUser = (backendUser: User): FrontendUser => {
     bio: backendUser.bio,
     location: backendUser.location,
     currentRole: backendUser.current_role,
-    profileImage: backendUser.profile_image_url,
+    profileImage: backendUser.profile_image_url ? `http://localhost:8000${backendUser.profile_image_url}` : undefined,
     phone: backendUser.phone,
     linkedin: backendUser.linkedin_url,
     github: backendUser.github_url,

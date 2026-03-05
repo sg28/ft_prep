@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { userApi, postApi, POST_TAGS, PostTag } from '../services/api';
@@ -47,7 +47,11 @@ const UserProfile: React.FC = () => {
   const [postsLoading, setPostsLoading] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostTag, setNewPostTag] = useState<PostTag | null>(null);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [isSubmittingPost, setIsSubmittingPost] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   const isOwnProfile = authUser?.id === id;
 
@@ -86,7 +90,7 @@ const UserProfile: React.FC = () => {
           bio: data.bio,
           location: data.location,
           currentRole: data.current_role,
-          profileImage: data.profile_image_url,
+          profileImage: data.profile_image_url ? `http://localhost:8000${data.profile_image_url}` : null,
           phone: data.phone,
           linkedin: data.linkedin_url,
           github: data.github_url,
@@ -105,11 +109,51 @@ const UserProfile: React.FC = () => {
     fetchProfile();
   }, [id]);
 
-  const handleSave = () => {
-    // TODO: call update API
-    console.log('Saving user data:', editedUser);
-    setProfileData(editedUser);
-    setIsEditing(false);
+  const handleSave = async () => {
+    if (!id) return;
+    const payload = {
+      name: editedUser.name,
+      bio: editedUser.bio,
+      location: editedUser.location,
+      current_role: editedUser.currentRole,
+      graduation_year: editedUser.graduationYear ? Number(editedUser.graduationYear) : undefined,
+      phone: editedUser.phone,
+      linkedin_url: editedUser.linkedin,
+      github_url: editedUser.github,
+      twitter_handle: editedUser.twitter,
+    };
+    const response = await userApi.updateProfile(id, payload);
+    if (response.data) {
+      setProfileData(editedUser);
+      setIsEditing(false);
+    } else {
+      console.error('Failed to save profile:', response.error);
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !id) return;
+
+    const localPreviewUrl = URL.createObjectURL(file);
+    setProfileData((prev: any) => ({ ...prev, profileImage: localPreviewUrl }));
+    setEditedUser((prev: any) => ({ ...prev, profileImage: localPreviewUrl }));
+
+    setIsUploadingAvatar(true);
+    setAvatarError(null);
+    const response = await userApi.uploadAvatar(id, file);
+    setIsUploadingAvatar(false);
+
+    if (response.data?.profile_image_url) {
+      const serverUrl = `http://localhost:8000${response.data.profile_image_url}`;
+      setProfileData((prev: any) => ({ ...prev, profileImage: serverUrl }));
+      setEditedUser((prev: any) => ({ ...prev, profileImage: serverUrl }));
+    } else {
+      setAvatarError(response.error || 'Failed to upload image');
+      setProfileData((prev: any) => ({ ...prev, profileImage: profileData?.profileImage }));
+      setEditedUser((prev: any) => ({ ...prev, profileImage: profileData?.profileImage }));
+    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleCancel = () => {
@@ -118,18 +162,20 @@ const UserProfile: React.FC = () => {
   };
 
   const handleCreatePost = async () => {
-    if (!newPostContent.trim()) return;
+    if (!newPostContent.trim() || !newPostTag) return;
     const token = localStorage.getItem('julienites-token');
     if (!token) return;
     setIsSubmittingPost(true);
     const response = await postApi.createPost(token, {
       content: newPostContent.trim(),
       tag: newPostTag,
+      is_anonymous: isAnonymous,
     });
     if (response.data) {
       setPosts((prev) => [response.data!, ...prev]);
       setNewPostContent('');
       setNewPostTag(null);
+      setIsAnonymous(false);
     }
     setIsSubmittingPost(false);
   };
@@ -174,7 +220,7 @@ const UserProfile: React.FC = () => {
           <div className="h-[53px] flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="p-2 rounded-full hover:bg-background-tertiary transition-colors flex items-center gap-2"
+              className="p-2 rounded-lg hover:bg-background-tertiary transition-colors flex items-center gap-2"
               aria-label="Go back"
             >
               <ArrowLeft size={20} />
@@ -182,7 +228,7 @@ const UserProfile: React.FC = () => {
             </button>
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="text-xl font-bold">Julienites</span>
-              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-full">
+              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-md">
                 {getVersionDisplay()}
               </span>
             </div>
@@ -192,16 +238,16 @@ const UserProfile: React.FC = () => {
       </header>
 
       {/* Profile Content */}
-      <div className="max-w-[1265px] mx-auto px-4 py-6">
-        <div className="bg-background-secondary rounded-2xl border border-border p-6">
+      <div className="max-w-[1265px] mx-auto px-4 py-3">
+        <div className="bg-background-secondary rounded-2xl border border-border p-4">
           {/* Profile Header with Edit Button */}
-          <div className="flex justify-between items-start mb-6">
+          <div className="flex justify-between items-start mb-4">
             <h1 className="text-2xl font-bold">{isOwnProfile ? 'My Profile' : profileData.name}</h1>
             {isOwnProfile && (
               !isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-twitter-blue text-white rounded-lg font-bold hover:bg-twitter-blueHover transition-colors flex items-center gap-2"
                 >
                   <Edit size={18} />
                   Edit Profile
@@ -210,14 +256,14 @@ const UserProfile: React.FC = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="px-4 py-2 bg-success-color text-white rounded-full font-bold hover:bg-green-700 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-success-color text-white rounded-lg font-bold hover:bg-green-700 transition-colors flex items-center gap-2"
                   >
                     <Save size={18} />
                     Save Changes
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-background-tertiary text-text-primary rounded-full font-bold hover:bg-border transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-background-tertiary text-text-primary rounded-lg font-bold hover:bg-border transition-colors flex items-center gap-2"
                   >
                     <X size={18} />
                     Cancel
@@ -228,20 +274,49 @@ const UserProfile: React.FC = () => {
           </div>
 
           {/* Profile Header */}
-          <div className="flex flex-col md:flex-row gap-6 mb-8">
+          <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex-shrink-0">
               <div className="relative w-32 h-32 md:w-40 md:h-40">
-                <div className="w-full h-full rounded-full bg-twitter-blue flex items-center justify-center">
-                  <span className="text-white font-bold text-4xl md:text-5xl">
-                    {initials}
-                  </span>
-                </div>
+                {currentUser.profileImage ? (
+                  <img
+                    src={currentUser.profileImage}
+                    alt={`${currentUser.name}'s profile`}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-twitter-blue flex items-center justify-center">
+                    <span className="text-white font-bold text-4xl md:text-5xl">
+                      {initials}
+                    </span>
+                  </div>
+                )}
                 <div className="absolute bottom-2 right-2 w-6 h-6 bg-success-color rounded-full border-4 border-background-secondary"></div>
+                {isUploadingAvatar && (
+                  <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
+                    <span className="text-white text-xs">Uploading...</span>
+                  </div>
+                )}
               </div>
+
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
               {isEditing && (
-                <button className="mt-4 text-sm text-twitter-blue hover:underline">
-                  Change Profile Picture
-                </button>
+                <div className="mt-4">
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploadingAvatar}
+                    className="text-sm text-twitter-blue hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUploadingAvatar ? 'Uploading...' : 'Change Profile Picture'}
+                  </button>
+                  {avatarError && <p className="text-xs text-red-400 mt-1">{avatarError}</p>}
+                </div>
               )}
             </div>
 
@@ -358,7 +433,7 @@ const UserProfile: React.FC = () => {
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-border mb-6">
+          <div className="border-b border-border mb-4">
             <div className="flex gap-8">
               {['About', 'Posts', 'Media', 'Connections'].map((tab) => (
                 <button
@@ -487,23 +562,23 @@ const UserProfile: React.FC = () => {
 
             {activeTab === 'Posts' && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">{isOwnProfile ? 'My Posts' : `${profileData.name}'s Posts`}</h2>
+                <h2 className="text-lg font-bold mb-3">{isOwnProfile ? 'My Posts' : `${profileData.name}'s Posts`}</h2>
                 {isOwnProfile && (
-                  <div className="border border-border rounded-xl p-4 mb-6">
+                  <div className="border border-border rounded-xl p-3 mb-3">
                     <textarea
                       value={newPostContent}
                       onChange={(e) => setNewPostContent(e.target.value)}
                       placeholder="What's on your mind?"
-                      rows={3}
-                      className="w-full bg-transparent text-text-primary placeholder-text-tertiary resize-none focus:outline-none"
+                      rows={2}
+                      className="w-full bg-transparent text-text-primary placeholder-text-tertiary resize-none focus:outline-none text-sm"
                     />
-                    <div className="flex flex-wrap gap-2 mt-3">
+                    <div className="flex flex-wrap items-center gap-2 mt-2">
                       {POST_TAGS.map((tag) => (
                         <button
                           key={tag}
                           type="button"
                           onClick={() => setNewPostTag(newPostTag === tag ? null : tag)}
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
+                          className={`px-3 py-1 rounded-md text-xs font-semibold border transition-colors ${
                             newPostTag === tag
                               ? TAG_STYLES[tag].active
                               : 'border-border text-text-tertiary hover:border-text-secondary'
@@ -512,16 +587,26 @@ const UserProfile: React.FC = () => {
                           {tag}
                         </button>
                       ))}
-                    </div>
-                    <div className="flex justify-end mt-2">
+                      <label className="flex items-center gap-1.5 ml-1 cursor-pointer select-none text-xs text-text-tertiary">
+                        <input
+                          type="checkbox"
+                          checked={isAnonymous}
+                          onChange={(e) => setIsAnonymous(e.target.checked)}
+                          className="w-3.5 h-3.5 accent-twitter-blue"
+                        />
+                        Anonymous
+                      </label>
                       <button
                         onClick={handleCreatePost}
-                        disabled={!newPostContent.trim() || isSubmittingPost}
-                        className="px-4 py-2 bg-twitter-blue text-white rounded-full font-bold hover:bg-twitter-blueHover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={!newPostContent.trim() || !newPostTag || isSubmittingPost}
+                        className="ml-auto px-4 py-1 bg-twitter-blue text-white rounded-lg font-bold hover:bg-twitter-blueHover transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs"
                       >
                         {isSubmittingPost ? 'Posting...' : 'Post'}
                       </button>
                     </div>
+                    {!newPostTag && newPostContent.trim() && (
+                      <p className="text-xs text-red-400 mt-1">Please select a tag to post.</p>
+                    )}
                   </div>
                 )}
                 {postsLoading ? (
@@ -529,16 +614,23 @@ const UserProfile: React.FC = () => {
                 ) : posts.length === 0 ? (
                   <p className="text-text-tertiary">No posts yet.</p>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     {posts.map((post) => (
-                      <div key={post.id} className="border border-border rounded-xl p-4">
-                        {post.tag && (
-                          <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${TAG_STYLES[post.tag]?.badge || 'bg-border text-text-tertiary'}`}>
-                            {post.tag}
-                          </span>
-                        )}
-                        <p className="text-text-primary whitespace-pre-wrap">{post.content}</p>
-                        <div className="flex items-center gap-6 mt-3 text-text-tertiary text-sm">
+                      <div key={post.id} className="border border-border rounded-lg p-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          {post.tag && (
+                            <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${TAG_STYLES[post.tag]?.badge || 'bg-border text-text-tertiary'}`}>
+                              {post.tag}
+                            </span>
+                          )}
+                          {post.is_anonymous && (
+                            <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-background-tertiary text-text-tertiary border border-border">
+                              Anonymous
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-text-primary whitespace-pre-wrap text-sm">{post.content}</p>
+                        <div className="flex items-center gap-4 mt-2 text-text-tertiary text-xs">
                           <span className="flex items-center gap-1">
                             <Heart size={16} />
                             {post.likes_count ?? 0}

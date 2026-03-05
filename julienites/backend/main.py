@@ -5,15 +5,48 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from typing import List, Optional
 from datetime import datetime
+import asyncio
+import logging
+import os
 import uvicorn
+from contextlib import asynccontextmanager
+from fastapi.staticfiles import StaticFiles
 
 from app.database import get_db, engine
 from app import models, schemas, crud
 from app.config import settings
 from app.routers import auth, users, posts, connections, search
+from app.tasks import cleanup_underengaged_posts
+
+logger = logging.getLogger(__name__)
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
+
+CLEANUP_INTERVAL_SECONDS = 7 * 24 * 60 * 60  # 1 week
+
+
+async def _weekly_cleanup_loop():
+    """Runs the post engagement cleanup once a week."""
+    while True:
+        await asyncio.sleep(CLEANUP_INTERVAL_SECONDS)
+        try:
+            result = cleanup_underengaged_posts()
+            logger.info("Scheduled cleanup complete: %s", result)
+        except Exception as exc:
+            logger.error("Scheduled cleanup error: %s", exc)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(_weekly_cleanup_loop())
+    yield
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+
 
 app = FastAPI(
     title="Julienites API",
@@ -21,8 +54,13 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json"
+    openapi_url="/api/openapi.json",
+    lifespan=lifespan,
 )
+
+# Serve uploaded files as static assets
+os.makedirs("uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # CORS middleware
 app.add_middleware(
@@ -76,6 +114,16 @@ async def get_version():
         "version": "1.0.0",
         "frontend_compatible": "0.1.1"
     }
+
+
+@app.post("/api/admin/cleanup-posts")
+async def trigger_post_cleanup():
+    """
+    Manually trigger the weekly post engagement cleanup.
+    Deletes posts with fewer than 3 unique engagers (likers + commenters).
+    """
+    result = cleanup_underengaged_posts()
+    return result
 
 if __name__ == "__main__":
     uvicorn.run(

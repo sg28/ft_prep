@@ -141,7 +141,7 @@ export const userApi = {
     }),
     
   searchUsers: (query: string) =>
-    apiRequest<UserResponse[]>(`/users/search?q=${encodeURIComponent(query)}`, {
+    apiRequest<UserResponse[]>(`/search/users?q=${encodeURIComponent(query)}`, {
       headers: getAuthHeaders(),
     }),
 
@@ -157,6 +157,59 @@ export const userApi = {
       headers,
     });
   },
+
+  uploadAvatar: async (userId: string, file: File): Promise<ApiResponse<UserResponse>> => {
+    const url = `${API_BASE_URL}/users/${userId}/avatar`;
+    const formData = new FormData();
+    formData.append('file', file);
+    logApiCall('POST', url, { fileName: file.name, fileSize: file.size });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { ...getAuthHeaders() }, // NO Content-Type - browser sets multipart boundary
+        body: formData,
+      });
+      const data = await response.json().catch(() => ({}));
+      logApiCall('POST', url, undefined, data, response.status);
+      if (response.status === 401) {
+        localStorage.removeItem('julienites-token');
+        window.location.href = '/login';
+      }
+      return {
+        data: response.ok ? data : undefined,
+        error: response.ok ? undefined : data.detail || `HTTP ${response.status}`,
+        status: response.status,
+      };
+    } catch (error) {
+      return { error: error instanceof Error ? error.message : 'Network error', status: 0 };
+    }
+  },
+};
+
+interface ConnectionStatus {
+  user_id: string;
+  is_following: boolean;
+  is_followed_by: boolean;
+  mutual_follow: boolean;
+}
+
+export const connectionApi = {
+  follow: (userId: string) =>
+    apiRequest<{ message: string }>(`/connections/follow/${userId}`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+    }),
+
+  unfollow: (userId: string) =>
+    apiRequest<{ message: string }>(`/connections/follow/${userId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    }),
+
+  getStatus: (userId: string) =>
+    apiRequest<ConnectionStatus>(`/connections/status/${userId}`, {
+      headers: getAuthHeaders(),
+    }),
 };
 
 export const authApi = {
@@ -195,6 +248,7 @@ interface PostResponse {
   content: string;
   media_urls?: string[];
   is_public: boolean;
+  is_anonymous: boolean;
   tag?: PostTag | null;
   likes_count: number;
   comments_count: number;
@@ -208,17 +262,20 @@ interface PostCreateRequest {
   content: string;
   media_urls?: string[];
   is_public?: boolean;
+  is_anonymous?: boolean;
   tag?: PostTag | null;
 }
 
 export const postApi = {
-  getFeedPosts: (token: string, skip: number = 0, limit: number = 50) =>
-    apiRequest<PostResponse[]>(`/posts/?skip=${skip}&limit=${limit}`, {
+  getFeedPosts: (token: string, skip: number = 0, limit: number = 50, tag?: string | null, days?: number | null) => {
+    const params = new URLSearchParams({ skip: String(skip), limit: String(limit) });
+    if (tag) params.set('tag', tag);
+    if (days) params.set('days', String(days));
+    return apiRequest<PostResponse[]>(`/posts/?${params.toString()}`, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    }),
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+  },
 
   getUserPosts: (token: string, userId: string, skip: number = 0, limit: number = 50) =>
     apiRequest<PostResponse[]>(`/posts/user/${userId}?skip=${skip}&limit=${limit}`, {
