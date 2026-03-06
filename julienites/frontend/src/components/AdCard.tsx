@@ -48,7 +48,7 @@ const AdCard: React.FC<AdCardProps> = ({
         <h3 className="font-bold text-text-primary text-sm mb-1">{title}</h3>
         <p className="text-text-tertiary text-xs mb-3">{description}</p>
         
-        <button className="w-full bg-twitter-blue text-white rounded-full py-2 text-sm font-bold hover:bg-twitter-blueHover transition-colors">
+        <button className="w-full bg-twitter-blue text-white rounded-lg py-2 text-sm font-bold hover:bg-twitter-blueHover transition-colors">
           {ctaText}
         </button>
       </div>
