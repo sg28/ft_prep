@@ -199,6 +199,7 @@ class PostInDB(PostBase):
     likes_count: Optional[int] = 0
     comments_count: Optional[int] = 0
     reposts_count: Optional[int] = 0
+    liked_by_me: bool = False
     created_at: datetime
     updated_at: Optional[datetime] = None
     user: UserPublic
@@ -322,3 +323,85 @@ class UserProfile(UserPublic):
     posts: List[PostInDB] = []
     following: List[UserPublic] = []
     followers: List[UserPublic] = []
+
+
+# Forms
+class FormFieldBase(BaseSchema):
+    label: str = Field(..., max_length=255)
+    type: str = Field(..., max_length=50)
+    required: bool = False
+    options: Optional[List[str]] = None
+    order: int = 0
+
+
+class FormFieldCreate(FormFieldBase):
+    pass
+
+
+class FormFieldInDB(FormFieldBase):
+    id: UUID
+
+
+class FormBase(BaseSchema):
+    title: str = Field(..., max_length=255)
+    description: Optional[str] = None
+    allow_public_submissions: bool = False
+
+
+class FormCreate(FormBase):
+    fields: List[FormFieldCreate] = []
+
+
+class FormUpdate(FormBase):
+    fields: Optional[List[FormFieldCreate]] = None
+
+
+class FormInDB(FormBase):
+    id: UUID
+    owner_id: UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    fields: List[FormFieldInDB] = []
+    responses_count: int = 0
+
+
+class FormResponseCreate(BaseSchema):
+    data: Dict[str, Any]
+
+
+class FormResponseInDB(BaseSchema):
+    id: UUID
+    form_id: UUID
+    user_id: Optional[UUID] = None
+    data: Dict[str, Any]
+    submitted_at: datetime
+
+
+# Dataset analysis
+class ColumnNumericStats(BaseSchema):
+    count: int
+    mean: Optional[float] = None
+    min: Optional[float] = None
+    max: Optional[float] = None
+
+
+class ColumnCategoryTop(BaseSchema):
+    value: str
+    count: int
+
+
+class ColumnSummary(BaseSchema):
+    name: str
+    missing: int
+    numeric: Optional[ColumnNumericStats] = None
+    top_values: Optional[List[ColumnCategoryTop]] = None
+
+
+class DatasetAnalysis(BaseSchema):
+    filename: str
+    filetype: str
+    rows: int
+    columns: List[str]
+    samples: List[Dict[str, Any]] = []
+    summaries: List[ColumnSummary] = []
+    note: Optional[str] = None

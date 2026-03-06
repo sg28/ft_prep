@@ -220,3 +220,47 @@ class Notification(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     user = relationship("User")
+
+
+class Form(Base):
+    __tablename__ = "forms"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    allow_public_submissions = Column(Boolean, default=False)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    owner = relationship("User")
+    fields = relationship("FormField", back_populates="form", cascade="all, delete-orphan", order_by="FormField.order")
+    responses = relationship("FormResponse", back_populates="form", cascade="all, delete-orphan")
+
+
+class FormField(Base):
+    __tablename__ = "form_fields"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    form_id = Column(UUID(as_uuid=True), ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
+    label = Column(String(255), nullable=False)
+    type = Column(String(50), nullable=False)
+    required = Column(Boolean, default=False)
+    options = Column(JSON, nullable=True)  # array of strings
+    order = Column(Integer, default=0)
+
+    form = relationship("Form", back_populates="fields")
+
+
+class FormResponse(Base):
+    __tablename__ = "form_responses"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    form_id = Column(UUID(as_uuid=True), ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    data = Column(JSON, nullable=False)
+    submitted_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    form = relationship("Form", back_populates="responses")
+    user = relationship("User")

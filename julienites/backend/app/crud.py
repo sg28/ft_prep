@@ -411,3 +411,98 @@ experience_crud = ExperienceCRUD()
 skill_crud = SkillCRUD()
 post_crud = PostCRUD()
 connection_crud = ConnectionCRUD()
+
+
+# Forms CRUD operations
+class FormCRUD:
+    @staticmethod
+    def create_form(db: Session, owner_id: UUID, form: schemas.FormCreate) -> models.Form:
+        db_form = models.Form(
+            owner_id=owner_id,
+            title=form.title,
+            description=form.description,
+            allow_public_submissions=form.allow_public_submissions,
+        )
+        db.add(db_form)
+        db.flush()
+        order = 0
+        for fld in (form.fields or []):
+            db_field = models.FormField(
+                form_id=db_form.id,
+                label=fld.label,
+                type=fld.type,
+                required=fld.required,
+                options=fld.options,
+                order=fld.order if fld.order is not None else order,
+            )
+            order += 1
+            db.add(db_field)
+        db.commit()
+        db.refresh(db_form)
+        return db_form
+
+    @staticmethod
+    def get_forms_by_owner(db: Session, owner_id: UUID) -> List[models.Form]:
+        return db.query(models.Form).filter(models.Form.owner_id == owner_id).order_by(desc(models.Form.created_at)).all()
+
+    @staticmethod
+    def get_form(db: Session, form_id: UUID) -> Optional[models.Form]:
+        return db.query(models.Form).filter(models.Form.id == form_id).first()
+
+    @staticmethod
+    def update_form(db: Session, form_id: UUID, form_update: schemas.FormUpdate) -> Optional[models.Form]:
+        db_form = FormCRUD.get_form(db, form_id)
+        if not db_form:
+            return None
+        update_data = form_update.dict(exclude_unset=True)
+        fields_data = update_data.pop('fields', None)
+        for field, value in update_data.items():
+            setattr(db_form, field, value)
+        if fields_data is not None:
+            # replace fields
+            for f in list(db_form.fields):
+                db.delete(f)
+            db.flush()
+            order = 0
+            for fld in fields_data:
+                db_field = models.FormField(
+                    form_id=db_form.id,
+                    label=fld.label,
+                    type=fld.type,
+                    required=fld.required,
+                    options=fld.options,
+                    order=fld.order if fld.order is not None else order,
+                )
+                order += 1
+                db.add(db_field)
+        db.commit()
+        db.refresh(db_form)
+        return db_form
+
+    @staticmethod
+    def delete_form(db: Session, form_id: UUID) -> bool:
+        db_form = FormCRUD.get_form(db, form_id)
+        if not db_form:
+            return False
+        db.delete(db_form)
+        db.commit()
+        return True
+
+    @staticmethod
+    def create_response(db: Session, form_id: UUID, user_id: Optional[UUID], data: Dict[str, Any]) -> models.FormResponse:
+        resp = models.FormResponse(form_id=form_id, user_id=user_id, data=data)
+        db.add(resp)
+        db.commit()
+        db.refresh(resp)
+        return resp
+
+    @staticmethod
+    def get_form_responses(db: Session, form_id: UUID, limit: int = 50, offset: int = 0) -> List[models.FormResponse]:
+        return db.query(models.FormResponse).filter(models.FormResponse.form_id == form_id).order_by(desc(models.FormResponse.submitted_at)).offset(offset).limit(limit).all()
+
+    @staticmethod
+    def get_recent_responses_for_owner(db: Session, owner_id: UUID, limit: int = 10) -> List[models.FormResponse]:
+        return db.query(models.FormResponse).join(models.Form, models.FormResponse.form_id == models.Form.id).filter(models.Form.owner_id == owner_id).order_by(desc(models.FormResponse.submitted_at)).limit(limit).all()
+
+
+form_crud = FormCRUD()

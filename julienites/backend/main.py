@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from app.database import get_db, engine
 from app import models, schemas, crud
 from app.config import settings
-from app.routers import auth, users, posts, connections, search
+from app.routers import auth, users, posts, connections, search, forms, datasets
 from app.tasks import cleanup_underengaged_posts
 
 logger = logging.getLogger(__name__)
@@ -80,6 +80,9 @@ app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(posts.router, prefix="/api/posts", tags=["Posts"])
 app.include_router(connections.router, prefix="/api/connections", tags=["Connections"])
 app.include_router(search.router, prefix="/api/search", tags=["Search"])
+app.include_router(forms.router, prefix="/api/forms", tags=["Forms"])\
+
+app.include_router(datasets.router, prefix="/api/datasets", tags=["Datasets"])
 
 @app.get("/")
 async def root():

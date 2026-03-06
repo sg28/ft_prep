@@ -117,7 +117,7 @@ async function apiRequest<T>(
   }
 }
 
-const getAuthHeaders = (): Record<string, string> => {
+export const getAuthHeaders = (): Record<string, string> => {
   const token = localStorage.getItem('julienites-token');
   return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
@@ -253,6 +253,7 @@ interface PostResponse {
   likes_count: number;
   comments_count: number;
   reposts_count: number;
+  liked_by_me?: boolean;
   created_at: string;
   updated_at?: string;
   user: UserResponse;
@@ -351,6 +352,90 @@ export const postApi = {
       },
       body: JSON.stringify(commentData),
     }),
+};
+
+// Forms API
+export interface FormField {
+  id?: string;
+  label: string;
+  type: string;
+  required?: boolean;
+  options?: string[];
+  order?: number;
+}
+
+export interface Form {
+  id: string;
+  owner_id: string;
+  title: string;
+  description?: string;
+  allow_public_submissions: boolean;
+  created_at: string;
+  updated_at?: string;
+  fields: FormField[];
+  responses_count: number;
+}
+
+export interface FormCreateReq {
+  title: string;
+  description?: string;
+  allow_public_submissions?: boolean;
+  fields: Omit<FormField, 'id'>[];
+}
+
+export interface FormResponseItem {
+  id: string;
+  form_id: string;
+  user_id?: string;
+  data: Record<string, any>;
+  submitted_at: string;
+}
+
+export const formsApi = {
+  list: () => apiRequest<Form[]>(`/forms/`, { headers: getAuthHeaders() }),
+  create: (form: FormCreateReq) => apiRequest<Form>(`/forms/`, { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify(form) }),
+  get: (id: string) => apiRequest<Form>(`/forms/${id}`, { headers: getAuthHeaders() }),
+  update: (id: string, form: FormCreateReq) => apiRequest<Form>(`/forms/${id}`, { method: 'PUT', headers: getAuthHeaders(), body: JSON.stringify(form) }),
+  remove: (id: string) => apiRequest<{ message: string }>(`/forms/${id}`, { method: 'DELETE', headers: getAuthHeaders() }),
+  submitResponse: (id: string, data: Record<string, any>) => apiRequest<FormResponseItem>(`/forms/${id}/responses`, { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify({ data }) }),
+  listResponses: (id: string, limit = 50, offset = 0) => apiRequest<FormResponseItem[]>(`/forms/${id}/responses?limit=${limit}&offset=${offset}`, { headers: getAuthHeaders() }),
+  recentResponses: (limit = 10) => apiRequest<FormResponseItem[]>(`/forms/responses/recent?limit=${limit}`, { headers: getAuthHeaders() }),
+};
+
+export interface DatasetAnalysis {
+  filename: string;
+  filetype: string;
+  rows: number;
+  columns: string[];
+  samples: Array<Record<string, any>>;
+  summaries: Array<{
+    name: string;
+    missing: number;
+    numeric?: { count: number; mean?: number; min?: number; max?: number };
+    top_values?: Array<{ value: string; count: number }>;
+  }>;
+  note?: string | null;
+}
+
+export const datasetsApi = {
+  analyze: async (file: File) => {
+    const url = `${API_BASE_URL}/datasets/analyze`;
+    const formData = new FormData();
+    formData.append('upload', file);
+    logApiCall('POST', url, { fileName: file.name, fileSize: file.size });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { ...getAuthHeaders() }, // allow browser to set multipart boundary
+        body: formData,
+      });
+      const data = await response.json().catch(() => ({}));
+      logApiCall('POST', url, undefined, data, response.status);
+      return { data: response.ok ? (data as DatasetAnalysis) : undefined, error: response.ok ? undefined : data.detail || `HTTP ${response.status}`, status: response.status };
+    } catch (e) {
+      return { status: 0, error: e instanceof Error ? e.message : 'Network error' } as ApiResponse<DatasetAnalysis>;
+    }
+  },
 };
 
 export default apiRequest;

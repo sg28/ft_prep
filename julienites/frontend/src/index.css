@@ -89,6 +89,8 @@ html {
 
 html {
   scroll-behavior: smooth;
+  /* Reserve space for scrollbar to prevent layout shift between routes */
+  scrollbar-gutter: stable;
 }
 
 /* Custom scrollbar */

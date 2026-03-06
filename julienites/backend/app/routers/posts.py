@@ -32,6 +32,12 @@ async def get_feed_posts(
         query = query.filter(models.Post.created_at >= cutoff)
 
     posts = query.order_by(desc(models.Post.created_at)).offset(skip).limit(limit).all()
+    # Annotate liked_by_me for current user
+    for p in posts:
+        try:
+            p.liked_by_me = any(l.user_id == current_user.id for l in p.likes)
+        except Exception:
+            p.liked_by_me = False
     return posts
 
 
@@ -45,6 +51,12 @@ async def get_user_posts(
 ):
     """Get posts by a specific user"""
     posts = crud.post_crud.get_user_posts(db, user_id, skip=skip, limit=limit)
+    # Annotate liked_by_me for current user
+    for p in posts:
+        try:
+            p.liked_by_me = any(l.user_id == current_user.id for l in p.likes)
+        except Exception:
+            p.liked_by_me = False
     return posts
 
 
@@ -69,6 +81,11 @@ async def get_post(
             detail="Not enough permissions to view this post"
         )
     
+    # Annotate liked_by_me for current user
+    try:
+        post.liked_by_me = any(l.user_id == current_user.id for l in post.likes)
+    except Exception:
+        post.liked_by_me = False
     return post
 
 
@@ -166,7 +183,9 @@ async def like_post(
             detail="Already liked this post"
         )
     
-    return {"message": "Post liked successfully"}
+    # Return updated counts/state
+    updated = crud.post_crud.get_post(db, post_id)
+    return {"message": "Post liked successfully", "likes_count": updated.likes_count, "liked_by_me": True}
 
 
 @router.delete("/{post_id}/like")
@@ -183,7 +202,9 @@ async def unlike_post(
             detail="Not liked this post"
         )
     
-    return {"message": "Post unliked successfully"}
+    # Return updated counts/state
+    updated = crud.post_crud.get_post(db, post_id)
+    return {"message": "Post unliked successfully", "likes_count": updated.likes_count, "liked_by_me": False}
 
 
 # Comments endpoints

@@ -4,7 +4,7 @@ import {
   Home,
   Users,
   DollarSign,
-  Bookmark
+  Microscope
 } from 'lucide-react';
 import RocketWithProgress from './RocketWithProgress';
 
@@ -20,12 +20,12 @@ interface NavigationProps {
 
 const navItems: NavigationItem[] = [
   { name: 'Home', icon: <Home size={20} />, path: '/' },
+  { name: 'Research', icon: <Microscope size={20} />, path: '/research' },
   { name: 'Julienties', icon: <Users size={20} />, path: '/julienties' },
   { name: 'Fund Raising', icon: <DollarSign size={20} />, path: '/fund-raising' },
-  { name: 'Bookmark', icon: <Bookmark size={20} />, path: '/bookmarks' },
 ];
 
-const disabledItems = ['Fund Raising', 'Bookmark'];
+const disabledItems = ['Fund Raising'];
 
 const Navigation: React.FC<NavigationProps> = ({ className = '' }) => {
   const navigate = useNavigate();

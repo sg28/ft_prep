@@ -6,6 +6,7 @@ import ProfileCard from '../components/ProfileCard';
 import AdCard from '../components/AdCard';
 import Navigation from '../components/Navigation';
 import MobileBottomNav from '../components/MobileBottomNav';
+import LikeButton from '../components/LikeButton';
 import { postApi, userApi, POST_TAGS, PostTag } from '../services/api';
 import {
   Moon,
@@ -369,10 +370,7 @@ const MainLayout: React.FC = () => {
                   <p className="text-text-primary mb-3 text-sm">{post.content}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6 text-text-tertiary">
-                      <span className="flex items-center gap-1">
-                        <span>❤️</span>
-                        <span>{post.likes_count}</span>
-                      </span>
+                      <LikeButton postId={post.id} initialCount={post.likes_count} initiallyLiked={!!post.liked_by_me} size="sm" />
                       <button
                         onClick={() => toggleComments(post.id)}
                         className={`flex items-center gap-1 hover:text-twitter-blue transition-colors ${openCommentPostId === post.id ? 'text-twitter-blue' : ''}`}

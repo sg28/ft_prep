@@ -12,14 +12,13 @@ import {
   Github,
   Twitter,
   MessageCircle,
-  Repeat,
-  Heart,
   ArrowLeft,
   Edit,
   Save,
   X
 } from 'lucide-react';
 import { getVersionDisplay } from '../config/version';
+import LikeButton from '../components/LikeButton';
 
 const TAG_STYLES: Record<string, { active: string; badge: string }> = {
   'Questions':   { active: 'bg-blue-500/20 border-blue-500 text-blue-400',   badge: 'bg-blue-500/20 text-blue-400' },
@@ -631,17 +630,10 @@ const UserProfile: React.FC = () => {
                         </div>
                         <p className="text-text-primary whitespace-pre-wrap text-sm">{post.content}</p>
                         <div className="flex items-center gap-4 mt-2 text-text-tertiary text-xs">
-                          <span className="flex items-center gap-1">
-                            <Heart size={16} />
-                            {post.likes_count ?? 0}
-                          </span>
+                          <LikeButton postId={post.id} initialCount={post.likes_count ?? 0} initiallyLiked={!!post.liked_by_me} size="sm" />
                           <span className="flex items-center gap-1">
                             <MessageCircle size={16} />
                             {post.comments_count ?? 0}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Repeat size={16} />
-                            {post.reposts_count ?? 0}
                           </span>
                           <span className="ml-auto">
                             {new Date(post.created_at).toLocaleDateString()}

@@ -8,6 +8,8 @@ import MemberProfile from './pages/MemberProfile';
 import UserProfile from './pages/UserProfile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import FormRunner from './pages/FormRunner';
+import Research from './pages/Research';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -78,6 +80,16 @@ function AppRoutes() {
       <Route path="/profile/:id" element={
         <ProtectedRoute>
           <UserProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/research" element={
+        <ProtectedRoute>
+          <Research />
+        </ProtectedRoute>
+      } />
+      <Route path="/research/forms/:formId" element={
+        <ProtectedRoute>
+          <FormRunner />
         </ProtectedRoute>
       } />
     </Routes>
