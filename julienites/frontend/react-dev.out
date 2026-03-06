@@ -2,9 +2,9 @@
 > frontend@0.1.1 start
 > react-scripts start
 
-(node:49834) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:52965) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-(node:49834) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:52965) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 [36mStarting the development server...[39m
 [36m[39m
 [33mCompiled with warnings.[39m
@@ -15,110 +15,11 @@ Warning
 Warning
 (168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
 
-Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
-To ignore, add [36m// eslint-disable-next-line[39m to the line before.
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-webpack compiled with [1m[33m2 warnings[39m[22m
-[32mNo issues found.[39m
-Compiling...
-[33mCompiled with warnings.[39m
-[33m[39m
-Warning
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
-Warning
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
 [eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
-Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
-To ignore, add [36m// eslint-disable-next-line[39m to the line before.
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-[1m[33mWARNING[39m[22m in [eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
-webpack compiled with [1m[33m3 warnings[39m[22m
-[32mNo issues found.[39m
-Compiling...
-[33mCompiled with warnings.[39m
-[33m[39m
-Warning
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
-Warning
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
-[eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
-Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
-To ignore, add [36m// eslint-disable-next-line[39m to the line before.
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-[1m[33mWARNING[39m[22m in [1m./src/index.css[39m[22m (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[5].use[2]!./node_modules/source-map-loader/dist/cjs.js!./src/index.css)
-[1mModule Warning (from ./node_modules/postcss-loader/dist/cjs.js):
-Warning
-
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
-
-[1m[33mWARNING[39m[22m in [eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
-webpack compiled with [1m[33m3 warnings[39m[22m
-[33mFiles successfully emitted, waiting for typecheck results...[39m
-[36mIssues checking in progress...[39m
-[32mNo issues found.[39m
-Compiling...
-[33mCompiled with warnings.[39m
-[33m[39m
-Warning
-(162:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
-Warning
-(168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed
-
-[eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
 src/pages/Research.tsx
-  [1mLine 8:7:[22m   'loadForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
-  [1mLine 17:7:[22m  'saveForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
-  [1mLine 21:7:[22m  'loadResponsesCount' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 11:7:[22m  'loadForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 20:7:[22m  'saveForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 24:7:[22m  'loadResponsesCount' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
 
 Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
 To ignore, add [36m// eslint-disable-next-line[39m to the line before.
@@ -136,13 +37,10 @@ Warning
 (168:5) autoprefixer: Replace fill-available to stretch, because spec had been changed[39m[22m
 
 [1m[33mWARNING[39m[22m in [eslint] 
-src/components/FormBuilder.tsx
-  [1mLine 93:8:[22m  React Hook React.useEffect has missing dependencies: 'field.label' and 'field.placeholder'. Either include them or remove the dependency array. If 'setLabelValue' needs the current value of 'field.label', you can also switch to useReducer instead of useState and read 'field.label' in the reducer  [33m[4mreact-hooks/exhaustive-deps[24m[39m
-
 src/pages/Research.tsx
-  [1mLine 8:7:[22m   'loadForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
-  [1mLine 17:7:[22m  'saveForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
-  [1mLine 21:7:[22m  'loadResponsesCount' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 11:7:[22m  'loadForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 20:7:[22m  'saveForms' is assigned a value but never used           [33m[4m@typescript-eslint/no-unused-vars[24m[39m
+  [1mLine 24:7:[22m  'loadResponsesCount' is assigned a value but never used  [33m[4m@typescript-eslint/no-unused-vars[24m[39m
 
 webpack compiled with [1m[33m3 warnings[39m[22m
 [32mNo issues found.[39m

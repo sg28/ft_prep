@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { PlusCircle, FileText, BarChart, Copy, Link as LinkIcon, ClipboardList } from 'lucide-react';
+import { PlusCircle, FileText, BarChart, Copy, Link as LinkIcon, ClipboardList, Moon, Sun, Settings, LogOut, User as UserIcon } from 'lucide-react';
 import FormBuilder, { FormDefinition } from '../components/FormBuilder';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { formsApi, Form as ApiForm, FormCreateReq, datasetsApi, DatasetAnalysis } from '../services/api';
+import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
+import { getVersionDisplay } from '../config/version';
 
 const loadForms = (): FormDefinition[] => {
   try {
@@ -32,6 +35,10 @@ const loadResponsesCount = (formId: string): number => {
 
 const Research: React.FC = () => {
   const navigate = useNavigate();
+  const { toggleTheme, isDark } = useTheme();
+  const { user, logout } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const getUserInitials = (name: string) => name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2);
   const [forms, setForms] = useState<ApiForm[]>([]);
   const [showBuilder, setShowBuilder] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -95,11 +102,90 @@ const Research: React.FC = () => {
   return (
     <div className="min-h-screen bg-background-primary text-text-primary">
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Research</h1>
-          <button className="bg-twitter-blue text-white rounded-md px-3 py-2 text-sm font-bold hover:bg-twitter-blueHover flex items-center gap-2" onClick={() => setShowBuilder(true)}>
-            <PlusCircle size={16} /> New Form
-          </button>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-twitter-blue to-twitter-pink"></div>
+              <h1 className="text-xl font-bold">Julienites</h1>
+              <span className="text-xs bg-twitter-blue/20 text-twitter-blue px-2 py-1 rounded-full">
+                {getVersionDisplay()}
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-background-secondary transition-colors"
+                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+              >
+                {isDark ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center gap-2 p-1 rounded-full hover:bg-background-secondary transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-twitter-blue flex items-center justify-center overflow-hidden">
+                      {user.profileImage ? (
+                        <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-white font-bold text-sm">{getUserInitials(user.name)}</span>
+                      )}
+                    </div>
+                    <span className="font-medium text-sm hidden md:inline">
+                      {user.name.split(' ')[0]}
+                    </span>
+                  </button>
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-background-secondary rounded-xl border border-border shadow-lg z-50">
+                      <div className="p-4 border-b border-border">
+                        <div className="font-bold">{user.name}</div>
+                        <div className="text-text-tertiary text-sm">@{user.username}</div>
+                      </div>
+                      <div className="p-2">
+                        <button
+                          onClick={() => {
+                            window.location.href = `/profile/${user?.id}`;
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                        >
+                          <UserIcon size={16} />
+                          My Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary transition-colors"
+                        >
+                          <Settings size={16} />
+                          Settings
+                        </button>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full flex items-center gap-2 text-left px-4 py-2 rounded-lg hover:bg-background-tertiary text-red-500 transition-colors"
+                        >
+                          <LogOut size={16} />
+                          Log out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button 
+                  onClick={() => window.location.href = '/login'}
+                  className="bg-twitter-blue text-white px-4 py-2 rounded-full font-bold hover:bg-twitter-blueHover transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
@@ -264,6 +350,13 @@ const Research: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+      {/* Close user menu when clicking outside */}
+      {showUserMenu && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowUserMenu(false)}
+        />
       )}
     </div>
   );
