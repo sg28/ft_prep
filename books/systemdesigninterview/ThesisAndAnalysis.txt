@@ -33,35 +33,85 @@ Watchouts
 
 
 
-function LeakyBucketAlgorithm(args:functionArgument){
-     
+// Leaky bucket: FIFO queue with fixed outflow rate.
+class LeakyBucket {
+  constructor({ bucketSize, itemsPerSecond, onProcess }) {
+    if (!Number.isFinite(bucketSize) || bucketSize <= 0) throw new Error('bucketSize > 0');
+    if (!Number.isFinite(itemsPerSecond) || itemsPerSecond <= 0) throw new Error('itemsPerSecond > 0');
+    if (typeof onProcess !== 'function') throw new Error('onProcess must be a function');
 
+    this.bucketSize = bucketSize;
+    this.itemsPerSecond = itemsPerSecond;
+    this.onProcess = onProcess;
+
+    this.queue = [];
+    this._timer = null;
+  }
+
+  start() {
+    if (this._timer) return;
+    const intervalMs = Math.max(1, Math.floor(1000 / this.itemsPerSecond));
+    this._timer = setInterval(() => {
+      if (this.queue.length === 0) return;
+      const item = this.queue.shift();
+      try { this.onProcess(item); } catch (_) {}
+    }, intervalMs);
+  }
+
+  stop() {
+    if (!this._timer) return;
+    clearInterval(this._timer);
+    this._timer = null;
+  }
+
+  allowOrReject(item) {
+    if (this.queue.length < this.bucketSize) {
+      this.queue.push({ item, ts: Date.now() });
+      return {
+        accepted: true,
+        remaining: this.bucketSize - this.queue.length,
+        headers: {
+          'X-RateLimit-Limit': String(this.bucketSize),
+          'X-RateLimit-Remaining': String(this.bucketSize - this.queue.length),
+        }
+      };
+    }
+    const retryAfterSec = Math.ceil((this.queue.length + 1) / this.itemsPerSecond);
+    return {
+      accepted: false,
+      status: 429,
+      headers: {
+        'Retry-After': String(retryAfterSec),
+        'X-RateLimit-Limit': String(this.bucketSize),
+        'X-RateLimit-Remaining': '0',
+      }
+    };
+  }
+
+  size() { return this.queue.length; }
 }
 
+module.exports = { LeakyBucket };
 
-let stream = {
-    requestPerSecond(r): 10,
-    lmax: 3,
-    memoryBound:5,
-    policy: When the queue is full, drop the new arrival,
-    retryTimer:3Ms,
-    Unit: Second,
-    capacity(s): Math.min(requestPerSecond * lamx * memoryBound)
-    wait:Math.floor(s / r)
 
+const { LeakyBucket } = require('./leaky_bucket');
+
+const bucket = new LeakyBucket({
+  bucketSize: 5,
+  itemsPerSecond: 10,
+  onProcess: (req) => {
+    // downstream handling
+    // console.log('Processed', req.item.id);
+  }
+});
+
+bucket.start();
+
+// Burst: 6 arrivals immediately (1 should be rejected)
+for (let i = 0; i < 6; i++) {
+  const res = bucket.allowOrReject({ id: i });
+  if (!res.accepted) console.log('Rejected', i, res.status, res.headers);
 }
-LeakyBucketAlgorithm(stream)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Stop after a few seconds
+setTimeout(() => bucket.stop(), 3000);

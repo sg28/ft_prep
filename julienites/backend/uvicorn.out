@@ -1881,3 +1881,878 @@ WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connection
 2026-03-05 22:34:29,580 INFO sqlalchemy.engine.Engine [cached since 0.05304s ago] {'follower_id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
 INFO:     127.0.0.1:56752 - "GET /api/connections/status/b6254dbe-aae1-49be-8ff3-c89050e36bdd HTTP/1.1" 200 OK
 2026-03-05 22:34:29,581 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:56937 - "OPTIONS /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56941 - "OPTIONS /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56942 - "OPTIONS /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,319 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,320 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,320 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,322 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-05 23:18:47,322 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:56937 - "GET /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,326 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,327 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,327 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,327 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,328 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-05 23:18:47,328 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:56943 - "GET /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,329 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,331 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,331 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,331 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,332 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-05 23:18:47,332 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:56937 - "GET /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,334 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,335 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,335 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,335 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,336 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-05 23:18:47,336 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'param_1': 100, 'param_2': 0}
+INFO:     127.0.0.1:56943 - "GET /api/users/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,336 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/connections/status/de320988-89c2-422e-b678-50641b34c157 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56937 - "OPTIONS /api/connections/status/4c68130b-ef88-4056-abca-743c903a2ee9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56942 - "OPTIONS /api/connections/status/06622cd2-be07-4627-9a40-40a808ea6675 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56941 - "OPTIONS /api/connections/status/330f89c4-630c-472f-8486-fb2714ce3963 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56945 - "OPTIONS /api/connections/status/fbe1ba09-d6ec-4268-9ff9-8790f2164820 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/connections/status/3f3ee1f3-c4ca-4f0b-87ab-8234cf974028 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56937 - "OPTIONS /api/connections/status/7c392ee0-f071-4277-a074-7c8ed282a2b7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "OPTIONS /api/connections/status/9b5e1b44-fc62-463b-aa97-b27295eab70d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56942 - "OPTIONS /api/connections/status/b6254dbe-aae1-49be-8ff3-c89050e36bdd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56941 - "OPTIONS /api/connections/status/67c3d747-c055-43c6-b140-b531a06f8216 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56945 - "OPTIONS /api/connections/status/de320988-89c2-422e-b678-50641b34c157 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56943 - "OPTIONS /api/connections/status/4c68130b-ef88-4056-abca-743c903a2ee9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56937 - "OPTIONS /api/connections/status/06622cd2-be07-4627-9a40-40a808ea6675 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "OPTIONS /api/connections/status/330f89c4-630c-472f-8486-fb2714ce3963 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56942 - "OPTIONS /api/connections/status/fbe1ba09-d6ec-4268-9ff9-8790f2164820 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56941 - "OPTIONS /api/connections/status/9b5e1b44-fc62-463b-aa97-b27295eab70d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56945 - "OPTIONS /api/connections/status/3f3ee1f3-c4ca-4f0b-87ab-8234cf974028 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56947 - "OPTIONS /api/connections/status/7c392ee0-f071-4277-a074-7c8ed282a2b7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56942 - "OPTIONS /api/connections/status/b6254dbe-aae1-49be-8ff3-c89050e36bdd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56941 - "OPTIONS /api/connections/status/67c3d747-c055-43c6-b140-b531a06f8216 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,348 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,349 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,350 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,350 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,350 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,350 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'param_1': 1}
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,351 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,352 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,352 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'param_1': 1}
+2026-03-05 23:18:47,352 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,352 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56943 - "GET /api/connections/status/de320988-89c2-422e-b678-50641b34c157 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,353 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,354 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,354 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'param_1': 1}
+2026-03-05 23:18:47,354 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,354 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'param_1': 1}
+2026-03-05 23:18:47,355 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,355 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56937 - "GET /api/connections/status/4c68130b-ef88-4056-abca-743c903a2ee9 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,355 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,355 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'param_1': 1}
+2026-03-05 23:18:47,356 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,356 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'param_1': 1}
+2026-03-05 23:18:47,356 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,356 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56945 - "GET /api/connections/status/06622cd2-be07-4627-9a40-40a808ea6675 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,357 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,357 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'param_1': 1}
+2026-03-05 23:18:47,357 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,357 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'param_1': 1}
+2026-03-05 23:18:47,358 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,358 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56941 - "GET /api/connections/status/fbe1ba09-d6ec-4268-9ff9-8790f2164820 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,358 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,358 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'param_1': 1}
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'param_1': 1}
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56947 - "GET /api/connections/status/330f89c4-630c-472f-8486-fb2714ce3963 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,359 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'param_1': 1}
+2026-03-05 23:18:47,360 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,360 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'param_1': 1}
+2026-03-05 23:18:47,361 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,361 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56942 - "GET /api/connections/status/3f3ee1f3-c4ca-4f0b-87ab-8234cf974028 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,361 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,361 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,361 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,362 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,362 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,362 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,363 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,363 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,365 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,365 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,365 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'param_1': 1}
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,366 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,367 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,367 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'param_1': 1}
+2026-03-05 23:18:47,368 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,368 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56943 - "GET /api/connections/status/7c392ee0-f071-4277-a074-7c8ed282a2b7 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,368 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,369 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,369 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'param_1': 1}
+2026-03-05 23:18:47,369 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,369 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'param_1': 1}
+2026-03-05 23:18:47,370 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,370 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56941 - "GET /api/connections/status/4c68130b-ef88-4056-abca-743c903a2ee9 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,371 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,371 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'param_1': 1}
+2026-03-05 23:18:47,371 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,371 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'param_1': 1}
+2026-03-05 23:18:47,372 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,372 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('de320988-89c2-422e-b678-50641b34c157'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56945 - "GET /api/connections/status/de320988-89c2-422e-b678-50641b34c157 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,372 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,372 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'param_1': 1}
+2026-03-05 23:18:47,373 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,373 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'param_1': 1}
+2026-03-05 23:18:47,373 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,373 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56942 - "GET /api/connections/status/b6254dbe-aae1-49be-8ff3-c89050e36bdd HTTP/1.1" 200 OK
+2026-03-05 23:18:47,374 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,374 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'param_1': 1}
+2026-03-05 23:18:47,374 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,374 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'param_1': 1}
+2026-03-05 23:18:47,375 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,375 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56937 - "GET /api/connections/status/9b5e1b44-fc62-463b-aa97-b27295eab70d HTTP/1.1" 200 OK
+2026-03-05 23:18:47,375 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,375 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'param_1': 1}
+2026-03-05 23:18:47,376 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,376 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'param_1': 1}
+2026-03-05 23:18:47,376 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,376 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56947 - "GET /api/connections/status/67c3d747-c055-43c6-b140-b531a06f8216 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,377 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,377 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,377 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,377 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,377 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,378 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,380 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,380 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,380 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,381 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,383 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,383 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'param_1': 1}
+2026-03-05 23:18:47,383 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,383 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'param_1': 1}
+2026-03-05 23:18:47,384 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,384 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56943 - "GET /api/connections/status/06622cd2-be07-4627-9a40-40a808ea6675 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,384 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,384 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'param_1': 1}
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'param_1': 1}
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('fbe1ba09-d6ec-4268-9ff9-8790f2164820'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+2026-03-05 23:18:47,385 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,386 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+INFO:     127.0.0.1:56942 - "GET /api/connections/status/fbe1ba09-d6ec-4268-9ff9-8790f2164820 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,386 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,386 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'param_1': 1}
+2026-03-05 23:18:47,387 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,387 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'param_1': 1}
+2026-03-05 23:18:47,387 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,387 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56941 - "GET /api/connections/status/9b5e1b44-fc62-463b-aa97-b27295eab70d HTTP/1.1" 200 OK
+2026-03-05 23:18:47,387 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,388 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'param_1': 1}
+2026-03-05 23:18:47,388 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,388 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'param_1': 1}
+2026-03-05 23:18:47,388 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,388 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56937 - "GET /api/connections/status/3f3ee1f3-c4ca-4f0b-87ab-8234cf974028 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,389 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,389 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'param_1': 1}
+2026-03-05 23:18:47,390 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,390 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'param_1': 1}
+2026-03-05 23:18:47,390 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,390 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('330f89c4-630c-472f-8486-fb2714ce3963'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56947 - "GET /api/connections/status/330f89c4-630c-472f-8486-fb2714ce3963 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,390 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,391 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,392 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,392 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,392 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,393 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,393 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'param_1': 1}
+2026-03-05 23:18:47,393 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,393 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,393 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,394 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,394 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'param_1': 1}
+2026-03-05 23:18:47,395 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,395 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56945 - "GET /api/connections/status/7c392ee0-f071-4277-a074-7c8ed282a2b7 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,395 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'param_1': 1}
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,396 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'param_1': 1}
+2026-03-05 23:18:47,397 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,397 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56943 - "GET /api/connections/status/b6254dbe-aae1-49be-8ff3-c89050e36bdd HTTP/1.1" 200 OK
+2026-03-05 23:18:47,397 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-05 23:18:47,398 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,398 INFO sqlalchemy.engine.Engine [cached since 2678s ago] {'id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'param_1': 1}
+2026-03-05 23:18:47,398 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,398 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'following_id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'param_1': 1}
+2026-03-05 23:18:47,399 INFO sqlalchemy.engine.Engine SELECT user_connections.follower_id AS user_connections_follower_id, user_connections.following_id AS user_connections_following_id, user_connections.created_at AS user_connections_created_at 
+FROM user_connections 
+WHERE user_connections.follower_id = %(follower_id_1)s::UUID AND user_connections.following_id = %(following_id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-05 23:18:47,399 INFO sqlalchemy.engine.Engine [cached since 2658s ago] {'follower_id_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216'), 'following_id_1': UUID('39bc41c3-4c14-4803-9916-1ac891e4a1d1'), 'param_1': 1}
+INFO:     127.0.0.1:56942 - "GET /api/connections/status/67c3d747-c055-43c6-b140-b531a06f8216 HTTP/1.1" 200 OK
+2026-03-05 23:18:47,399 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     192.168.1.1:44138 - "GET / HTTP/1.1" 200 OK
+INFO:     192.168.1.1:60982 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60752 - "GET /39bc41c3-4c14-4803-9916-1ac891e4a1d1/avatar_9e0d537f7ca64bfa89d808b50431e7cc.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60754 - "OPTIONS /api/posts/?skip=0&limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60756 - "OPTIONS /api/posts/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-06 23:45:02,758 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-06 23:45:02,758 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-06 23:45:02,758 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-06 23:45:02,761 INFO sqlalchemy.engine.Engine SELECT posts.id AS posts_id, posts.user_id AS posts_user_id, posts.content AS posts_content, posts.media_urls AS posts_media_urls, posts.tag AS posts_tag, posts.likes_count AS posts_likes_count, posts.comments_count AS posts_comments_count, posts.reposts_count AS posts_reposts_count, posts.is_public AS posts_is_public, posts.is_anonymous AS posts_is_anonymous, posts.created_at AS posts_created_at, posts.updated_at AS posts_updated_at 
+FROM posts 
+WHERE posts.is_public = true ORDER BY posts.created_at DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-06 23:45:02,761 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': 100, 'param_2': 0}
+2026-03-06 23:45:02,763 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,763 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('8f9eb428-d564-48bf-b4d9-6b6b261541df')}
+2026-03-06 23:45:02,765 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,765 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('04471309-cb15-47f0-971d-76bb5af0f165')}
+2026-03-06 23:45:02,765 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,765 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('73f268f4-6baf-41c2-a7be-dc7129ae9aea')}
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('1cb9890a-3bf2-41f6-b61d-346569f9edc8')}
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('8ea4f56d-4ff6-467d-94b9-d0b4476c6fce')}
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f2ff4b63-8444-4f12-a102-60938c3fa067')}
+2026-03-06 23:45:02,766 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('afcdbf47-93c9-499b-b287-fc9e8db0ee38')}
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('a14f4a96-55cc-49fc-9323-22fb9e27f218')}
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('58abbaa1-4680-4f63-92e3-bc3b0d0552d4')}
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,767 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('a54ea154-5211-452e-a551-d3aea68c1259')}
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('d7bdd0e6-56cc-4a82-a80b-a1db7c7b511f')}
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('c272fdcc-f35b-4337-8e6d-9383aaeec194')}
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('00a8f5ff-e5c9-40c4-9d3d-a83681fbf0e4')}
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,768 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('276e39a3-4ee1-4bbc-85f9-637e5cb9751b')}
+2026-03-06 23:45:02,769 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,769 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('bed4d1a3-18b0-4d38-bc7a-189819a649eb')}
+2026-03-06 23:45:02,769 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,769 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('2bcfef98-4ccf-4440-ab85-7484c368283f')}
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('55a44323-55eb-4df1-aef5-43798d3a0893')}
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('caa77e1b-50ba-4395-b180-744c84b21209')}
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,770 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('ed0bae39-84ae-4f2e-a55f-565b8e8507f0')}
+2026-03-06 23:45:02,771 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,771 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('36e96cd5-9ff3-48f8-9912-3e682e261dbe')}
+2026-03-06 23:45:02,771 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,771 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('4661eb8b-561f-4682-8a46-fbf2e17a38d4')}
+2026-03-06 23:45:02,771 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,772 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('65de6fb3-bf0e-436a-99c0-42463c3a837a')}
+2026-03-06 23:45:02,772 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,772 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f556cfdd-3750-4509-af62-e5ff4eca61e4')}
+2026-03-06 23:45:02,772 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,772 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f66e5b73-9b08-4342-9be3-bf1229aa3ce4')}
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('13cbdcf9-c8d7-43a6-8b7c-fd830ae38cf0')}
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('bbe9581a-7d83-4eed-a8b7-a9a9264cc6eb')}
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,773 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('dfb1c314-9d7e-4167-83b0-efb7eca6a666')}
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('215fd7e5-4819-4f08-978d-cc8cf24f54fd')}
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('4e55cb12-ec46-4704-aef8-691785eb6593')}
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,774 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('0bd41a46-1e84-4003-9ae5-fabef8352886')}
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('ba4439a3-b4e8-48a7-9959-5d2d7a18e01f')}
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('de320988-89c2-422e-b678-50641b34c157')}
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,775 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd')}
+2026-03-06 23:45:02,776 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,776 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216')}
+2026-03-06 23:45:02,776 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,776 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028')}
+2026-03-06 23:45:02,777 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,777 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7')}
+2026-03-06 23:45:02,777 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,777 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9')}
+2026-03-06 23:45:02,778 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,778 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675')}
+2026-03-06 23:45:02,779 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,779 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d')}
+INFO:     127.0.0.1:60754 - "GET /api/posts/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-06 23:45:02,780 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-03-06 23:45:02,785 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-06 23:45:02,785 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(id_1)s::UUID 
+ LIMIT %(param_1)s
+2026-03-06 23:45:02,786 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'id_1': '39bc41c3-4c14-4803-9916-1ac891e4a1d1', 'param_1': 1}
+2026-03-06 23:45:02,787 INFO sqlalchemy.engine.Engine SELECT posts.id AS posts_id, posts.user_id AS posts_user_id, posts.content AS posts_content, posts.media_urls AS posts_media_urls, posts.tag AS posts_tag, posts.likes_count AS posts_likes_count, posts.comments_count AS posts_comments_count, posts.reposts_count AS posts_reposts_count, posts.is_public AS posts_is_public, posts.is_anonymous AS posts_is_anonymous, posts.created_at AS posts_created_at, posts.updated_at AS posts_updated_at 
+FROM posts 
+WHERE posts.is_public = true ORDER BY posts.created_at DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2026-03-06 23:45:02,787 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': 100, 'param_2': 0}
+2026-03-06 23:45:02,789 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,789 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('8f9eb428-d564-48bf-b4d9-6b6b261541df')}
+2026-03-06 23:45:02,789 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,789 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('04471309-cb15-47f0-971d-76bb5af0f165')}
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('73f268f4-6baf-41c2-a7be-dc7129ae9aea')}
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('1cb9890a-3bf2-41f6-b61d-346569f9edc8')}
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,790 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('8ea4f56d-4ff6-467d-94b9-d0b4476c6fce')}
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f2ff4b63-8444-4f12-a102-60938c3fa067')}
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('afcdbf47-93c9-499b-b287-fc9e8db0ee38')}
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('a14f4a96-55cc-49fc-9323-22fb9e27f218')}
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,791 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('58abbaa1-4680-4f63-92e3-bc3b0d0552d4')}
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('a54ea154-5211-452e-a551-d3aea68c1259')}
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('d7bdd0e6-56cc-4a82-a80b-a1db7c7b511f')}
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('c272fdcc-f35b-4337-8e6d-9383aaeec194')}
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,792 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('00a8f5ff-e5c9-40c4-9d3d-a83681fbf0e4')}
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('276e39a3-4ee1-4bbc-85f9-637e5cb9751b')}
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('bed4d1a3-18b0-4d38-bc7a-189819a649eb')}
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('2bcfef98-4ccf-4440-ab85-7484c368283f')}
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,793 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('55a44323-55eb-4df1-aef5-43798d3a0893')}
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('caa77e1b-50ba-4395-b180-744c84b21209')}
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('ed0bae39-84ae-4f2e-a55f-565b8e8507f0')}
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('36e96cd5-9ff3-48f8-9912-3e682e261dbe')}
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,794 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('4661eb8b-561f-4682-8a46-fbf2e17a38d4')}
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('65de6fb3-bf0e-436a-99c0-42463c3a837a')}
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f556cfdd-3750-4509-af62-e5ff4eca61e4')}
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('f66e5b73-9b08-4342-9be3-bf1229aa3ce4')}
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,795 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('13cbdcf9-c8d7-43a6-8b7c-fd830ae38cf0')}
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('bbe9581a-7d83-4eed-a8b7-a9a9264cc6eb')}
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('dfb1c314-9d7e-4167-83b0-efb7eca6a666')}
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,796 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('215fd7e5-4819-4f08-978d-cc8cf24f54fd')}
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('4e55cb12-ec46-4704-aef8-691785eb6593')}
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('0bd41a46-1e84-4003-9ae5-fabef8352886')}
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine SELECT post_likes.id AS post_likes_id, post_likes.post_id AS post_likes_post_id, post_likes.user_id AS post_likes_user_id, post_likes.created_at AS post_likes_created_at 
+FROM post_likes 
+WHERE %(param_1)s::UUID = post_likes.post_id
+2026-03-06 23:45:02,797 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'param_1': UUID('ba4439a3-b4e8-48a7-9959-5d2d7a18e01f')}
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('de320988-89c2-422e-b678-50641b34c157')}
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('b6254dbe-aae1-49be-8ff3-c89050e36bdd')}
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,798 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('67c3d747-c055-43c6-b140-b531a06f8216')}
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('3f3ee1f3-c4ca-4f0b-87ab-8234cf974028')}
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('7c392ee0-f071-4277-a074-7c8ed282a2b7')}
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,799 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('4c68130b-ef88-4056-abca-743c903a2ee9')}
+2026-03-06 23:45:02,800 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,800 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('06622cd2-be07-4627-9a40-40a808ea6675')}
+2026-03-06 23:45:02,800 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.name AS users_name, users.password_hash AS users_password_hash, users.graduation_year AS users_graduation_year, users.bio AS users_bio, users.location AS users_location, users."current_role" AS users_current_role, users.profile_image_url AS users_profile_image_url, users.phone AS users_phone, users.linkedin_url AS users_linkedin_url, users.github_url AS users_github_url, users.twitter_handle AS users_twitter_handle, users.following_count AS users_following_count, users.followers_count AS users_followers_count, users.post_count AS users_post_count, users.is_active AS users_is_active, users.is_verified AS users_is_verified, users.role AS users_role, users.created_at AS users_created_at, users.updated_at AS users_updated_at, users.last_login_at AS users_last_login_at 
+FROM users 
+WHERE users.id = %(pk_1)s::UUID
+2026-03-06 23:45:02,800 INFO sqlalchemy.engine.Engine [cached since 3.772e+04s ago] {'pk_1': UUID('9b5e1b44-fc62-463b-aa97-b27295eab70d')}
+INFO:     127.0.0.1:60756 - "GET /api/posts/?skip=0&limit=100 HTTP/1.1" 200 OK
+2026-03-06 23:45:02,801 INFO sqlalchemy.engine.Engine ROLLBACK
