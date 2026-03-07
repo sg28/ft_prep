@@ -1,0 +1,114 @@
+Token Bucket Algorithm.
+
+---
+Story:
+
+Imagine you have a cookie jar. The jar can hold a maximum of 5 cookies.
+Every second, a kind baker puts 2 fresh cookies into the jar.
+But if the jar is already full, the extra cookies are thrown away — the jar cannot overflow.
+
+Now every time a friend comes and asks for a cookie, you check the jar.
+If there is at least 1 cookie, you give it to them and they are happy.
+If the jar is empty, you tell them "sorry, come back later."
+
+The baker does not bake on a timer. He only bakes when a friend arrives and asks.
+At that point he quickly calculates — "how long was I away? Let me add the cookies I owe."
+Then he checks if there are enough cookies for the friend.
+
+That is the entire algorithm.
+
+- jar          = bucket
+- cookies      = tokens
+- jar capacity = capacity
+- baking rate  = refill_rate
+- each friend  = one API request
+- giving cookie = allowing the request
+- empty jar    = rate limit hit, request rejected
+---
+
+function allow_request(bucket){
+  let {refill_rate, last_refill_time, capacity, current_available_token } = bucket;
+
+  let time_elapsed = new Date() - last_refill_time;
+  let new_token = time_elapsed * refill_rate;
+  bucket.current_available_token = Math.min(capacity, new_token + current_available_token);
+  bucket.last_refill_time = new Date();
+
+  if(bucket.current_available_token >= 1){
+    bucket.current_available_token = bucket.current_available_token - 1;
+    return true;
+  }
+
+  return false;
+}
+
+
+let bucket = {
+  current_available_token: 5,
+  capacity: 5,
+  last_refill_time: new Date(),
+  refill_rate: 2 / 1000 
+}
+
+
+Note:
+There is no separate timer. That's the smart part of this algorithm.
+Tokens are not generated on a schedule.
+Instead, they are calculated on demand — only when a request arrives.
+
+
+---
+Shortcomings of this code:
+
+1. Single server only
+   The bucket is a variable in memory. If you run 10 servers, each has its own bucket.
+   They don't share data. The rate limiter breaks across servers.
+   Fix: Store the bucket in Redis so all servers share the same data.
+
+2. Race condition
+   Two requests hitting the server at the same time can both read tokens = 1,
+   both pass, and both subtract — bypassing the limit.
+   Fix: Use Redis Lua scripts to make read + check + write one atomic operation.
+
+3. No user identification
+   This code has one bucket for everyone. In reality every user needs their own bucket.
+   Fix: Use a unique key per user in Redis, e.g. bucket:user_123
+
+4. No persistence
+   If the server restarts, the bucket is gone. All counters reset.
+   Fix: Redis persists data across restarts.
+
+5. No 429 response
+   The code returns true/false but in a real API you need to return HTTP 429
+   with headers: X-Ratelimit-Remaining, X-Ratelimit-Limit, X-Ratelimit-Retry-After
+---
+
+
+---
+Test Cases:
+
+// Test 1: Burst — fire 8 requests instantly
+// Expected: first 5 pass (bucket starts full), last 3 fail
+console.log("--- Test 1: Burst ---");
+for(let i = 0; i < 8; i++){
+  console.log(`Request ${i + 1}:`, allow_request(bucket));
+}
+
+// Reset bucket
+bucket.current_available_token = 0;
+bucket.last_refill_time = new Date();
+
+// Test 2: Empty bucket — fire request immediately
+// Expected: false (no tokens yet)
+console.log("\n--- Test 2: Empty bucket ---");
+console.log("Request 1:", allow_request(bucket));
+
+// Test 3: Wait 1 second, then fire requests
+// Expected: 2 pass (refill rate is 2/sec), then fail
+console.log("\n--- Test 3: Wait 1 second then fire ---");
+setTimeout(() => {
+  console.log("Request 1:", allow_request(bucket)); // true
+  console.log("Request 2:", allow_request(bucket)); // true
+  console.log("Request 3:", allow_request(bucket)); // false
+}, 1000);
+---
