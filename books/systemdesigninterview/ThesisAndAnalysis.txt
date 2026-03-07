@@ -1,1 +1,67 @@
-hello Rate limiter
+Lesson — Leaky (Leaking) Bucket (Read-only, no questions)
+- Mental model: FIFO queue drains at a fixed outflow rate. 
+Incoming requests join the queue; if the queue is full (bucket size reached), 
+new requests are dropped.
+- Parameters:
+  - Bucket size: maximum queued requests (memory bound).
+  - Outflow rate: fixed processing rate, for example r requests/second.
+- Accept/reject: Enqueue if space; else reject. Processor removes requests at a steady rate.
+- Pros: smooths traffic to downstream; predictable outflow; memory bounded.
+- Cons: bursts can fill the queue causing head-of-line blocking; 
+        recent requests may be dropped while old ones wait; tuning size/outflow is nontrivial.
+- Good fit: when a downstream must be protected by a stable rate (payments, fragile services), 
+        or when smoothing spikes is required.
+- Contrast with token bucket: token bucket allows short bursts up to capacity if tokens exist; 
+        leaky bucket enforces a constant drain rate and may delay/drop during bursts.
+- In practice: Shopify uses a leaky bucket for API rate limiting.
+
+Real example — Checkout payments (small)
+- Downstream payment processor handles 10 requests/second safely.
+- Configure leaky bucket: outflow = 10 rps, bucket size = 50.
+- t=0: flash sale sends 40 requests → all enqueued; they drain in ~4s at 10 rps.
+- t=1s: another burst of 30 → only ~20 slots free; 20 enqueued, ~10 dropped (429/Retry-After).
+- Result: downstream sees a smooth 10 rps; head-of-line blocking may delay newer requests.
+
+When to use
+- Protect fragile/expensive downstreams at a steady rate (payments, external APIs).
+
+Watchouts
+- Too-small queue → more drops during spikes.
+- Too-large queue → long waits/timeouts. Return Retry-After and encourage client backoff.
+
+
+
+
+
+function LeakyBucketAlgorithm(args:functionArgument){
+     
+
+}
+
+
+let stream = {
+    requestPerSecond(r): 10,
+    lmax: 3,
+    memoryBound:5,
+    policy: When the queue is full, drop the new arrival,
+    retryTimer:3Ms,
+    Unit: Second,
+    capacity(s): Math.min(requestPerSecond * lamx * memoryBound)
+    wait:Math.floor(s / r)
+
+}
+LeakyBucketAlgorithm(stream)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
