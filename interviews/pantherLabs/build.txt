@@ -1,0 +1,195 @@
+
+Your goal is to implement a function that given a title search term 
+and/or a tag, will return the Top 5 StackOverflow[1] unanswered questions 
+with the highest view count created during the last week.
+
+The StackExchange API v2.3 allows searches by tag and/or a specific term 
+in the title using the GET /search endpoint[2]. 
+The API documentation can also perform requests directly and display the response, 
+for example:
+
+https://api.stackexchange.com/docs/search#order=desc&sort=creation&tagged=go&intitle=git&filter=default&site=stackoverflow&run=true
+
+The maximum question items count returned by the API with a single response 
+is 100[3]. The solution should take into account that the search results may 
+be split into multiple pages, in which case all the results should be fetched and processed.
+
+The function returns an ordered collection of JSON-serializable objects containing:
+
+The question ID
+The question link
+The creation date
+The view count
+The solution function should return an object that will be serialized to JSON as the following example:
+
+Notes:
+
+The StackExchange API does not require authentication, but IP-based rate limiting applies 
+for unauthenticated requests[4]. Make sure to take this into account when paginating over results.
+You can add as many helper functions or classes as you see necessary, 
+that will be called by your solution function.
+
+Make sure to structure your solution in a way that it can be tested using the unit 
+testing/mocking 
+libraries available in the Coderpad environment. 
+For details see the available libraries for each 
+runtime environment available at Coderpad[5].
+If there is no time for writing the tests, 
+keep notes of the discrete scenarios that you would check during testing.
+
+[1] https://stackoverflow.com 
+[2] https://api.stackexchange.com/docs/search 
+[3] https://api.stackexchange.com/docs/paging 
+[4] https://api.stackexchange.com/docs/throttle 
+[5] https://coderpad.io/languages/
+
+
+return data structure
+[
+  {
+    "link": "https://stackoverflow.com/questions/67152490/go-git-correct-way-to-create-a-local-branch-emulating-behavior-of-quotgit-br",
+    "view_count": 69,
+    "creation_date": 1618773360,
+    "question_id": 67152490
+  },
+  {
+    "link": "https://stackoverflow.com/questions/67101189/how-to-get-git-tagor-branch-name-of-current-repository-in-golang",
+    "view_count": 61,
+    "creation_date": 1618451704,
+    "question_id": 67101189
+  },
+  {
+    "link": "https://stackoverflow.com/questions/66980055/vendoring-go-module-with-git-submodule",
+    "view_count": 51,
+    "creation_date": 1617773379,
+    "question_id": 66980055
+  },
+  {
+    "link": "https://stackoverflow.com/questions/66888068/go-git-how-to-generate-patch-for-first-commit",
+    "view_count": 37,
+    "creation_date": 1617194377,
+    "question_id": 66888068
+  },
+  {
+    "link": "https://stackoverflow.com/questions/67166817/go-get-private-azure-repo39s-hosted-packages-golang-fails-to-list-git-tags",
+    "view_count": 30,
+    "creation_date": 1618854162,
+    "question_id": 67166817
+  },
+  {
+    "link": "https://stackoverflow.com/questions/67177810/bitbucket-pipeline-ignore-git-config",
+    "view_count": 23,
+    "creation_date": 1618917234,
+    "question_id": 67177810
+  },
+  {
+    "link": "https://stackoverflow.com/questions/67100141/how-to-install-and-use-git-sizer-for-windows-github-vs-code",
+    "view_count": 23,
+    "creation_date": 1618441346,
+    "question_id": 67100141
+  }
+]
+
+
+
+
+/*
+title 
+API: https://api.stackexchange.com/docs/search#
+order=desc
+&sort=creation
+&tagged=go
+&intitle=git
+&filter=default
+&site=stackoverflow
+&run=true
+
+
+return
+    top5 from StackOverflow[1]
+    unanswered questions &&
+    highest view count &&
+    created last week.
+
+    The question ID
+    The question link
+    The creation date
+    The view count    
+
+
+request is title / tag
+return 
+[
+  {
+    "link": "https://stackoverflow.com/questions/67152490/go-git-correct-way-to-create-a-local-branch-emulating-behavior-of-quotgit-br",
+    "view_count": 69,
+    "creation_date": 1618773360,
+    "question_id": 67152490
+  },
+]
+
+Checks:
+Rate limit
+*/
+
+
+function search(searchTerm, tag){
+    const url = 'https://api.stackexchange.com/2.3/search?order=desc&sort=creation&tagged=go&intitle=git&site=stackoverflow';
+    
+    const formData = Math.floor(Date.now() / 1000) - (7 * 24 *60);
+    const allQuestions = [];
+    let page = 1;
+    const pageSize = 100;
+
+    //pagination
+    while(true){
+        let params = new URLSearchParams({
+            order:'desc',
+            sort:'creation',
+            site:'stackoverflow',
+            pageSize:pageSize,
+            formData:formData
+        })
+
+        // create search criteria
+        if(searchTerm){
+           params.append('intitle',searchTerm) 
+        }
+        // for tag
+        if(tag){
+           params.append('tagged',tag) 
+        }
+
+        try{
+            const response = await fetch(`${url}?{params.toString()}`);
+            if(!response.ok){
+                throw new Error('Error');
+            }
+            const data = await response.json();
+            data.items.forEach(item =>{
+                if(!item.is_answered){
+                   allQuestions.push(item);
+                }
+            });
+
+            // We have the top 5 or there is no more pages
+            if(!data.has_more){
+                break;
+            }
+            page++;
+        }catch(error){
+            throw new Error('Failed');
+        }
+    }
+    allQuestions.sort((a, b) => b.view_count-a.view_count);
+    
+    const limit = Math.min(5, allQuestions.length);
+    const result = allQuestions.slice(0, limit).map(item =>({
+        question_id: item.question_id,
+        question_link: item.question_link,
+        creation_date: item.creation_date,
+        view_count:item.view_count
+    }));
+    return result;
+}
+
