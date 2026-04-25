@@ -490,6 +490,281 @@ LAYERS AT A GLANCE
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DISTRIBUTED SYSTEMS DEEP DIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  The hard problems that don't show up in the architecture diagram.
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  1. EXACTLY-ONCE vs AT-LEAST-ONCE — AND THE DEDUP PROBLEM
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  We guarantee at-least-once delivery from Kafka. This means the same event can appear
+  twice — network retry, consumer crash mid-commit, rebalance during processing.
+
+  Problem: If normalization processes an event twice, we fire two alerts for one incident.
+           At 11M events/sec, dedup state is massive.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Idempotency key = SHA256(tenant_id + source + event_id + timestamp)                │
+  │                                                                                      │
+  │  Normalization workers write to ClickHouse with ON CONFLICT DO NOTHING              │
+  │  (ClickHouse: ReplacingMergeTree deduplicates on insert key)                        │
+  │                                                                                      │
+  │  Alert dedup: Redis SET NX with TTL per (rule_id + entity_id + dedup_window)        │
+  │  → Only first writer wins, all duplicates dropped                                   │
+  │  → TTL = dedup window (e.g. 5 min for P0, 1 hr for P3)                             │
+  │                                                                                      │
+  │  Kafka consumer offset committed AFTER successful write — never before              │
+  │  → Crash before commit = reprocess (idempotent write handles duplicate)             │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+  Trade-off accepted: at-least-once + idempotent writes > exactly-once Kafka transactions
+  Reason: Kafka exactly-once (transactions) adds ~30% latency overhead at our throughput.
+          Idempotent writes at the store layer are cheaper and sufficient.
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  2. ORDERING ACROSS PARALLEL CONSUMER GROUPS
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  Normalization and Enrichment are separate consumer groups on the same Kafka topic.
+  They process in parallel — enrichment can finish before normalization for the same event.
+
+  Problem: Detection engine needs BOTH normalized schema AND enrichment context.
+           If it reads too early, it gets a half-enriched event.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Two-phase write model:                                                              │
+  │                                                                                      │
+  │  Phase 1: Normalization worker writes to ClickHouse (raw normalized record)         │
+  │           Sets Redis key: norm_done:{event_id} = 1, TTL 60s                        │
+  │                                                                                      │
+  │  Phase 2: Enrichment worker reads normalized record from ClickHouse,                │
+  │           merges enrichment fields, writes enriched record back                     │
+  │           Sets Redis key: enrich_done:{event_id} = 1, TTL 60s                      │
+  │                                                                                      │
+  │  Detection engine consumer group: reads from a SECOND Kafka topic                  │
+  │  "enriched-events" — only populated after both phases complete                      │
+  │                                                                                      │
+  │  Enrichment worker is the single writer to "enriched-events" topic                 │
+  │  → ordering guarantee restored within tenant partition                              │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+  This is the "fan-out then join" pattern. The enriched-events topic is the join point.
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  3. DISTRIBUTED SLIDING WINDOWS (threshold & correlation detection)
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  Threshold rules: "5 failed logins for same user in 60 seconds"
+  This requires stateful counting across a distributed worker pool.
+
+  Problem: If 3 normalization workers each see some of the 5 login events, no single
+           worker reaches the threshold. Distributed state coordination is needed.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Redis for sliding window counters:                                                  │
+  │                                                                                      │
+  │  Key: window:{tenant_id}:{rule_id}:{entity_id}:{window_bucket}                     │
+  │  Value: sorted set (event timestamps) — ZRANGEBYSCORE for window membership         │
+  │  TTL: window duration + 10% buffer                                                  │
+  │                                                                                      │
+  │  All detection workers for a tenant hash to the SAME Redis shard                   │
+  │  (consistent hashing on tenant_id) — single source of truth per tenant             │
+  │                                                                                      │
+  │  INCR is atomic in Redis — no race condition on the counter                        │
+  │                                                                                      │
+  │  On Redis node failure:                                                              │
+  │  → Redis Cluster with replica promotion (< 1s failover via Sentinel)               │
+  │  → In-flight window state for that shard is lost                                   │
+  │  → Acceptable: we may miss a threshold breach during the ~1s failover window       │
+  │  → For P0 rules: secondary ClickHouse query as fallback (slower, not real-time)    │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+  Trade-off: Redis window state loss on failure < 1s is accepted over the complexity of
+  distributed consensus (Flink/Spark Structured Streaming) for this use case.
+  For customers requiring zero-miss guarantees: Flink offered as premium tier.
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  4. CLICKHOUSE WRITE THROUGHPUT — BATCHING STRATEGY
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  ClickHouse is optimized for bulk inserts. Row-by-row inserts at 11M events/sec would
+  overwhelm the merge tree and cause write amplification.
+
+  Problem: Normalization workers process events one-by-one from Kafka.
+           Direct insert per event = millions of tiny inserts = ClickHouse thrash.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Buffer layer in each normalization worker:                                          │
+  │                                                                                      │
+  │  • Accumulate events in memory: flush when EITHER condition is met:                 │
+  │    - Buffer size >= 50,000 rows   (size threshold)                                  │
+  │    - Buffer age  >= 500ms         (time threshold)                                  │
+  │                                                                                      │
+  │  • 500ms flush interval → hot log store is at most 500ms stale                     │
+  │  • Acceptable for detection (rules run on enriched-events Kafka topic anyway)       │
+  │                                                                                      │
+  │  • ClickHouse async_insert mode as secondary option:                                │
+  │    server-side buffering, flush managed by ClickHouse itself                        │
+  │                                                                                      │
+  │  • ReplicatedMergeTree with 2 replicas:                                             │
+  │    write to one, async replication to second                                        │
+  │    quorum writes (wait_for_async_insert=1) for P0 tenant data only                 │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+  Query freshness trade-off: 500ms lag is fine for investigation queries.
+  Detection runs off Kafka (real-time), not ClickHouse — so detection is not affected.
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  5. MULTI-REGION ACTIVE-ACTIVE — CONFLICT RESOLUTION
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  Two regions (e.g. us-east-1, us-west-2) both accept writes. A P0 alert fires in both
+  regions simultaneously for the same tenant event (due to Kafka replication lag).
+
+  Problem: Two agent workers in two regions produce two verdicts for the same alert.
+           Which one wins? Entity history in Postgres could diverge.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Tenant pinned to PRIMARY region for Postgres writes:                               │
+  │  • Entity history, verdicts, analyst decisions → single-region Postgres (primary)  │
+  │  • Read replicas in secondary region for low-latency reads                         │
+  │  • This is active-active for ingestion + detection, active-passive for state        │
+  │                                                                                      │
+  │  Alert ownership via distributed lock (Redis SETNX with 30s TTL):                  │
+  │  • First region to acquire lock owns the alert for triage                          │
+  │  • Second region sees lock exists → defers, monitors for lock release              │
+  │  • Lock released after verdict written to Postgres                                  │
+  │                                                                                      │
+  │  Kafka: cross-region replication via MirrorMaker2 (async, ~100ms lag)             │
+  │  • Ingestion is truly active-active (both regions ingest from local sources)       │
+  │  • Events replicated to partner region for DR                                       │
+  │                                                                                      │
+  │  On primary region failure:                                                          │
+  │  • DNS failover to secondary (< 60s)                                               │
+  │  • Secondary promotes read replica → new primary                                   │
+  │  • RPO: ~100ms (MirrorMaker lag) | RTO: ~60s                                      │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+  Honest trade-off: "active-active" is a simplification. Ingestion is truly active-active.
+  State (Postgres) is active-passive per tenant. This is the right trade-off — distributed
+  consensus across regions for every verdict write is not worth the latency cost.
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  6. AGENT HORIZONTAL SCALING — STATELESS WORKERS
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  The AI triage agent is multi-step: context load → plan → tool calls → LLM → post-process.
+  This takes 2–30 seconds. Workers must be horizontally scalable without sticky sessions.
+
+  Problem: If the worker dies mid-investigation, the in-flight alert is lost.
+           If workers are stateful, you can't scale freely.
+
+  Solution:
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  All worker state externalized to Redis:                                             │
+  │                                                                                      │
+  │  Redis key: agent_state:{alert_id}                                                  │
+  │  Value: {step, tool_results_so_far, partial_reasoning, retry_count}                │
+  │  TTL: 5 minutes (max investigation budget)                                           │
+  │                                                                                      │
+  │  Workers are fully stateless — pull job from queue, load state from Redis,          │
+  │  execute next step, write state back, repeat                                         │
+  │                                                                                      │
+  │  Worker crash recovery:                                                              │
+  │  • Job queue (SQS / Kafka) has visibility timeout = 60s                             │
+  │  • If worker doesn't ACK within 60s → job requeued                                 │
+  │  • New worker picks up job, loads partial state from Redis, resumes from last step  │
+  │  • Idempotent tool calls (read-only tools trivially safe; write tools use           │
+  │    idempotency keys passed to SOAR/ticketing APIs)                                  │
+  │                                                                                      │
+  │  Scaling: worker pool auto-scales on queue depth (KEDA + Kubernetes)               │
+  │  • P0 queue: dedicated always-on workers (never cold start)                         │
+  │  • P3 queue: scale to zero when empty                                               │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  7. KAFKA CONSUMER LAG MONITORING & BACKPRESSURE
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Lag monitoring:                                                                     │
+  │  • Per consumer group, per partition offset lag tracked via Kafka consumer API      │
+  │  • Exported to Prometheus → Grafana alert if lag > 30s worth of events             │
+  │                                                                                      │
+  │  Backpressure response (tiered):                                                     │
+  │  Lag < 10s    → normal operation                                                    │
+  │  Lag 10–30s   → scale up normalization workers (KEDA triggers)                     │
+  │  Lag 30–60s   → shed P3 (low priority) detection rules temporarily                 │
+  │  Lag > 60s    → alert on-call, pause non-critical consumer groups                  │
+  │                Protect P0/P1 pipeline at all costs                                  │
+  │                                                                                      │
+  │  Kafka retention = 7 days → can always replay if a consumer group falls far behind │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  8. COLD START — NEW TENANT WITH NO HISTORY
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  A brand new tenant has: no RAG history, no entity baselines, no fine-tuned model.
+
+  ┌──────────────────────────────────────────────────────────────────────────────────────┐
+  │  Day 0 bootstrapping:                                                                │
+  │                                                                                      │
+  │  RAG store: seeded with:                                                            │
+  │  • Panther's curated SOC playbook library (generic, not tenant-specific)           │
+  │  • MITRE ATT&CK technique descriptions                                             │
+  │  • Public threat intel reports                                                       │
+  │                                                                                      │
+  │  UEBA baselines: cold start period = first 14 days                                 │
+  │  • During cold start: ML anomaly detection disabled                                 │
+  │  • Rule-based + threshold detection only (lower FP risk without baseline)          │
+  │  • Baseline built from first 14 days of observed behavior                          │
+  │                                                                                      │
+  │  LLM: base model used (no fine-tuning) with vertical prompt module                 │
+  │  • Industry vertical detected from onboarding (finance, healthcare, tech...)       │
+  │  • Vertical-specific prompt module loaded (higher risk tolerance calibration)       │
+  │                                                                                      │
+  │  After 30 days: first fine-tune run, RAG populated with resolved alerts            │
+  │  After 90 days: full system operating at designed accuracy targets                 │
+  └──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  9. COST MODEL PER TENANT
+  ─────────────────────────────────────────────────────────────────────────────────────────
+
+  ┌────────────────────────────────────┬───────────────────┬────────────────────────────┐
+  │ Cost driver                        │ Who pays          │ Control lever              │
+  ├────────────────────────────────────┼───────────────────┼────────────────────────────┤
+  │ Kafka ingest (per GB)              │ Tenant            │ Data volume pricing tier   │
+  │ ClickHouse storage (per TB/month)  │ Tenant            │ Hot window config (30/90d) │
+  │ S3 cold archive                    │ Tenant            │ Retention policy setting   │
+  │ LLM tokens (per alert routed)      │ Panther           │ Deterministic pre-filter   │
+  │   (only 20-30% reach LLM)         │                   │ reduces LLM calls 70%      │
+  │ Redis (per tenant state)           │ Panther (shared)  │ TTL tuning per data type   │
+  │ Normalization workers (CPU)        │ Panther (shared)  │ Worker pool bin-packing    │
+  └────────────────────────────────────┴───────────────────┴────────────────────────────┘
+
+  Pricing model: per-GB ingested + per-alert-resolved (outcome pricing)
+  • Aligns incentives: we win when automation rate is high (low cost to us, high value to them)
+  • LLM cost = biggest variable → deterministic pre-filter is the margin protection mechanism
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 THE BILLION DOLLAR FORMULA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

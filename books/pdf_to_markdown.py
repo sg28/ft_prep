@@ -18,6 +18,14 @@ except ImportError:
     print("Install with: pip install pymupdf")
     sys.exit(1)
 
+try:
+    import pytesseract
+    from PIL import Image
+    import io
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
+
 
 class PDFToMarkdownConverter:
     """Convert PDF to structured Markdown files optimized for LLMs."""
@@ -44,8 +52,30 @@ class PDFToMarkdownConverter:
         self.doc = fitz.open(pdf_path)
         self.toc = self.doc.get_toc()  # Table of contents
 
+        # Detect if PDF is image-based (requires OCR)
+        sample_text = self.doc[0].get_text().strip() if len(self.doc) > 0 else ""
+        self.needs_ocr = len(sample_text) < 10 and OCR_AVAILABLE
+        if self.needs_ocr:
+            print("Detected image-based PDF. Using OCR (Tesseract) for text extraction.")
+        elif len(sample_text) < 10 and not OCR_AVAILABLE:
+            print("WARNING: PDF appears image-based but pytesseract is not installed.")
+            print("Install with: pip install pytesseract  (also needs tesseract-ocr system package)")
+
+    def extract_text_with_ocr(self, page) -> str:
+        """Extract text from an image-based page using OCR."""
+        # Render page to image at 300 DPI for good OCR quality
+        mat = fitz.Matrix(300 / 72, 300 / 72)
+        pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB)
+        img_bytes = pix.tobytes("png")
+        img = Image.open(io.BytesIO(img_bytes))
+        text = pytesseract.image_to_string(img, lang="eng")
+        return text
+
     def extract_text_with_formatting(self, page) -> str:
         """Extract text from page preserving basic formatting."""
+        if self.needs_ocr:
+            return self.extract_text_with_ocr(page)
+
         blocks = page.get_text("dict")["blocks"]
         text_parts = []
 
@@ -159,12 +189,13 @@ class PDFToMarkdownConverter:
         print(f"✓ Created metadata: {output_path.name}")
 
     def convert_to_chapters(self):
-        """Convert PDF to chapter-based markdown files."""
+        """Convert PDF to chapter-based markdown files. Returns True if chapters were found."""
         chapters = self.detect_chapter_boundaries()
 
         if not chapters:
             print("No chapters detected. Creating single file...")
-            return self.convert_to_single_file()
+            self.convert_to_single_file()
+            return False
 
         print(f"Detected {len(chapters)} chapters")
 
@@ -182,6 +213,8 @@ class PDFToMarkdownConverter:
             output_path = self.output_dir / filename
             output_path.write_text(content, encoding='utf-8')
             print(f"✓ Created chapter {chapter_num}: {filename}")
+
+        return True
 
     def convert_to_single_file(self):
         """Convert entire PDF to a single markdown file."""
@@ -217,13 +250,12 @@ class PDFToMarkdownConverter:
 
         # Convert based on mode
         if mode == "chapters":
-            self.convert_to_chapters()
+            chapters_found = self.convert_to_chapters()
+            # Only create a combined full-book if chapters were actually split
+            if chapters_found:
+                print("\nCreating combined full-book file...")
+                self.convert_to_single_file()
         else:
-            self.convert_to_single_file()
-
-        # Always create full book for reference
-        if mode == "chapters":
-            print("\nCreating combined full-book file...")
             self.convert_to_single_file()
 
         print(f"\n✓ Conversion complete!")
