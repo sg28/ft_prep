@@ -1,0 +1,8 @@
+# Credits
+
+<!-- Page 372 -->
+
+CREDITS
+
+COVER DESIGN BY JARROD TAYLOR
+
