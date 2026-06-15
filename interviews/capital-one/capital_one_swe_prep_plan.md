@@ -975,3 +975,111 @@ End every round with 1–2. Don't repeat across rounds.
 | Blind | Salary + culture | Free |
 | Interview Query C1 guide | Verified questions | Free tier |
 | Prepfully C1 guide | Process details | Free |
+
+---
+
+## 15. How to Practice This Plan
+
+### Core principles
+
+1. **Active recall over re-reading.** Close the doc, reproduce from blank.
+2. **Verbalize everything.** If you can't explain it aloud, you don't know it.
+3. **Time-box every drill.** Pressure exposes the gaps.
+4. **Record at least once per module.** Listen back; you'll hear what interviewers hear.
+5. **Spaced repetition.** Revisit each module at 24h, 72h, and 1wk after first pass.
+
+### Per-module practice protocol
+
+**Module A — Banking OOP (3 templates)**
+
+For each of Banking, Credit Card, Parking Lot:
+- **Pass 1 (study):** Read template, trace each method, understand why each clarifying question + edge case exists. ~15 min.
+- **Pass 2 (recall):** Close doc. Blank file. Write Part 1 from scratch. Compare. Note misses. 15 min.
+- **Pass 3 (full):** Close doc. Write Parts 1–3 talking aloud. Record. 30–45 min.
+- **Pass 4 (variant pressure):** Without looking, write the OOP for a new domain ("hotel booking system" / "library / file storage"). 30 min.
+
+Compare to template only *after* each pass, not during.
+
+**Module B — CodeSignal OA**
+
+- Solve each pattern's first problem untimed to learn it (~30 min each)
+- Redo all 15 timed (8–12 min each) in one block
+- One full mock OA: 4 unseen problems, 70 min, on a real timer
+- Review every miss with a 1-line root cause: pattern unknown / pacing / careless
+
+**Module C — System Design**
+
+For each design:
+- **Pass 1:** Read design + concepts. Understand the why, don't memorize.
+- **Pass 2:** Open Excalidraw or whiteboard. Without looking, draw architecture + API + data model. 45 min.
+- **Pass 3:** Talk through your whiteboard aloud, recorded. 30 min.
+- **Pass 4:** Cold drill — have someone (or a separate AI session) ask the §6 follow-up questions. Answer without preparation.
+
+**Module D — Case Study**
+
+- For each sample: cover the bugs/refactor sections. Read only the function. Write your own bug list + refactor. 15 min.
+- Compare. Note bugs *and bug categories* you missed (e.g. "I always miss float-comparison").
+- After 5 samples, find 5 new ones (LeetCode review-this-code problems or ask me for fresh ones).
+
+**Module E — STAR Stories**
+
+- Write each out longhand
+- Record on phone voice memo, time it
+- Listen back: filler words, pacing, missing numbers, missing reflection
+- Re-record until under 2 min
+- Drill the §8 follow-up matrix cold with a partner or AI session
+
+**Module F — Domain Refreshers**
+
+- AWS: write your own one-pagers, don't read marketing pages. Per service: 2-sentence what-it-is, 3 use cases, 1 gotcha.
+- Finance: explain each in 2 sentences as if to a non-engineer. If you can't, you don't know it.
+
+**Module G — Mock Power Day**
+
+Real 4-hour block. No phone. No tabs except IDE.
+- 60 min coding (Banking variant you haven't drilled, e.g. file storage)
+- 5 min break
+- 60 min system design (fresh prompt, e.g. "design peer-to-peer payments")
+- 5 min break
+- 60 min case study (fresh buggy code)
+- 5 min break
+- 45 min behavioral with a partner playing interviewer
+
+Immediately after: write a gap list. Those gaps are your remaining focus.
+
+### Tools (mostly free)
+
+| Need | Free option | Paid option |
+|---|---|---|
+| Timed problems | leetcode.com built-in timer | LeetCode Premium $35/mo |
+| Mock interviewer | 2nd AI session in another tab | Interviewing.io, Pramp, Exponent |
+| Whiteboard | Excalidraw, tldraw, paper + phone camera | Miro |
+| Recording | Phone voice memo | — |
+| Code execution | Local IDE | CoderPad trial |
+
+### AI mock interviewer prompts
+
+Paste into a fresh AI chat (Claude, ChatGPT, whatever):
+
+**Technical round:**
+> "You are a Capital One Principal Software Engineer interviewer running the [coding / system design / case study] round of a Power Day. Ask me a round-appropriate question, then push back with follow-ups based on my answers. When my answers are vague or missing tradeoffs, call it out. Don't give me the answer; make me work. Start now."
+
+**Behavioral round:**
+> "You are a Capital One behavioral interviewer. Ask me one behavioral question, then ask 3–4 follow-up questions that dig into my specific contribution, what I'd do differently, and how I measured success. After my answer, give brief feedback on what was weak. Don't be soft."
+
+### Common practice mistakes
+
+- Reading the solution before attempting — defeats recall
+- Practicing silent — real rounds are spoken
+- Skipping the timed phase — creates false confidence
+- No follow-up drilling — you'll freeze on the second question
+- Not recording — you can't hear your own filler words
+- Cramming — spaced sessions (24h/72h/1wk gaps) beat marathons
+
+### Weekly cadence (no day structure — just rhythm)
+
+- **Daily:** 1 OA problem timed (~15 min) + rehearse 1 STAR aloud (~3 min)
+- **3–4x per week:** One full OOP template or system design (45–60 min)
+- **2x per week:** Case study drill (1 buggy sample, 15–20 min)
+- **1x per week:** Long block — mock interview or domain refresher (1–2 hrs)
+- **Once total (few days before Power Day):** Full mock Power Day (4 hrs)
