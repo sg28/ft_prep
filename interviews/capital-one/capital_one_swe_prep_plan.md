@@ -2,6 +2,7 @@
 
 **Target:** Principal Associate / Lead Software Engineer
 **Approach:** Topic-based, study to mastery per module
+**Language:** JavaScript (ES2022+)
 **Updated:** June 14, 2026
 
 ---
@@ -103,7 +104,14 @@ Drop in this order:
 | Intervals | Merge Intervals, Insert Interval |
 | Math | Count Primes (Sieve), Prime to N |
 
-**Language:** Python (fastest, fewer footguns). JS/TS if faster for you.
+**Language:** JavaScript. Use ES2022+: `Map`, `Set`, optional chaining, nullish coalescing, `Array.from`, spread. Avoid `var`. Use `const` by default.
+
+**JS-specific gotchas to know cold:**
+- `Map` preserves insertion order; plain objects do too in modern engines but `Map` is clearer for keyed lookups
+- `Number` is float-only — use `BigInt` or integer cents for money math
+- Array sort is in-place and lexicographic by default — always pass a comparator for numbers
+- `arr.includes(x)` on a large array is O(n) — use a `Set` for membership checks
+- `JSON.stringify` doesn't handle `BigInt` or `Map` natively
 
 **Pre-OA:** Wired internet · Chrome only (tab-switch flagged) · scratch paper · water · restroom done.
 
@@ -116,7 +124,7 @@ Drop in this order:
 - Part 2: Cross-entity op
 - Part 3: Aggregation / ranking / time-based
 
-Part 1 design dictates Parts 2–3. Build extension-ready: separate entity class, dict lookups, activity counter from line one.
+Part 1 design dictates Parts 2–3. Build extension-ready: separate entity class, Map lookups, activity counter from line one.
 
 **Pattern 2 — Stateful simulation, not pure algorithm.**
 
@@ -142,164 +150,175 @@ Part 1 design dictates Parts 2–3. Build extension-ready: separate entity class
 
 ### Template 1 — Banking OOP
 
-```python
-class Bank:
-    def __init__(self):
-        self.accounts = {}          # id -> Account
-        self.activity_count = {}    # id -> int
-        self.transactions = []      # audit / scheduled
+```javascript
+class Bank {
+    constructor() {
+        this.accounts = new Map();          // id -> Account
+        this.activityCount = new Map();     // id -> number
+        this.transactions = [];             // audit / scheduled
+    }
 
-    def create_account(self, account_id: str) -> bool:
-        if account_id in self.accounts:
-            return False
-        self.accounts[account_id] = Account(account_id)
-        self.activity_count[account_id] = 0
-        return True
+    createAccount(accountId) {
+        if (this.accounts.has(accountId)) return false;
+        this.accounts.set(accountId, new Account(accountId));
+        this.activityCount.set(accountId, 0);
+        return true;
+    }
 
-    def deposit(self, account_id: str, amount: int) -> int:
-        if account_id not in self.accounts or amount <= 0:
-            return -1
-        self.accounts[account_id].balance += amount
-        self.activity_count[account_id] += 1
-        return self.accounts[account_id].balance
+    deposit(accountId, amount) {
+        if (!this.accounts.has(accountId) || amount <= 0) return -1;
+        const acct = this.accounts.get(accountId);
+        acct.balance += amount;
+        this.activityCount.set(accountId, this.activityCount.get(accountId) + 1);
+        return acct.balance;
+    }
 
-    def withdraw(self, account_id: str, amount: int) -> int:
-        if account_id not in self.accounts or amount <= 0:
-            return -1
-        acct = self.accounts[account_id]
-        if acct.balance < amount:
-            return -1
-        acct.balance -= amount
-        self.activity_count[account_id] += 1
-        return acct.balance
+    withdraw(accountId, amount) {
+        if (!this.accounts.has(accountId) || amount <= 0) return -1;
+        const acct = this.accounts.get(accountId);
+        if (acct.balance < amount) return -1;
+        acct.balance -= amount;
+        this.activityCount.set(accountId, this.activityCount.get(accountId) + 1);
+        return acct.balance;
+    }
 
-    def transfer(self, from_id: str, to_id: str, amount: int) -> int:
-        if from_id == to_id:
-            return -1
-        if from_id not in self.accounts or to_id not in self.accounts:
-            return -1
-        if amount <= 0 or self.accounts[from_id].balance < amount:
-            return -1
-        self.accounts[from_id].balance -= amount
-        self.accounts[to_id].balance += amount
-        self.activity_count[from_id] += 1
-        return self.accounts[from_id].balance
+    transfer(fromId, toId, amount) {
+        if (fromId === toId) return -1;
+        if (!this.accounts.has(fromId) || !this.accounts.has(toId)) return -1;
+        if (amount <= 0 || this.accounts.get(fromId).balance < amount) return -1;
+        this.accounts.get(fromId).balance -= amount;
+        this.accounts.get(toId).balance += amount;
+        this.activityCount.set(fromId, this.activityCount.get(fromId) + 1);
+        return this.accounts.get(fromId).balance;
+    }
 
-    def top_k_active(self, k: int) -> list:
-        return sorted(
-            self.activity_count.items(),
-            key=lambda x: (-x[1], x[0])
-        )[:k]
+    topKActive(k) {
+        return [...this.activityCount.entries()]
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+            .slice(0, k);
+    }
+}
 
-
-class Account:
-    def __init__(self, account_id: str):
-        self.id = account_id
-        self.balance = 0
+class Account {
+    constructor(accountId) {
+        this.id = accountId;
+        this.balance = 0;
+    }
+}
 ```
 
-**Clarifying questions:** Amounts positive int? Transfer atomic? Timestamps needed? Top-K tie-break?
+**Clarifying questions:** Amounts positive integers? Transfer atomic? Timestamps needed? Top-K tie-break?
 **Edge cases:** negative amount · self-transfer · missing account · insufficient funds
 
 ### Template 2 — Credit Card System (variant)
 
-```python
-import time
+```javascript
+class CreditCardSystem {
+    constructor() {
+        this.cards = new Map();             // id -> Card
+        this.transactions = [];             // [cardId, amount, kind, ts]
+        this.activityCount = new Map();     // id -> number
+    }
 
-class CreditCardSystem:
-    def __init__(self):
-        self.cards = {}              # id -> Card
-        self.transactions = []       # (card_id, amt, kind, ts)
-        self.activity_count = {}     # id -> int
+    issue(cardId, limit) {
+        if (this.cards.has(cardId) || limit <= 0) return false;
+        this.cards.set(cardId, new Card(cardId, limit));
+        this.activityCount.set(cardId, 0);
+        return true;
+    }
 
-    def issue(self, card_id: str, limit: int) -> bool:
-        if card_id in self.cards or limit <= 0:
-            return False
-        self.cards[card_id] = Card(card_id, limit)
-        self.activity_count[card_id] = 0
-        return True
+    charge(cardId, amount) {
+        if (!this.cards.has(cardId) || amount <= 0) return -1;
+        const card = this.cards.get(cardId);
+        if (card.balance + amount > card.limit) return -1;
+        card.balance += amount;
+        this.activityCount.set(cardId, this.activityCount.get(cardId) + 1);
+        this.transactions.push([cardId, amount, 'charge', Date.now()]);
+        return card.balance;
+    }
 
-    def charge(self, card_id: str, amount: int) -> int:
-        if card_id not in self.cards or amount <= 0:
-            return -1
-        card = self.cards[card_id]
-        if card.balance + amount > card.limit:
-            return -1
-        card.balance += amount
-        self.activity_count[card_id] += 1
-        self.transactions.append((card_id, amount, "charge", time.time()))
-        return card.balance
+    pay(cardId, amount) {
+        if (!this.cards.has(cardId) || amount <= 0) return -1;
+        const card = this.cards.get(cardId);
+        const paid = Math.min(amount, card.balance);
+        card.balance -= paid;
+        this.activityCount.set(cardId, this.activityCount.get(cardId) + 1);
+        this.transactions.push([cardId, paid, 'pay', Date.now()]);
+        return card.balance;
+    }
 
-    def pay(self, card_id: str, amount: int) -> int:
-        if card_id not in self.cards or amount <= 0:
-            return -1
-        card = self.cards[card_id]
-        paid = min(amount, card.balance)
-        card.balance -= paid
-        self.activity_count[card_id] += 1
-        self.transactions.append((card_id, paid, "pay", time.time()))
-        return card.balance
+    statsLastNDays(cardId, n) {
+        if (!this.cards.has(cardId)) return -1;
+        const cutoff = Date.now() - n * 86_400_000;  // ms in a day
+        let count = 0;
+        for (const [cid, , kind, ts] of this.transactions) {
+            if (cid === cardId && ts >= cutoff && kind === 'charge') count++;
+        }
+        return count;
+    }
 
-    def stats_last_n_days(self, card_id: str, n: int) -> int:
-        if card_id not in self.cards:
-            return -1
-        cutoff = time.time() - (n * 86400)
-        return sum(1 for t in self.transactions
-                   if t[0] == card_id and t[3] >= cutoff and t[2] == "charge")
+    topKSpenders(k) {
+        const spend = new Map();
+        for (const [cid, amt, kind] of this.transactions) {
+            if (kind !== 'charge') continue;
+            spend.set(cid, (spend.get(cid) ?? 0) + amt);
+        }
+        return [...spend.entries()]
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+            .slice(0, k);
+    }
+}
 
-    def top_k_spenders(self, k: int) -> list:
-        spend = {}
-        for cid, amt, kind, _ in self.transactions:
-            if kind == "charge":
-                spend[cid] = spend.get(cid, 0) + amt
-        return sorted(spend.items(), key=lambda x: (-x[1], x[0]))[:k]
-
-
-class Card:
-    def __init__(self, card_id: str, limit: int):
-        self.id = card_id
-        self.limit = limit
-        self.balance = 0  # outstanding owed
+class Card {
+    constructor(cardId, limit) {
+        this.id = cardId;
+        this.limit = limit;
+        this.balance = 0;  // outstanding owed
+    }
+}
 ```
 
 **Variant-specific clarifications:** Credit limit hard cap? Overpayment refund or just zero out? Stats by charge only or net spend?
 
 ### Template 3 — Parking Lot (variant)
 
-```python
-class ParkingLot:
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.spots = [None] * capacity   # index -> license_plate or None
-        self.vehicles = {}               # plate -> spot_index
-        self.next_free = 0
+```javascript
+class ParkingLot {
+    constructor(capacity) {
+        this.capacity = capacity;
+        this.spots = new Array(capacity).fill(null);  // index -> plate or null
+        this.vehicles = new Map();                    // plate -> spot index
+    }
 
-    def park(self, plate: str) -> int:
-        if plate in self.vehicles:
-            return -1
-        if len(self.vehicles) >= self.capacity:
-            return -1
-        # Linear scan; for huge lots use a heap or sorted set
-        for i in range(self.capacity):
-            if self.spots[i] is None:
-                self.spots[i] = plate
-                self.vehicles[plate] = i
-                return i
-        return -1
+    park(plate) {
+        if (this.vehicles.has(plate)) return -1;
+        if (this.vehicles.size >= this.capacity) return -1;
+        for (let i = 0; i < this.capacity; i++) {
+            if (this.spots[i] === null) {
+                this.spots[i] = plate;
+                this.vehicles.set(plate, i);
+                return i;
+            }
+        }
+        return -1;
+    }
 
-    def leave(self, plate: str) -> int:
-        if plate not in self.vehicles:
-            return -1
-        idx = self.vehicles[plate]
-        self.spots[idx] = None
-        del self.vehicles[plate]
-        return idx
+    leave(plate) {
+        if (!this.vehicles.has(plate)) return -1;
+        const idx = this.vehicles.get(plate);
+        this.spots[idx] = null;
+        this.vehicles.delete(plate);
+        return idx;
+    }
 
-    def occupancy(self) -> int:
-        return len(self.vehicles)
+    occupancy() {
+        return this.vehicles.size;
+    }
 
-    def is_full(self) -> bool:
-        return len(self.vehicles) >= self.capacity
+    isFull() {
+        return this.vehicles.size >= this.capacity;
+    }
+}
 ```
 
 **Variant-specific clarifications:** Vehicle sizes/spot types? Pricing model? Multi-floor?
@@ -377,7 +396,7 @@ outbox(id PK, event_type, payload, published_at NULL)
 - Outbox pattern guarantees event publication
 - Reconciliation job: nightly sweep verifies SUM(ledger_entries.signed_amount) per account == balances.balance
 - Sharding: by account_id hash when single primary hits ceiling (~50K TPS)
-- Currency precision: bigint cents only, never float
+- Currency precision: bigint cents only (in JS: `BigInt` or safe integer cents), never float
 
 **Failure modes:**
 | Failure | Detection | Recovery |
@@ -496,197 +515,199 @@ Posting flow (later, batch): hold → posted entry in ledger
 4. Rewrite cleaner
 5. State time/space complexity
 
-**Bug categories to scan for:** off-by-one · mutation of input · missing null/empty checks · redundant branches / dead else · wrong loop bounds · float comparison · resource leaks · race conditions · wrong data structure · magic numbers
+**Bug categories to scan for:** off-by-one · mutation of input · missing null/undefined checks · redundant branches / dead else · wrong loop bounds · float comparison · resource leaks · race conditions · wrong data structure · magic numbers · `==` vs `===` · implicit type coercion
 
 ### Sample 1 — Fee Calculation
 
-```python
-def calculate_late_fee(balance, days_late, customer_type):
-    fee = 0
-    if days_late > 0:
-        if customer_type == "premium":
-            fee = balance * 0.01
-        elif customer_type == "regular":
-            fee = balance * 0.02
-        else:
-            fee = balance * 0.02
-        if days_late > 30:
-            fee = fee * 2
-        elif days_late > 60:
-            fee = fee * 3
-    return fee
+```javascript
+function calculateLateFee(balance, daysLate, customerType) {
+    let fee = 0;
+    if (daysLate > 0) {
+        if (customerType === 'premium') {
+            fee = balance * 0.01;
+        } else if (customerType === 'regular') {
+            fee = balance * 0.02;
+        } else {
+            fee = balance * 0.02;
+        }
+        if (daysLate > 30) {
+            fee = fee * 2;
+        } else if (daysLate > 60) {
+            fee = fee * 3;
+        }
+    }
+    return fee;
+}
 ```
 
 **Purpose:** Calculate late fee based on balance, days overdue, and customer tier.
-**Bugs:** (1) `days_late > 60` branch unreachable — `> 30` swallows it. (2) Premium and regular both 2% if customer_type matches neither premium nor regular — duplicate branches. (3) Float math on currency. (4) No cap on fee. (5) No validation of negative balance or days_late.
+**Bugs:** (1) `daysLate > 60` branch unreachable — `> 30` swallows it. (2) `regular` and the default both yield 2% — duplicate branches that should be consolidated. (3) Float math on currency. (4) No cap on fee. (5) No validation of negative balance or daysLate.
 
 **Refactor:**
-```python
-from decimal import Decimal
+```javascript
+const LATE_FEE_RATES = { premium: 0.01, regular: 0.02 };
+const DEFAULT_RATE = 0.02;
 
-LATE_FEE_RATES = {"premium": Decimal("0.01"), "regular": Decimal("0.02")}
-DEFAULT_RATE = Decimal("0.02")
-MAX_FEE_MULTIPLIER = 3
-
-def calculate_late_fee(balance_cents: int, days_late: int, customer_type: str) -> int:
-    if balance_cents <= 0 or days_late <= 0:
-        return 0
-    rate = LATE_FEE_RATES.get(customer_type, DEFAULT_RATE)
-    base = Decimal(balance_cents) * rate
-    multiplier = 3 if days_late > 60 else 2 if days_late > 30 else 1
-    return int(base * multiplier)
+function calculateLateFee(balanceCents, daysLate, customerType) {
+    if (balanceCents <= 0 || daysLate <= 0) return 0;
+    const rate = LATE_FEE_RATES[customerType] ?? DEFAULT_RATE;
+    const multiplier = daysLate > 60 ? 3 : daysLate > 30 ? 2 : 1;
+    return Math.round(balanceCents * rate * multiplier);
+}
 ```
 
+**Note on float math in JS:** JS has no native Decimal. For interview-grade code, integer cents + `Math.round` is acceptable. In production, use `decimal.js` or `bignumber.js`. State this aloud.
 **Complexity:** O(1) time and space.
 
 ### Sample 2 — Transaction Dedup
 
-```python
-def remove_duplicates(transactions):
-    seen = []
-    for t in transactions:
-        if t not in seen:
-            seen.append(t)
-    return seen
+```javascript
+function removeDuplicates(transactions) {
+    const seen = [];
+    for (const t of transactions) {
+        if (!seen.includes(t)) {
+            seen.push(t);
+        }
+    }
+    return seen;
+}
 ```
 
-**Purpose:** Remove duplicate transactions from a list.
-**Bugs:** (1) `t not in seen` on a list is O(n) — total O(n²). (2) Mutates nothing but returns a new list while name suggests in-place. (3) No definition of duplicate — exact match? same txn_id? (4) Order preservation unclear.
+**Purpose:** Remove duplicate transactions from an array.
+**Bugs:** (1) `seen.includes(t)` is O(n) — total O(n²). (2) Comparing by reference, not by transaction identity (`txnId`). Two equal-content but different-object transactions are kept. (3) No definition of "duplicate" — exact match? same `txnId`? (4) Order preservation works here but isn't documented.
 
 **Refactor:**
-```python
-def remove_duplicate_transactions(transactions: list[dict]) -> list[dict]:
-    """Return transactions with duplicates removed by txn_id, preserving order."""
-    seen_ids = set()
-    result = []
-    for t in transactions:
-        if t["txn_id"] not in seen_ids:
-            seen_ids.add(t["txn_id"])
-            result.append(t)
-    return result
+```javascript
+function removeDuplicateTransactions(transactions) {
+    const seenIds = new Set();
+    const result = [];
+    for (const t of transactions) {
+        if (!seenIds.has(t.txnId)) {
+            seenIds.add(t.txnId);
+            result.push(t);
+        }
+    }
+    return result;
+}
 ```
 
 **Complexity:** O(n) time, O(n) space.
 
 ### Sample 3 — Balance Update
 
-```python
-def update_balance(account, amount):
-    account["balance"] = account["balance"] + amount
-    if account["balance"] < 0:
-        account["balance"] = 0
-    return account
+```javascript
+function updateBalance(account, amount) {
+    account.balance = account.balance + amount;
+    if (account.balance < 0) {
+        account.balance = 0;
+    }
+    return account;
+}
 ```
 
 **Purpose:** Add amount to balance, clamping at zero.
-**Bugs:** (1) Silently swallows overdrafts — caller can't tell if amount was applied. (2) No idempotency; replay double-charges. (3) Mutates input — dangerous in concurrent code. (4) No type or sign checks. (5) Returns the whole account, leaking internal state.
+**Bugs:** (1) Silently swallows overdrafts — caller can't tell whether the amount was applied. (2) No idempotency; replay double-charges. (3) Mutates the input object — dangerous in concurrent code. (4) No type or sign checks. (5) Returns the whole account, leaking internal state.
 
 **Refactor:**
-```python
-def apply_balance_change(
-    account: dict,
-    amount_cents: int,
-    txn_id: str,
-    seen_txns: set
-) -> tuple[bool, int]:
-    """
-    Returns (success, new_balance_cents).
-    Idempotent on txn_id. Rejects overdrafts instead of clamping.
-    """
-    if txn_id in seen_txns:
-        return True, account["balance"]
-    new_balance = account["balance"] + amount_cents
-    if new_balance < 0:
-        return False, account["balance"]
-    account["balance"] = new_balance
-    seen_txns.add(txn_id)
-    return True, new_balance
+```javascript
+function applyBalanceChange(account, amountCents, txnId, seenTxns) {
+    // Returns { success: boolean, balance: number }. Idempotent on txnId.
+    if (seenTxns.has(txnId)) {
+        return { success: true, balance: account.balance };
+    }
+    const newBalance = account.balance + amountCents;
+    if (newBalance < 0) {
+        return { success: false, balance: account.balance };
+    }
+    account.balance = newBalance;
+    seenTxns.add(txnId);
+    return { success: true, balance: newBalance };
+}
 ```
 
-**Complexity:** O(1) time, O(1) space (excluding `seen_txns` growth).
+**Complexity:** O(1) time, O(1) space (excluding `seenTxns` growth).
 
 ### Sample 4 — Tier Discount
 
-```python
-def apply_discount(price, customer):
-    discount = 0
-    if customer.tier == "gold":
-        discount = 0.15
-    if customer.tier == "silver":
-        discount = 0.10
-    if customer.tenure_months > 12:
-        discount = discount + 0.05
-    return price - (price * discount)
+```javascript
+function applyDiscount(price, customer) {
+    let discount = 0;
+    if (customer.tier === 'gold') {
+        discount = 0.15;
+    }
+    if (customer.tier === 'silver') {
+        discount = 0.10;
+    }
+    if (customer.tenureMonths > 12) {
+        discount = discount + 0.05;
+    }
+    return price - (price * discount);
+}
 ```
 
 **Purpose:** Apply tier-based discount with tenure bonus.
-**Bugs:** (1) Three separate `if`s instead of elif — works only because tiers are mutually exclusive but fragile. (2) No cap on stacked discount (could exceed 100% with new tiers added). (3) Float math on price. (4) No null check on customer. (5) Bronze/no-tier customer with tenure > 12 gets 5% with no base.
+**Bugs:** (1) Three separate `if`s instead of `else if` — works only because tiers are mutually exclusive but fragile if a new tier is added. (2) No cap on stacked discount (could exceed 100% with new tiers). (3) Float math on price. (4) No null/undefined check on `customer`. (5) A no-tier customer with tenure > 12 gets 5% on top of zero — questionable.
 
 **Refactor:**
-```python
-from decimal import Decimal
+```javascript
+const TIER_DISCOUNTS = { gold: 0.15, silver: 0.10, bronze: 0.05 };
+const TENURE_BONUS = 0.05;
+const MAX_DISCOUNT = 0.50;
 
-TIER_DISCOUNTS = {
-    "gold": Decimal("0.15"),
-    "silver": Decimal("0.10"),
-    "bronze": Decimal("0.05"),
+function applyDiscount(priceCents, customer) {
+    if (customer == null || priceCents <= 0) return priceCents;
+    const base = TIER_DISCOUNTS[customer.tier] ?? 0;
+    const bonus = customer.tenureMonths > 12 && base > 0 ? TENURE_BONUS : 0;
+    const total = Math.min(base + bonus, MAX_DISCOUNT);
+    return Math.round(priceCents * (1 - total));
 }
-TENURE_BONUS = Decimal("0.05")
-MAX_DISCOUNT = Decimal("0.50")
-
-def apply_discount(price_cents: int, customer) -> int:
-    if customer is None or price_cents <= 0:
-        return price_cents
-    base = TIER_DISCOUNTS.get(customer.tier, Decimal(0))
-    bonus = TENURE_BONUS if customer.tenure_months > 12 and base > 0 else Decimal(0)
-    total = min(base + bonus, MAX_DISCOUNT)
-    return int(Decimal(price_cents) * (Decimal(1) - total))
 ```
 
 **Complexity:** O(1).
 
 ### Sample 5 — Top Spenders
 
-```python
-def get_top_spenders(transactions, n):
-    totals = {}
-    for t in transactions:
-        if t.user in totals:
-            totals[t.user] += t.amount
-        else:
-            totals[t.user] = t.amount
-    sorted_users = sorted(totals.items(), key=lambda x: x[1])
-    return sorted_users[:n]
+```javascript
+function getTopSpenders(transactions, n) {
+    const totals = {};
+    for (const t of transactions) {
+        if (t.user in totals) {
+            totals[t.user] += t.amount;
+        } else {
+            totals[t.user] = t.amount;
+        }
+    }
+    const sortedUsers = Object.entries(totals).sort((a, b) => a[1] - b[1]);
+    return sortedUsers.slice(0, n);
+}
 ```
 
 **Purpose:** Return top N users by total transaction amount.
-**Bugs:** (1) Sorts ascending — returns the *lowest* spenders. (2) No tie-break — non-deterministic on equal totals. (3) No handling of `n <= 0` or `n > len(totals)`. (4) Counts all txns including refunds/declines.
+**Bugs:** (1) Sort comparator is ascending — returns the *lowest* spenders. (2) No tie-break — non-deterministic on equal totals. (3) No handling of `n <= 0` or `n > totals.length`. (4) Counts all transactions including refunds, declines, etc. (5) `in` operator on object includes inherited properties — use `Object.hasOwn` or a `Map`.
 
 **Refactor:**
-```python
-import heapq
-
-def get_top_spenders(transactions: list, n: int) -> list[tuple[str, int]]:
-    if n <= 0:
-        return []
-    totals: dict[str, int] = {}
-    for t in transactions:
-        if t.status != "settled" or t.amount <= 0:
-            continue
-        totals[t.user] = totals.get(t.user, 0) + t.amount
-    if n >= len(totals):
-        return sorted(totals.items(), key=lambda x: (-x[1], x[0]))
-    return heapq.nlargest(n, totals.items(), key=lambda x: (x[1], -ord(x[0][0])))
+```javascript
+function getTopSpenders(transactions, n) {
+    if (n <= 0) return [];
+    const totals = new Map();
+    for (const t of transactions) {
+        if (t.status !== 'settled' || t.amount <= 0) continue;
+        totals.set(t.user, (totals.get(t.user) ?? 0) + t.amount);
+    }
+    return [...totals.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, n);
+}
 ```
 
-**Complexity:** O(m + k log n) where m = txns, k = unique users, n = result size.
+**Complexity:** O(m + k log k) where m = transactions, k = unique users.
 
 ### Business → code translations
 
-- "Customers with > 6 mo tenure pay 10% less" → tenure check + Decimal multiplier
-- "Daily compounding APR" → `balance *= (1 + Decimal(apr)/365)` per day; never float
+- "Customers with > 6 mo tenure pay 10% less" → tenure check + multiplier on integer cents
+- "Daily compounding APR" → `balance = Math.round(balance * (1 + apr / 365))` per day; never float on stored balances
 - "Skip fee if autopay enrolled" → flag check, document precedence
-- "Apply higher of tier or promo discount, not both" → `max(tier_d, promo_d)` not sum
+- "Apply higher of tier or promo discount, not both" → `Math.max(tierD, promoD)` not sum
 - "Cashback capped at $500/month" → running total per month, clamp at cap
 
 ---
