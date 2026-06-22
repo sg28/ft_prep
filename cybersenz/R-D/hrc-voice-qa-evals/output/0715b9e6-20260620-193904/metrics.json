@@ -1,0 +1,264 @@
+{
+  "avg_agent_response_latency_ms": 4127.1,
+  "silence_gaps": [
+    {
+      "start": 31.04,
+      "end": 38.52,
+      "duration_s": 7.48
+    },
+    {
+      "start": 43.71,
+      "end": 48.98,
+      "duration_s": 5.27
+    },
+    {
+      "start": 59.6,
+      "end": 64.32,
+      "duration_s": 4.72
+    },
+    {
+      "start": 117.38,
+      "end": 124.53,
+      "duration_s": 7.15
+    },
+    {
+      "start": 127.2,
+      "end": 130.12,
+      "duration_s": 2.92
+    },
+    {
+      "start": 133.06,
+      "end": 137.86,
+      "duration_s": 4.8
+    },
+    {
+      "start": 140.24,
+      "end": 144.16,
+      "duration_s": 3.92
+    },
+    {
+      "start": 151.15,
+      "end": 161.06,
+      "duration_s": 9.91
+    },
+    {
+      "start": 163.14,
+      "end": 166.51,
+      "duration_s": 3.37
+    },
+    {
+      "start": 171.2,
+      "end": 179.4,
+      "duration_s": 8.2
+    },
+    {
+      "start": 180.66,
+      "end": 183.66,
+      "duration_s": 3.0
+    },
+    {
+      "start": 192.36,
+      "end": 195.9,
+      "duration_s": 3.54
+    },
+    {
+      "start": 205.32,
+      "end": 220.44,
+      "duration_s": 15.12
+    },
+    {
+      "start": 221.64,
+      "end": 225.84,
+      "duration_s": 4.2
+    },
+    {
+      "start": 230.42,
+      "end": 242.48,
+      "duration_s": 12.06
+    },
+    {
+      "start": 244.7,
+      "end": 247.3,
+      "duration_s": 2.6
+    },
+    {
+      "start": 252.53,
+      "end": 259.82,
+      "duration_s": 7.29
+    },
+    {
+      "start": 294.06,
+      "end": 296.58,
+      "duration_s": 2.52
+    },
+    {
+      "start": 298.32,
+      "end": 305.98,
+      "duration_s": 7.66
+    },
+    {
+      "start": 308.22,
+      "end": 310.88,
+      "duration_s": 2.66
+    },
+    {
+      "start": 321.84,
+      "end": 324.8,
+      "duration_s": 2.96
+    },
+    {
+      "start": 326.35,
+      "end": 332.68,
+      "duration_s": 6.33
+    },
+    {
+      "start": 412.87,
+      "end": 415.91,
+      "duration_s": 3.04
+    },
+    {
+      "start": 423.25,
+      "end": 425.87,
+      "duration_s": 2.62
+    },
+    {
+      "start": 426.79,
+      "end": 431.63,
+      "duration_s": 4.84
+    },
+    {
+      "start": 436.05,
+      "end": 438.39,
+      "duration_s": 2.34
+    },
+    {
+      "start": 439.37,
+      "end": 441.95,
+      "duration_s": 2.58
+    },
+    {
+      "start": 446.45,
+      "end": 449.75,
+      "duration_s": 3.3
+    },
+    {
+      "start": 480.69,
+      "end": 483.11,
+      "duration_s": 2.42
+    },
+    {
+      "start": 492.43,
+      "end": 496.93,
+      "duration_s": 4.5
+    },
+    {
+      "start": 502.48,
+      "end": 524.21,
+      "duration_s": 21.73
+    },
+    {
+      "start": 528.74,
+      "end": 531.75,
+      "duration_s": 3.01
+    },
+    {
+      "start": 574.79,
+      "end": 585.57,
+      "duration_s": 10.78
+    },
+    {
+      "start": 604.03,
+      "end": 606.55,
+      "duration_s": 2.52
+    },
+    {
+      "start": 622.07,
+      "end": 626.25,
+      "duration_s": 4.18
+    },
+    {
+      "start": 634.63,
+      "end": 647.67,
+      "duration_s": 13.04
+    },
+    {
+      "start": 648.97,
+      "end": 651.35,
+      "duration_s": 2.38
+    },
+    {
+      "start": 657.87,
+      "end": 665.36,
+      "duration_s": 7.49
+    },
+    {
+      "start": 671.05,
+      "end": 676.39,
+      "duration_s": 5.34
+    },
+    {
+      "start": 686.61,
+      "end": 689.35,
+      "duration_s": 2.74
+    },
+    {
+      "start": 690.45,
+      "end": 695.85,
+      "duration_s": 5.4
+    },
+    {
+      "start": 709.87,
+      "end": 715.34,
+      "duration_s": 5.47
+    },
+    {
+      "start": 728.52,
+      "end": 731.46,
+      "duration_s": 2.94
+    },
+    {
+      "start": 736.82,
+      "end": 740.0,
+      "duration_s": 3.18
+    },
+    {
+      "start": 741.46,
+      "end": 747.3,
+      "duration_s": 5.84
+    },
+    {
+      "start": 754.18,
+      "end": 762.6,
+      "duration_s": 8.42
+    },
+    {
+      "start": 780.98,
+      "end": 790.26,
+      "duration_s": 9.28
+    },
+    {
+      "start": 792.84,
+      "end": 796.28,
+      "duration_s": 3.44
+    },
+    {
+      "start": 797.42,
+      "end": 799.7,
+      "duration_s": 2.28
+    },
+    {
+      "start": 800.18,
+      "end": 805.34,
+      "duration_s": 5.16
+    },
+    {
+      "start": 805.74,
+      "end": 809.46,
+      "duration_s": 3.72
+    }
+  ],
+  "interruptions": 0,
+  "total_hold_time_s": 72.73,
+  "total_turns": 69,
+  "agent_talk_ratio": 0.262
+}

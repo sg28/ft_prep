@@ -1,0 +1,799 @@
+{
+  "call_uuid": "0715b9e6-f0e4-428b-9e29-5dab9c9e4016",
+  "eval_timestamp": "2026-06-21T02:39:47.486044+00:00",
+  "score": 77,
+  "dimensions": {
+    "data_completeness": {
+      "score": 18,
+      "rationale": "Member ID and detailed infertility/ART coverage, limits, and some auth rules were obtained, but key financials (group number, deductible, OOP max, copays/coinsurance, effective dates, and auth contact details) were not collected."
+    },
+    "conversation_quality": {
+      "score": 18,
+      "rationale": "The agent was clear, professional, and concise, stated purpose and credentials naturally, and asked targeted benefit questions with minimal awkwardness or repetition."
+    },
+    "navigation_efficiency": {
+      "score": 17,
+      "rationale": "The agent reached the correct infertility precert team on the first path and handled the transfer smoothly, though there was some initial IVR difficulty with DOB capture that led to a transfer."
+    },
+    "error_recovery": {
+      "score": 12,
+      "rationale": "The agent handled the rep\u2019s comment about prior benefits checks and multiple transfers smoothly and stayed on track, but did not probe for missing financial details or clarify the apparent misstatement about precert vs. no prior auth."
+    },
+    "call_closure": {
+      "score": 12,
+      "rationale": "The agent obtained the rep\u2019s name and a reference number and closed politely, but did not summarize or confirm the key benefit details before ending the call."
+    }
+  },
+  "flagged_moments": [
+    {
+      "timestamp_s": 541.9,
+      "issue": "Rep states no prior authorization is required for certain infertility services but later confirms that precertification is required for initiation of fertility treatment without clarifying the apparent inconsistency.",
+      "severity": "medium"
+    },
+    {
+      "timestamp_s": 541.9,
+      "issue": "Agent does not ask about core financial benefit details such as deductible, out-of-pocket maximum, copays/coinsurance, or effective dates, limiting the usefulness of the verification.",
+      "severity": "medium"
+    }
+  ],
+  "what_went_well": [
+    "Agent clearly identified themselves and the practice and stated the purpose of the call early.",
+    "Infertility-specific coverage, including IUI and IVF limits and coverage for cryopreservation, thawing, donor, and genetic services, was gathered in a structured, detailed way.",
+    "The agent maintained a professional tone, handled transfers and holds calmly, and obtained a reference number and rep name."
+  ],
+  "what_to_improve": [
+    "Consistently capture core plan financials (group number, deductible, OOP max, copay/coinsurance, and effective dates) in addition to infertility specifics.",
+    "When a rep gives potentially conflicting information (e.g., no prior auth for certain services but precert required for treatment initiation), ask clarifying follow-up questions to avoid ambiguity.",
+    "Add a brief end-of-call summary of key benefits and limits to confirm accuracy before disconnecting."
+  ],
+  "one_line_summary": "A professional and well-structured infertility benefits call that captured detailed treatment coverage but missed core financial benefit data and left one prior-authorization detail somewhat ambiguous.",
+  "metrics": {
+    "avg_agent_response_latency_ms": 4127.1,
+    "silence_gaps": [
+      {
+        "start": 31.04,
+        "end": 38.52,
+        "duration_s": 7.48
+      },
+      {
+        "start": 43.71,
+        "end": 48.98,
+        "duration_s": 5.27
+      },
+      {
+        "start": 59.6,
+        "end": 64.32,
+        "duration_s": 4.72
+      },
+      {
+        "start": 117.38,
+        "end": 124.53,
+        "duration_s": 7.15
+      },
+      {
+        "start": 127.2,
+        "end": 130.12,
+        "duration_s": 2.92
+      },
+      {
+        "start": 133.06,
+        "end": 137.86,
+        "duration_s": 4.8
+      },
+      {
+        "start": 140.24,
+        "end": 144.16,
+        "duration_s": 3.92
+      },
+      {
+        "start": 151.15,
+        "end": 161.06,
+        "duration_s": 9.91
+      },
+      {
+        "start": 163.14,
+        "end": 166.51,
+        "duration_s": 3.37
+      },
+      {
+        "start": 171.2,
+        "end": 179.4,
+        "duration_s": 8.2
+      },
+      {
+        "start": 180.66,
+        "end": 183.66,
+        "duration_s": 3.0
+      },
+      {
+        "start": 192.36,
+        "end": 195.9,
+        "duration_s": 3.54
+      },
+      {
+        "start": 205.32,
+        "end": 220.44,
+        "duration_s": 15.12
+      },
+      {
+        "start": 221.64,
+        "end": 225.84,
+        "duration_s": 4.2
+      },
+      {
+        "start": 230.42,
+        "end": 242.48,
+        "duration_s": 12.06
+      },
+      {
+        "start": 244.7,
+        "end": 247.3,
+        "duration_s": 2.6
+      },
+      {
+        "start": 252.53,
+        "end": 259.82,
+        "duration_s": 7.29
+      },
+      {
+        "start": 294.06,
+        "end": 296.58,
+        "duration_s": 2.52
+      },
+      {
+        "start": 298.32,
+        "end": 305.98,
+        "duration_s": 7.66
+      },
+      {
+        "start": 308.22,
+        "end": 310.88,
+        "duration_s": 2.66
+      },
+      {
+        "start": 321.84,
+        "end": 324.8,
+        "duration_s": 2.96
+      },
+      {
+        "start": 326.35,
+        "end": 332.68,
+        "duration_s": 6.33
+      },
+      {
+        "start": 412.87,
+        "end": 415.91,
+        "duration_s": 3.04
+      },
+      {
+        "start": 423.25,
+        "end": 425.87,
+        "duration_s": 2.62
+      },
+      {
+        "start": 426.79,
+        "end": 431.63,
+        "duration_s": 4.84
+      },
+      {
+        "start": 436.05,
+        "end": 438.39,
+        "duration_s": 2.34
+      },
+      {
+        "start": 439.37,
+        "end": 441.95,
+        "duration_s": 2.58
+      },
+      {
+        "start": 446.45,
+        "end": 449.75,
+        "duration_s": 3.3
+      },
+      {
+        "start": 480.69,
+        "end": 483.11,
+        "duration_s": 2.42
+      },
+      {
+        "start": 492.43,
+        "end": 496.93,
+        "duration_s": 4.5
+      },
+      {
+        "start": 502.48,
+        "end": 524.21,
+        "duration_s": 21.73
+      },
+      {
+        "start": 528.74,
+        "end": 531.75,
+        "duration_s": 3.01
+      },
+      {
+        "start": 574.79,
+        "end": 585.57,
+        "duration_s": 10.78
+      },
+      {
+        "start": 604.03,
+        "end": 606.55,
+        "duration_s": 2.52
+      },
+      {
+        "start": 622.07,
+        "end": 626.25,
+        "duration_s": 4.18
+      },
+      {
+        "start": 634.63,
+        "end": 647.67,
+        "duration_s": 13.04
+      },
+      {
+        "start": 648.97,
+        "end": 651.35,
+        "duration_s": 2.38
+      },
+      {
+        "start": 657.87,
+        "end": 665.36,
+        "duration_s": 7.49
+      },
+      {
+        "start": 671.05,
+        "end": 676.39,
+        "duration_s": 5.34
+      },
+      {
+        "start": 686.61,
+        "end": 689.35,
+        "duration_s": 2.74
+      },
+      {
+        "start": 690.45,
+        "end": 695.85,
+        "duration_s": 5.4
+      },
+      {
+        "start": 709.87,
+        "end": 715.34,
+        "duration_s": 5.47
+      },
+      {
+        "start": 728.52,
+        "end": 731.46,
+        "duration_s": 2.94
+      },
+      {
+        "start": 736.82,
+        "end": 740.0,
+        "duration_s": 3.18
+      },
+      {
+        "start": 741.46,
+        "end": 747.3,
+        "duration_s": 5.84
+      },
+      {
+        "start": 754.18,
+        "end": 762.6,
+        "duration_s": 8.42
+      },
+      {
+        "start": 780.98,
+        "end": 790.26,
+        "duration_s": 9.28
+      },
+      {
+        "start": 792.84,
+        "end": 796.28,
+        "duration_s": 3.44
+      },
+      {
+        "start": 797.42,
+        "end": 799.7,
+        "duration_s": 2.28
+      },
+      {
+        "start": 800.18,
+        "end": 805.34,
+        "duration_s": 5.16
+      },
+      {
+        "start": 805.74,
+        "end": 809.46,
+        "duration_s": 3.72
+      }
+    ],
+    "interruptions": 0,
+    "total_hold_time_s": 72.73,
+    "total_turns": 69,
+    "agent_talk_ratio": 0.262
+  },
+  "flow": {
+    "checkpoints": [
+      {
+        "id": 1,
+        "name": "IVR navigated to correct department",
+        "passed": true,
+        "evidence_turn": 0,
+        "evidence_text": "Thank you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna "
+      },
+      {
+        "id": 2,
+        "name": "Reached human rep",
+        "passed": true,
+        "evidence_turn": 4,
+        "evidence_text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you "
+      },
+      {
+        "id": 3,
+        "name": "Caller identified (NPI / practice name)",
+        "passed": true,
+        "evidence_turn": 6,
+        "evidence_text": "Hi. This is Emily calling from Huntington Reproductive Center."
+      },
+      {
+        "id": 4,
+        "name": "Patient credentials provided (DOB / member ID)",
+        "passed": true,
+        "evidence_turn": 1,
+        "evidence_text": "Enter or say the month, day, and year of the date of birth of the person you're calling about."
+      },
+      {
+        "id": 5,
+        "name": "Eligibility / benefits requested",
+        "passed": true,
+        "evidence_turn": 22,
+        "evidence_text": "I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have?"
+      },
+      {
+        "id": 6,
+        "name": "Required fields captured (deductible / OOP / co-pay / auth)",
+        "passed": true,
+        "evidence_turn": 39,
+        "evidence_text": "This patient has diagnostic testing, IUIs, specifically 58321, 58322, 58323, covered under basic medical. No prior authorization is required. Patient "
+      },
+      {
+        "id": 7,
+        "name": "Call closed correctly",
+        "passed": true,
+        "evidence_turn": 40,
+        "evidence_text": "Got it. Thank you."
+      }
+    ],
+    "checkpoints_passed": 7,
+    "checkpoints_total": 7
+  },
+  "transcript": {
+    "call_uuid": "0715b9e6-f0e4-428b-9e29-5dab9c9e4016",
+    "duration_s": 809.76,
+    "speaker_role_map": {
+      "speaker_1": "agent",
+      "speaker_0": "ivr",
+      "speaker_2": "rep"
+    },
+    "turns": [
+      {
+        "speaker": "ivr",
+        "start": 0.08,
+        "end": 31.04,
+        "text": "Thank you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna member ID number available. If you are calling for our fax number, for an Aetna pharmacy benefit, or for claims, press three. If you are an Aetna member, press one. If you are a healthcare provider, press two. To repeat these options, press nine."
+      },
+      {
+        "speaker": "agent",
+        "start": 38.52,
+        "end": 43.71,
+        "text": "Enter or say the month, day, and year of the date of birth of the person you're calling about."
+      },
+      {
+        "speaker": "ivr",
+        "start": 48.98,
+        "end": 59.6,
+        "text": "Sorry, I didn't hear you. Say the date of birth of the person you're calling about, or enter it on your keypad using two digits for the month, two digits for the day, and two digits for the year."
+      },
+      {
+        "speaker": "agent",
+        "start": 64.32,
+        "end": 71.42,
+        "text": "I seem to be having some difficulty. Let me transfer you to a representative who can help you. Please hold while I transfer your call."
+      },
+      {
+        "speaker": "rep",
+        "start": 72.86,
+        "end": 117.38,
+        "text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or, \"Pre-cert status.\""
+      },
+      {
+        "speaker": "ivr",
+        "start": 124.53,
+        "end": 127.2,
+        "text": "Aetna Infertility, this is Mark. Can I have your name, please?"
+      },
+      {
+        "speaker": "agent",
+        "start": 130.12,
+        "end": 133.06,
+        "text": "Hi. This is Emily calling from Huntington Reproductive Center."
+      },
+      {
+        "speaker": "ivr",
+        "start": 137.86,
+        "end": 140.24,
+        "text": "May I have your callback number?"
+      },
+      {
+        "speaker": "agent",
+        "start": 144.16,
+        "end": 151.15,
+        "text": "Sure. The callback number is 626-204-9699 extension 1304."
+      },
+      {
+        "speaker": "ivr",
+        "start": 161.06,
+        "end": 163.14,
+        "text": "All right. And the provider's NPI?"
+      },
+      {
+        "speaker": "agent",
+        "start": 166.51,
+        "end": 171.2,
+        "text": "The provider NPI is 1295873677."
+      },
+      {
+        "speaker": "ivr",
+        "start": 179.4,
+        "end": 180.66,
+        "text": "Can I also have the tax ID?"
+      },
+      {
+        "speaker": "agent",
+        "start": 183.66,
+        "end": 188.04,
+        "text": "Yes. The tax ID is 954510667."
+      },
+      {
+        "speaker": "ivr",
+        "start": 189.68,
+        "end": 192.36,
+        "text": "Uh, doctor's complete name and the complete address?"
+      },
+      {
+        "speaker": "agent",
+        "start": 195.9,
+        "end": 205.32,
+        "text": "The doctor's name is John M. Norian and the address is 8112 Millikin Avenue, Rancho Cucamonga, California 91730."
+      },
+      {
+        "speaker": "ivr",
+        "start": 220.44,
+        "end": 221.64,
+        "text": "And the member ID?"
+      },
+      {
+        "speaker": "agent",
+        "start": 225.84,
+        "end": 230.42,
+        "text": "The member ID is W283767028."
+      },
+      {
+        "speaker": "ivr",
+        "start": 242.48,
+        "end": 244.7,
+        "text": "Member's complete name and date of birth."
+      },
+      {
+        "speaker": "agent",
+        "start": 247.3,
+        "end": 252.53,
+        "text": "The member's name is Trista Gatoni and her date of birth is June 20th, 1991."
+      },
+      {
+        "speaker": "ivr",
+        "start": 259.82,
+        "end": 294.06,
+        "text": "All right, uh, Emily. For this patient's plan, I need to connect you to the onshore team."
+      },
+      {
+        "speaker": "agent",
+        "start": 296.58,
+        "end": 298.32,
+        "text": "Okay. I can hold for the transfer."
+      },
+      {
+        "speaker": "ivr",
+        "start": 305.98,
+        "end": 308.22,
+        "text": "All right. I'm connecting you now. Thank you for calling Aetna."
+      },
+      {
+        "speaker": "agent",
+        "start": 310.88,
+        "end": 316.72,
+        "text": "I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 318.54,
+        "end": 321.84,
+        "text": "I'll connect you now, uh, to, uh, the onshore team. Uh, please stay on the line."
+      },
+      {
+        "speaker": "agent",
+        "start": 324.8,
+        "end": 326.35,
+        "text": "No problem. I'll hold on the line."
+      },
+      {
+        "speaker": "rep",
+        "start": 332.68,
+        "end": 393.66,
+        "text": "Did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or \"Pre-cert status.\"  Thank you for calling Aetna's Infertility Pre-cert Unit. This is Liz. How can I help you? Hello?"
+      },
+      {
+        "speaker": "agent",
+        "start": 393.66,
+        "end": 407.63,
+        "text": "Hi, Liz. This is Em- ... Hi, Liz. This is Emily calling from Huntington Reproductive Center. I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have?"
+      },
+      {
+        "speaker": "rep",
+        "start": 408.95,
+        "end": 412.87,
+        "text": "Emily, can you provide me your phone number at the office, please?"
+      },
+      {
+        "speaker": "agent",
+        "start": 415.91,
+        "end": 423.25,
+        "text": "Yes. The callback number is 626-204-9699, extension 1304."
+      },
+      {
+        "speaker": "rep",
+        "start": 425.87,
+        "end": 426.79,
+        "text": "Your tax ID?"
+      },
+      {
+        "speaker": "agent",
+        "start": 431.63,
+        "end": 436.05,
+        "text": "The tax ID is 954-510-667."
+      },
+      {
+        "speaker": "rep",
+        "start": 438.39,
+        "end": 439.37,
+        "text": "The patient's ID?"
+      },
+      {
+        "speaker": "agent",
+        "start": 441.95,
+        "end": 446.45,
+        "text": "The member ID is W283767028."
+      },
+      {
+        "speaker": "rep",
+        "start": 449.75,
+        "end": 480.69,
+        "text": "One moment, please. Mm-hmm. Address to the practice?"
+      },
+      {
+        "speaker": "agent",
+        "start": 483.11,
+        "end": 490.03,
+        "text": "The address is 8112 Millikan Avenue, Rancho Cucamonga, California 91730."
+      },
+      {
+        "speaker": "rep",
+        "start": 491.13,
+        "end": 492.43,
+        "text": "Patient's name and date of birth?"
+      },
+      {
+        "speaker": "agent",
+        "start": 496.93,
+        "end": 502.48,
+        "text": "The patient's name is Trista Catone, and her date of birth is June 20th, 1991."
+      },
+      {
+        "speaker": "rep",
+        "start": 524.21,
+        "end": 528.74,
+        "text": "Emily, you just checked benefits on this patient. Was there something we were missing?"
+      },
+      {
+        "speaker": "agent",
+        "start": 531.75,
+        "end": 540.19,
+        "text": "Yes. We're just confirming the detailed infertility benefits for today's visit and treatment planning. Could you let me know what level of infertility coverage this patient has on the plan?"
+      },
+      {
+        "speaker": "rep",
+        "start": 541.89,
+        "end": 574.79,
+        "text": "This patient has diagnostic testing, IUIs, specifically 58321, 58322, 58323, covered under basic medical. No prior authorization is required. Patient does have coverage for ovulation inductions, no cycle limit, and she has three cycles lifetime for ART."
+      },
+      {
+        "speaker": "agent",
+        "start": 585.57,
+        "end": 586.87,
+        "text": "Got it. Thank you."
+      },
+      {
+        "speaker": "rep",
+        "start": 586.87,
+        "end": 586.88,
+        "text": "We're good."
+      },
+      {
+        "speaker": "agent",
+        "start": 586.88,
+        "end": 600.19,
+        "text": "I'd like to confirm coverage for in- Yes, I also need to verify coverage for initial cryopreservation. Can you tell me if CPT 89258 is covered, initial cryopreservation of embryos?"
+      },
+      {
+        "speaker": "rep",
+        "start": 601.57,
+        "end": 604.03,
+        "text": "Only if related to iatrogenic."
+      },
+      {
+        "speaker": "agent",
+        "start": 606.55,
+        "end": 617.73,
+        "text": "Okay. Is CPT 89337 covered for initial cryopreservation of eggs, and is CPT 89259 covered for initial cryopreservation of sperm?"
+      },
+      {
+        "speaker": "rep",
+        "start": 619.71,
+        "end": 622.07,
+        "text": "Only if related to iatrogenic."
+      },
+      {
+        "speaker": "agent",
+        "start": 626.25,
+        "end": 634.63,
+        "text": "Okay. Next, I need to check thawing procedures. Can you let me know if CPT 89 352 for thawing of embryos is covered?"
+      },
+      {
+        "speaker": "rep",
+        "start": 647.67,
+        "end": 648.97,
+        "text": "Not a covered service."
+      },
+      {
+        "speaker": "agent",
+        "start": 651.35,
+        "end": 656.13,
+        "text": "Okay. Is CPT 89 356 for thawing of eggs covered?"
+      },
+      {
+        "speaker": "rep",
+        "start": 657.65,
+        "end": 657.87,
+        "text": "No."
+      },
+      {
+        "speaker": "agent",
+        "start": 665.36,
+        "end": 669.59,
+        "text": "Is CPT 89 356 for thawing of sperm covered?"
+      },
+      {
+        "speaker": "rep",
+        "start": 670.77,
+        "end": 671.05,
+        "text": "No."
+      },
+      {
+        "speaker": "agent",
+        "start": 676.39,
+        "end": 686.61,
+        "text": "Okay. I also need to verify coverage for donor and surrogate services. Is there coverage when the diagnosis is Z52.819 for egg donor services?"
+      },
+      {
+        "speaker": "rep",
+        "start": 689.35,
+        "end": 690.45,
+        "text": "Not a covered service."
+      },
+      {
+        "speaker": "agent",
+        "start": 695.85,
+        "end": 709.57,
+        "text": "Mm-hmm. I also need to verify coverage for genetic services and storage. Is CPT 89 290 or 89 291 for PGTA biopsy covered under this plan?"
+      },
+      {
+        "speaker": "rep",
+        "start": 709.57,
+        "end": 709.87,
+        "text": "No."
+      },
+      {
+        "speaker": "agent",
+        "start": 715.34,
+        "end": 726.41,
+        "text": "Thanks. That helps. I also need to confirm any attempt or cycle limits. How many attempts are allowed for CPT 58322, IUI?"
+      },
+      {
+        "speaker": "rep",
+        "start": 727.45,
+        "end": 728.52,
+        "text": "No cycle limit."
+      },
+      {
+        "speaker": "agent",
+        "start": 731.46,
+        "end": 736.82,
+        "text": "Okay. How many attempts are allowed for CPT 58970 IVF?"
+      },
+      {
+        "speaker": "rep",
+        "start": 740.0,
+        "end": 741.46,
+        "text": "Three lifetime."
+      },
+      {
+        "speaker": "agent",
+        "start": 747.3,
+        "end": 753.88,
+        "text": "Got it. Three lifetime for IVF. Is pre-certification required for initiation of fertility treatment?"
+      },
+      {
+        "speaker": "rep",
+        "start": 753.88,
+        "end": 754.18,
+        "text": "Yes."
+      },
+      {
+        "speaker": "agent",
+        "start": 762.6,
+        "end": 770.52,
+        "text": "Okay. Before we wrap up, could I get your name as it should be noted for this call and a reference number for our records? Thank you for all this information."
+      },
+      {
+        "speaker": "rep",
+        "start": 771.64,
+        "end": 780.98,
+        "text": "Liz, L-I-Z. Call reference number 352-007-988."
+      },
+      {
+        "speaker": "agent",
+        "start": 790.26,
+        "end": 792.84,
+        "text": "Thanks, Liz. Have a great day."
+      },
+      {
+        "speaker": "rep",
+        "start": 796.28,
+        "end": 797.42,
+        "text": "Thank you for calling Aetna."
+      },
+      {
+        "speaker": "agent",
+        "start": 799.7,
+        "end": 800.18,
+        "text": "Take care."
+      },
+      {
+        "speaker": "rep",
+        "start": 805.34,
+        "end": 805.74,
+        "text": "Bye-bye."
+      },
+      {
+        "speaker": "agent",
+        "start": 809.46,
+        "end": 809.76,
+        "text": "Bye."
+      }
+    ]
+  },
+  "_tokens_used": {
+    "prompt": 3583,
+    "completion": 688,
+    "total": 4271
+  }
+}

@@ -1,0 +1,360 @@
+Speaker 1
+I mean, we could do with the help wherever we can. I mean, Rajweer and I were stretched in different directions. And if you can step in and help wherever you can, right? I mean, if you notice these are the workflow enhancements that we can see You can take, you know, and just prioritize. Okay, this is probably what is important. You can discuss with us also. And then you can take and move these things to closure yourself if possible Um I don't know what your bandwidth is, but if you could do something like that, that would be really, really nice.
+
+Speaker 2
+Okay, okay. Um so do you get a chance to look at the uh report briefly
+
+Speaker 1
+I did uh I don't know if Rajvi did yeah I read it too
+
+Speaker 2
+okay okay so that's do you want me to pull the report one more time and just go go over it yeah oh okay okay So um let me just quickly gather stuff
+
+Speaker 1
+You're all on your formal shirt in the morning for all your meetings. You don't have to go into the office ever?
+
+Speaker 2
+No, I do go to the office like uh twice. Two times a week. And then you can I have that flexibility. Uh this is
+
+Speaker 1
+sorry, give me one moment. I'm just gonna uh I have to take this call. One moment. Cool.
+
+Speaker 2
+That's one thing, the other thing is so
+
+Speaker 3
+Okay. Shall we
+
+Speaker 2
+Rajivir. Uh just uh I yeah, I I know you probably okay. So uh I'll just go over the fact that I've been um Um looking into this HRC voice and then some of the things that I f uh when Rajvi directed me to look into and then what I um found out I wanted to document and share that with you guys so we do have these two agents at this point of time and uh the woman health agent uh works good uh the only thing that few things that i found is is um at the so I'll just go to the summary the start of the period calls there were some uh improvements that were needed that that those were fixed Um and then two of the calls minute 20 seconds. So I've recorded what the calls um these are the call records that I pulled in from the server. word uh that I could get and these are the
+
+Speaker 1
+sorry just hold that thought one moment so this is with etna rajvir
+
+Speaker 3
+yeah
+
+Speaker 1
+Okay, so this is uh Emily 2. 0 basically.
+
+Speaker 4
+Yeah.
+
+Speaker 1
+That uh okay, okay, got it. Okay And just before I forget, is has Arpith is everything done for us to
+
+Speaker 3
+actually just one or two uh minor things left to do on Artbit side. I I I just spoke to him this morning and he was saying he he just had a few more things in terms of the GitHub action actions aspect. So that it's the proper CICD basis.
+
+Speaker 1
+Okay, but it's ready to go into production for them to start testing?
+
+Speaker 3
+Yeah, the one thing is which is out of our control is they have I don't know how the blue cross people are able to see but they have seen uh on one of the chats i think the last one that we did friday they explicitly outlined my name because the accounts and our uh the availity account is in my name So it is a case of we need to change that before we put the chat agent into production. And the way I was thinking of doing this is because Ananush created three emails, we'll use one of the other agents. temporarily for like two weeks and then from there we can slowly reintroduce Edgar. Yeah yeah that sounds good
+
+Speaker 2
+uh okay Uh I'll just go ahead again.
+
+Speaker 1
+Yeah, yeah. Because I was I saw uh Aetna, I was like, okay, that's MLE 2. 0. We got all of these different pairs and everything, but rush clarify okay that's really good
+
+Speaker 2
+so the i've also in the email that i've shared with you uh i've also shared a list of bugs and fixes that i found while I was testing them and this seems so when you open this let's see uh if I look at this like this Or should I download and see enough? So these are all the references for the sake of time. I'm just giving you an overview. Uh so these are the references Uh I hold let's see if the text editor would be uh Not readable. Can I pull in Yeah we can see it from this is fine. This is okay? Okay. I I can't e expand this right now. So okay anyway, so if you have time to look at this So some of them are fixed. Some of them I kept it under investigation because I needed to verify them. And every bug number has a reference in the report. Okay. So you could see that bug uh these are the reports reports references that I have for for understanding for this this report. Um the few concerns the women's health agent is cool. That's that's that's uh reasonable good enough. The only few things that I was discussing with Rajvir is that Rajvir we don't have control on things that might fail. So in that case we So the idea for this agent if I can understand correctly is it should be as close as a human being trying to communicate. Um right And uh if because do we know if we have a control on the ethnic side? Because in the on the ethna side it could be a human being who's be gonna be talking talking to our agent, right?
+
+Speaker 3
+It will be a human being. But the thing is, I I mean I this is really good, but I've already gone through and fixed all of these and I've sent out the call and I'm going through the exercise of like I message you the postcall analysis of making sure that the PDF populates correctly
+
+Speaker 2
+Okay, okay. So um I was yeah, so thanks for clarifying that. So I was under the same impression that uh it will be a human being on the uh on the ethno side unless we go to a a world where everything is between agents where we're going there. Yeah signal is doing that. Yeah yeah exactly exactly so there is uh so going in that direction we also have to consider the fact if our Agents are not uh fault tolerant. There might be some situation when our competitor will be able to flag our clients. So somebody like us who knows that we are bit somebody like us, uh, whoever is gonna be a competitor. might be building a same agent and there will be do they might do the same thing for Aetna and there will be a situation where Aetna will be flagging agents and they there will be a way to identify if this is an agent voice call or if this something else and if they get a lot of spams I don't know how are we handling spams so that is something I've missed out I have to look into that they will be there will be a way that we if we don't communicate the fault or on situation we might get Flagged somehow, and then again we have to intervene to get our agents pass through all those things.
+
+Speaker 1
+So I tell you this uh Snatchers is a good point. We are in conversations with Signal for instance. So Cigna is introducing an AI voice agent to handle incoming calls. And our uh ANI, which is our telephone number And all that is going through the process of getting approved and our AI agent getting approved. , So that is happening for Cigna. I'm assuming it will happen for Aetna, it's only a matter of time. But they're going through the prior approval process. process so that it's not flagged or it's not classified as spam or whatever like you were saying.
+
+Speaker 2
+Okay, okay. I'm I'm pretty sure there gonna be a some kind of key uh API credentials or something that will validate the agent as not spam. or a correct personality to connect. No, I'm
+
+Speaker 3
+alright. But see the thing is a lot of these representatives are from like the Philippines and things like that. So I well once we go through the relevant because within the IBR section as well as the beginning of the conversation We give the relevant credentials regarding the client as well as the patient that we're speaking about. And those credentials are what validate us. Yes, we have had it on occasion within previous implementations. implementations where there'd be like weeds we don't speak to AI agents, but in in practice it's a personal issue, not necessarily a company-wide mandate
+
+Speaker 2
+Okay. Okay.
+
+Speaker 3
+So in those events, we have the relevant uh logging ability to listen to the conversation and then a simple button to re-queue that conversation in the event that that does happen.
+
+Speaker 2
+Okay, okay, okay. Um so that's one thing. Uh is our fixes on the IVR agent uh I mean are we planning to have the IBR agent? That's my First question.
+
+Speaker 3
+The IVR agent works. See the thing with the IVR agent testing, the IVR agent testing is actually quite difficult to do because in terms of replicating the actual behaviors, the best way to do it is to send out the vote calls, listen back through, and then make the relevant changes that way. That's the best way that I found to test. Because at the end of the day, if you look through uh the agent transfer, the agent transfer says on on listening to a human voice, which would instantly constitute you or I speak into the agent. So given that is the case, I found the best way was to send me outbound IVR calls.
+
+Speaker 2
+Okay, okay, cool. um okay so for this to for for this to make sure it would be helpful if uh I could get access to the actual transcripts from the uh Um 11 Labs. I don't think I need access to the Twellio at this point of time because it's all about number configurations like all those things. If I'm if I understand that uh so that I could verify the transcripts from on the 11 labs and also I can verify the transcripts on our application on like I was on the server side So that would be something of of uh help.
+
+Speaker 3
+Okay, yeah, I'll give you those to you.
+
+Speaker 2
+Cool, cool. Uh so this reported this is this is a response uh that we have communicated, uh Rajvi. So this is basically what we are doing on the IVR side and how we are handling the postcall analysis and everything. So that's that's pretty much. And And um this is the basically the brief of the box that I found. So women 's health agent, this was resolved. This was previously an issue. um and then IBM Navigator agent now that you mentioned I can just go ahead and uh test it one more time verify the transcripts and everything and see if I can actually read the live logs which I probably will be probably so then I can close this issue um and then um women's health agent had diverged from the source so this was the difference between the the the deployment of the source code with actual changes. So I mentioned that maybe you can confirm that or I can confirm that later also. So I was so I went to the server, checked the l last release compared to what we were discussing, like the fix has been there. So I I found there was the fix was actually on the other side, but we probably Probably uh didn't have it on the code base source code itself, so I can verify that uh and then sometimes I found uh This transient dependency errors means uh um this I I between the navig uh between moving from the navigator agent to the woman's health agent, there might be something and some some issues that I I've been looking into it. I need some concrete evidence and logs to check it. Uh and then I mentioned the last time is like there was an abrupt drop in the call. So this was the last bug that I found. found when when talking to the woman's health agent like I was trying to give him all give give it all sort of uh different context and then at the end it just stopped And then there was nothing for a few minutes.
+
+Speaker 3
+I also went through and fixed that as well.
+
+Speaker 2
+Yeah, okay, cool. So I can verify that. Uh and then this is something that I found out um call failures I think that's something that I that's also uh falls under this category and we do have Redis that I mentioned and I found there was sometimes it was unreachable through the uh server side yeah i uh
+
+Speaker 3
+you have to use the relevant startup script for that because we where with the managed identity you can't just use docker compose Okay.
+
+Speaker 2
+You have to use the startup script. Okay, cool, cool. I'll do that. I I I'll try that out
+
+Speaker 1
+I'm just wondering, sorry, one thing. This is really good. I mean, should we get this into Jira Confluence or something like that? I mean, Rajvit, just so that you know it's there. you know in our overall repository and he's got a place rather than him creating his own PDF files and all. Yeah we can do a Jira board. I mean we've got one on the Cybersense uh thing also right atlassian atlassian
+
+Speaker 3
+i don't know uh in terms of atlassian it is kind of funny whether they want to blend the lines between you can use it or it's behind a payward.
+
+Speaker 1
+No, so you can get up to 10 users. We can add because it's being used very extensively for cyber care, right? For the secure AI controller. the separate one. So maybe we can do this over here, right? For any bugs, QA work and all of these. Because we'll at some point of time we'll have to have proper QA structure and all for even these voice agents, right? And so far it's been you to a large extent. And now with Snare Shish coming, Snareshish can help us. Our path is there, but we can start doing, you know, we can start building test cases.
+
+Speaker 3
+Yeah, we can definitely do that.
+
+Speaker 1
+Yeah, so I'm gonna add you Snyashish uh But to the uh confluence page of CyberSense. And then we can have a board or something like that within that for each each customer account that we're doing. And um I think that'll help us put more structure. And maybe that's something you can definitely help also, Snap. Cool, cool. I will just put structure around this, what we want to do from a QA perspective, how we build. develop the test cases because you getting very deep which is really good. I'm sure Rajvir also appreciates this. But uh this you can definitely help over
+
+Speaker 2
+senses. Cool, cool. I will step in as I as I can and as the directions I find out. Uh so pretty much that's all. Um so b for my end I haven't yet completed a final call with Aetna like triggering a call and then uh listening to the transcript so that's something uh the actual call to make sure they are all perfectly fine so ideally the way it should be like we triggered the call and listen get the either listen to the recording or look into the transcripts and see what our fail what's happening Uh that's pretty much what I found on the post. Well, and then the post call analysis also, right? That's the important part too. The po yes, so that's also I wanted to bring in. I I probably Yeah, the postcall analysis, the somewhere where we so Raj Rajvi just mentioned that he fixed it, so I have to test it. The postco analysis will be everything primarily correct me Rajbi if I'm wrong, like postcore analysis will be will be something like how are we handling you guys There's some failures and how are we handling closing of the communication?
+
+Speaker 3
+populating into a PDF.
+
+Speaker 4
+Okay.
+
+Speaker 3
+So that's the whole idea of the postcall analysis consists of the data extraction of whatever chat or call that's happening. that it goes through, flattens and normalizes within the individual chat or voice agent repository. And from there, once it's normalized, it gets sent in through a uh was through a standardized contract to the upstream dashboard to then populate a PDF And then that's the whole post-call analysis. So we judge it based off the call, yes. So we listen to the call recording. But the largest and most important aspect of the call is really what happens after the call, which is what were we able to take that information and accurately populate it into a PDF so that the client can action that against uh the information
+
+Speaker 2
+Agree. So that is the condition upon success, right? Yeah. Yeah. So we have to build condition on primarily upon success and upon failure. So we discussed conditions upon success, and that is exactly what you mentioned so we have to handle both the situation and post call po uh analysis right yeah yeah yeah so that's that's those those that's the thing uh i also mentioned um something before the meeting uh and that
+
+Speaker 1
+So one thing actually let me uh chime in over here and I know I I think for us this is something Rajiras Susa The more checks and balances you have, right, including exception handling, fault handling, error handling, right, uh graceful handling. I mean then from a HIPAA compliance, right? You you decide on your architecture, right? It is open fail, you know, open safe, whatever it is, right? All of these things. So anything that you come up with and you can help that would be really, really nice. And Rajvir, if there's something else that you know Which has been on your mind and you've not been able to get accomplished right, uh Sneashish can definitely help over there too. So this is this is what I'm I'm uh you know when I had my conversation with I know he doesn't have a lot of time, but at least I'm really happy that he's able to come and he's able to do these things. He wants to do a lot more stuff with uh AI. And then of course, you know, we've got a very strong personal connection. also it's been over a year, you know, so this will help us stay connected in many, many ways too.
+
+Speaker 2
+Yeah.
+
+Speaker 1
+And what you're doing, Snyashish, is very, very well much appreciated. No problem, no problem. That's okay. You know, I I mean we'll take all the experience that you have. You know, we we're trying to get there to be an enterprise great, like even on the security platform, someday I'll show you that also. Cool. You know, that'll be very interesting for you to see the AI security platform. Sure. But even on this, you're right. I mean, as many checks and balances, proper fault handle, exceptional handle, all of these things that you put. for these um you know voice agents the better we look to our customers right
+
+Speaker 2
+good uh just few last points that i mentioned before the meeting um just one to bring that in um and i probably i missed one more point here i do not know if there is something like we call we have a flow diagram or like a white sheet or a whiteboard diagram for our entire End to end process for our agent. If there is something uh in the confluence, or if you get me an access, if we have already so basically it's the mock-up, uh the the whiteboard mock-up Uh yes Rajw, you're saying something? We don't have that. We don't we don't have it yet? No. Okay, okay, cool. I can try to start writing something. like building something and I can give it to you for review because you have much more context to it. Maybe we can start building that for a for for our baseline. Uh these are the few things I also wanted to keep in track is our load testing because we do we I personally at this point of time do not know like how many um peak hours call our agents might have to go through and handle with Aetna and that's these these are basically a system design that we have to go through eventually if not today tomorrow sometime But sooner the better. Uh in among this, some of the few important things I wanted to mention is our cost situation. So I know we are using at this point GPT. Uh I think version four five four point five five one five point one five point one so uh in industry we we do have opportunity to work with depending on the task uh we we do have opportunity to not always use the llms so there can be options to identify which kind of context needs which kind of models So that would save us going forward.
+
+Speaker 3
+Is that relevant for us, Rajveer? No, see though, I I look down that route. So we have to look at it from a compliance aspect more than a cost aspect so the whole reason we went down the rabbit hole of using Azure was with uh openai those were one of the few model providers which not only for the cost compute, but as well as the fact of the matter is the OpenAI instances are hosted on Azure. They're not going to a tertiary server. So like you know, with uh use for example, anthropic on AWS. AWS is a However, even if you use anthropic on AWS, it's not on AWS servers. They go to a tertiary server which we are not in compliance with if we use. So while yes, we can always look for more options. I found the best bang for your book from a compliance aspect, but also the ability for GPT 5. 1 to conduct the phone call as well as conduct the postcall analysis as well.
+
+Speaker 2
+Cool, cool. That makes sense. And um do we do we have a definition of um we we if we don't have it we probably have to have a definition of a success for our call and that the way that I think Rajvi you can correct me is we have to build some uh uh build some uh metrics like uh um a rating system for our call to consider postcall when you also do a when we also do a postcall analysis along with the report we also need to have rating system for the agent to understand the performance of the agent going up or down. So that's something that I also wanted to bring forward.
+
+Speaker 1
+I think you've already done that, right, Rajweer? I mean you get a six P
+
+Speaker 3
+of completeness, but no what you're talking about is more of the will call itself so i've looked into uh potential providers that do this specialize uh particularly on the voice aspect because you know we can obviously within ourselves we can review the data the transcript, we can review the um the PDF, but to actually evaluate the call itself without going through the manual task of setting out 20, 45 minutes of listening to the call the phone call and having an automated process that will do that. That's something I looked into, but I just haven't had the bandwidth to go further down that rabbit hole.
+
+Speaker 2
+Yeah, yeah.
+
+Speaker 3
+Because that's something that we would have to build from the ground up as well. We could even attempt to use an even more competent model because GPT 5. 5 is available on Azure. So we could try using that. But in terms of the overall theatrics of uh translating the phone call using the right sort of ASR and everything to uh turn that into uh an uh a computer understandable articulation of the quality of the sound any relevant gaps of the conversation as well as other like humanistic variables like how Snashish uh alluded to earlier in terms of how we could potentially mark ourselves as a more human alternative than going for these um other like less known um voice agent providers and things like that.
+
+Speaker 1
+So I know we've got uh three minutes, but um Snacius again this is very very helpful man this is Really nice of you and uh you know so happy that you've come and you know you're gonna give us so I definitely would love to see more structural assessment like i said right rajra now we've stretched in 20 different directions right um i'm gonna add you to i'm gonna add you to the conference page, you can start putting structure and create your engineering spaces and you know add the test cases from a QA perspective. I will even get you at some point of time involved with the secure AI because I think your ability to test and all that will be really helpful over there too. That's the security platform. That's one of the reasons why we got up pre-seed funding, right? security platform itself. So that we've got a set of developers working. I'm going to create your, did I already create your email like Snyashish at secure CRM?
+
+Speaker 2
+Yeah, you I do have the email, yeah.
+
+Speaker 1
+Okay, and that's being forwarded to your Gmail or whatever, right?
+
+Speaker 2
+Yeah, I mean I get the Gmail and I got also get the secure CRM.
+
+Speaker 1
+Secure CR. Okay, so I'll add you to the conference page. I'll send you an invite over there. Uh uh anywhere else? Oh, Slack. Are you on Slack? Did I invite you to Slack?
+
+Speaker 2
+I am, I am. I'm always on Slack. This is the secure cyber sense. Slack that is always open for me.
+
+Speaker 1
+Okay. Because yeah, then you know we'll create different boards within this Slack channel where, you know, for each customer. And I believe there might be one for HRC. Uh Raj. you can correct me and you probably add
+
+Speaker 3
+I don't have one particularly for HRC. Okay. Okay.
+
+Speaker 1
+Yeah All right, I am going to jump uh drop off. I know you have to go too. I've got a call call with the sales guys. But uh let's uh catch up and you guys can carry on your conversation.
+
+Speaker 2
+Gotham just one more thing. Do you still want me to audit the SER work?
+
+Speaker 1
+I do, Rajwit, that was the other thing I wanted to ask you. You know, which I sent the message to you was, do we want Sneashesh? Can we have Sneashesh audit what uh Arpith has done.
+
+Speaker 3
+Yeah, he's got he's got access to Azure to uh look at anything he wants to. Who's he like Snaeshish has got access to the ship? Yeah he's already got access to Azure. I gave him access to everything.
+
+Speaker 2
+Yeah, I have do I I do have access, but I did not look into that work. Because I was focusing on this agents and everything. Okay. Okay. So
+
+Speaker 1
+if you can take a look, I'm gonna I just sent Arpith a message. If you can take a r review today itself, I can talk to you later tonight our time and then I can talk to Arpith subscription
+
+Speaker 2
+You you kindly have to give me like uh till tomorrow because I have I'm supporting this uh from the last weekend, this production niche. Issue.
+
+Speaker 1
+Okay. And Rajwit, anything you've had anything okay everything okay from your side? I mean you spoke to him today, right? For uh Pittswork?
+
+Speaker 2
+Yep
+
+Speaker 1
+Okay. All right guys. All right.
+
+Speaker 2
+Oh thank you.
+
+Speaker 1
+You guys can carry on. I'll drop off. Okay.
+
+Speaker 2
+Rajvi, do you want to uh carry on and discuss the next uh point of actions or what do you want me to look at? I mean yeah yeah
+
+Speaker 3
+we can if you'd like to I mean in terms of what the next steps I think like Gotham said if you'd like to more or less audit what are bits done in terms of his um Azure deployment. Cool. I think that would be a good next step because I really like the aspect we outlined, the evals, because that's something I I wanted to do myself. Because it isn't necessarily something that would only benefit this project, but anything that we do in the future. Because there's a lot of uh aspects. I I don't know if you've heard there's this one called, what was it called? secura uh let me give me a second yeah here it's automated q a for voice agents i've i i've i've looked into this before and i thought that would be a very good thing to do However, they're very taboo about it in terms of outlining oh what you can do, such and such. And especially for our vertical in terms of the HIPAA compliance, you know what, the less things that we have to uh give information to the better.
+
+Speaker 2
+Okay.
+
+Speaker 3
+So I I mean I thought of, you know what, it doesn't even have to be all this sort of um this extensive in terms of I'm not sure the exact uh theatrics and implementation that they've gone through, but I I I would really be interested to see because 11 labs themselves also have some aspect of Testing, but their testing isn't necessarily on the audio quality aspect. And because we're running the zero attention model, it does get uh you can only do so much with it But if we're looking at it from an aspect of, say, for example, if we find a way to where we can upload the call audio that we get from Twilio, and then from there we can get an output of what's all has gone on, how exactly it all has worked, give it a score, what went bad on the call and what what can be improved that's the kind of thing like you know what monitor the real production calls and continue because yeah exactly like continuous improvement so like The whole thing is there's no set-in-stone CICD for voice agents. And you can obviously see that that's a vertical in and of itself. They raised 2. 4 million to help voice agents more reliable. But I mean, that is something that I would really like like to look into further. But I they are hypocompliant. Okay. Yeah, but they are very uh interesting with their pricing and everything
+
+Speaker 2
+Okay. Uh I can take a look into this. Yeah. Yeah.
+
+Speaker 3
+No, because I definitely think something like this, even if this is like more of a long-term project that we do internally. I know for a fact an evals, like, because you know, you was it you that was telling me that you built some sort of AI agent evals aspect previously or there might have been someone else
+
+Speaker 2
+probably not me
+
+Speaker 3
+Okay, yeah, I I mean, but at the end of the day, AI agent evals are going to get more and more uh in tune with whatever we do. So I genuinely think to create our own implementation of something like this and then because we've got a plethora of phone calls for us to run through i'll be honest you we're not gonna have any issue with the testing material we can test it from short two three minute calls all the way to the 45 minute plus calls to get that sort of evaluation where it understands not only the transcript as aspect, but the aspect which outlines and uh populates the complete uh what you call it it the complete like flow of the conversation that's really what's missing and I think that could go a long way for us as a company as well.
+
+Speaker 2
+Yeah, agree. Agree. So is the so do you is this the product you have in mind as a benchmark for our product at this point of time? In terms of the testing evals. Okay.
+
+Speaker 3
+Because this isn't uh this isn't a voice agent product in and of itself. This is an evaluation platform. that people use for voice agents. Like they are combined with some of the voice agent aspects like live care, retail AI, VAPI. Like these are some of the big, big ones for like the they are more of the, let's call them the pedestrian variants, the ones where you have a nice dashboard. and you do everything from a prompting to setting up the webhooks. They're the ones you can easily use with things like NAN. We're using the 11 labs. So every single one of these providers uses 11 labs themselves. 11 Labs is the voice aspect. So the uh text to speech, the speech to text, as well as the orchestration. Every single one of them uses that. So we thought, why are we paying some middleman like Retail AI? to do that when we can do it ourselves. And and it's much cheaper because these guys have a token limit of 3,500 tokens before they start to charge extra. Cool. Cool. And you know the verbosity of the prompts that we had, they were charging us more or less time and a half for whatever kind of conversation that we we would have. had. So you know what we figured it was about time to move over. And you know what from the testing that I've seen and everything else, this is very much a uh a more cost-effective solution.
+
+Speaker 2
+Nice. Okay, cool. Can do that.
+
+Speaker 3
+But just do some like research into how exactly they do it because I I have some understanding and idea. We could go down the 11 Labs route because 11 Labs has its own API access, which we can particularly use their automatic speech recognition. And with that speech recognition, then we can find a way to do some sort of analysis and things like that.
+
+Speaker 2
+Okay. Yeah, okay. I can do that. Uh what are the most pressing um things that you have on your plate that I can take and give you some space to do some other Important stuff.
+
+Speaker 3
+Hmm. Honestly, the the the biggest thing is we've got it's not even this project, it's doing code reviews. for interns that's really the biggest thing on my plate if I'm gonna
+
+Speaker 2
+understand that yeah yeah um I can I can take a share of it
+
+Speaker 3
+I I mean but I I definitely think but you know what? While that would be good and it would be very helpful I think, you know, if you can do some general uh research into this in particular, because I really like how you brought that up, because I had a thought about this like a three months back. and I just you know what because like Otham said we're here there everywhere I was end up so thin I this just vanished into thin air and when you thought uh and when you told me about it I was like oh my god we could definitely do this now would really be the perfect time I reckon all right it's not gonna take things off my plate but this genuinely might be a very good avenue to look into and I think if you could look into the overall voice agent evals then that's hundred percent the way that we should should go. look We should definitely look into that for ourselves and maybe as a service as well. But I mean it as an internal tool alone, that would be extremely useful.
+
+Speaker 2
+Okay. Um so if I now take consideration for this week's work, I will uh audit the Azure work done by RP and I will take into look to these evals right
+
+Speaker 3
+yeah i i think those are the two main things i think for this week those would definitely be like the right things to do and uh once we do that because i know this will definitely be around On the short aspects that I've seen, this has been one rabbit hole. I've always wanted to look into it. I just haven't had the time.
+
+Speaker 2
+Okay. So this is basically understanding the quality of our agent.
+
+Speaker 3
+Yeah.
+
+Speaker 2
+That's what we are trying to do, right? Exactly. Yeah. Cool. I can do that. And the next thing is what other access you can give it to me? Because I would need 11 labs and other remaining accesses just to have uh a little bit of more space to do my research.
+
+Speaker 3
+Yeah, all right. If that's the case, let me go ahead and where's the workspace settings? How many people do we
+
+Speaker 2
+Yeah, I can
+
+Speaker 3
+hide
+
+Speaker 2
+you. Okay. All right. And um but uh uh while you are doing this, can we have a Friday uh team meeting between the members who are working on the similar products. Like I'm requesting for myself so that I understand what are the other members are doing so that I am aware what what are the problems progress and everything's happening in the Okay.
+
+Speaker 3
+I mean that we can definitely do that, but I know you're very uh your your time's really valuable. So in terms of we do have a company wide meeting where we'll basically give you the four-on-one on everything do you think that might be a better thing if you could attend it because i'm not sure if gotham has sent you the invite for that it's wednesday uh It is weekly call Tuesday no Wednesday at 4. 30 my time. You guys are how many hours behind It is currently what? It's 9. 30. So what at 8. 30 in the morning where that might not work for you.
+
+Speaker 2
+Wednesday, 8. 30 in the morning. I I would request you to send me that. I would try I would most want to have it, but let's see if in case I miss it, I'll just miss it. But that but I would want to have it.
+
+Speaker 3
+Here, let me go ahead and invite you to this. Yeah, I send it to your secure CRM email.
+
+Speaker 2
+Okay.
+
+Speaker 3
+And in terms of the Friday meeting what time works for you on Friday?
+
+Speaker 2
+Uh same time. Nine. Same. Alright, nine. So this is specifically for the product that I am looking at. So right now HRC voice. So everybody who is working on everything in HRC voice, uh, it would be helpful if we can come in together and discuss what we did. Just uh maybe ten minutes of everyone's time to start with.
+
+Speaker 3
+Uh yeah. Okay. Uh
+
+Speaker 2
+so in case uh just taking my example in case throughout the entire week if I am not able to give you any updates or anything, I would know that on Friday I will have to give you some kind of update update so I'll have an ownership and liability on it
+
+Speaker 3
+okay okay yeah now that sounds good in terms of a bit yeah let's go ahead and if he can join that's great if not that's awesome So finds you a little eight army.
+
+Speaker 2
+And the confluence
+
+Speaker 3
+Yeah, I'm not admin for that, so I'll just remind Gotham to do that. But check your email. I've just sent the Friday um uh nine a m meeting to you. Cool. Let me just try to see login
+
+Speaker 2
+Yeah, got all the invitation. I'll accept them after after I review them. Cool. Uh is there anything else, Rajvir? And in the meantime, I might be repeating things that you have already probably done or probably uh you are much aware of just let me know that what is the status and when I get an access to the confluence or anything I'll keep re updating them that these are checked off Like these are done and we we're not going to cut repeat those things.
+
+Speaker 3
+Yeah, sorry. I mean you know for the longest time it was just me. So if there wasn't the most documentation, it's just because you know I had it in the back of my mind.
+
+Speaker 2
+I I can I can can understand that totally I can I can take care of it that's fine.
+
+Speaker 3
+All right
+
+Speaker 4
+sounds good. Okay. All right.
+
+Speaker 2
+Okay. Thank you. Thank you Rajvi.
+
+Speaker 4
+Okay. Bye. Bye.
+

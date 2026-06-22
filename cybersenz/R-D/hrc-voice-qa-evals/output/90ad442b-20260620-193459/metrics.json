@@ -1,0 +1,84 @@
+{
+  "avg_agent_response_latency_ms": 3625.7,
+  "silence_gaps": [
+    {
+      "start": 116.9,
+      "end": 125.4,
+      "duration_s": 8.5
+    },
+    {
+      "start": 332.72,
+      "end": 473.25,
+      "duration_s": 140.53
+    },
+    {
+      "start": 477.94,
+      "end": 562.19,
+      "duration_s": 84.25
+    },
+    {
+      "start": 607.09,
+      "end": 615.13,
+      "duration_s": 8.04
+    },
+    {
+      "start": 625.46,
+      "end": 629.03,
+      "duration_s": 3.57
+    },
+    {
+      "start": 643.51,
+      "end": 647.65,
+      "duration_s": 4.14
+    },
+    {
+      "start": 668.39,
+      "end": 670.91,
+      "duration_s": 2.52
+    },
+    {
+      "start": 674.87,
+      "end": 678.37,
+      "duration_s": 3.5
+    },
+    {
+      "start": 690.03,
+      "end": 693.99,
+      "duration_s": 3.96
+    },
+    {
+      "start": 703.45,
+      "end": 707.99,
+      "duration_s": 4.54
+    },
+    {
+      "start": 716.37,
+      "end": 729.31,
+      "duration_s": 12.94
+    },
+    {
+      "start": 731.23,
+      "end": 737.05,
+      "duration_s": 5.82
+    },
+    {
+      "start": 768.91,
+      "end": 776.03,
+      "duration_s": 7.12
+    },
+    {
+      "start": 803.47,
+      "end": 805.69,
+      "duration_s": 2.22
+    },
+    {
+      "start": 818.21,
+      "end": 823.41,
+      "duration_s": 5.2
+    }
+  ],
+  "interruptions": 0,
+  "total_hold_time_s": 237.72,
+  "total_turns": 30,
+  "agent_talk_ratio": 0.487
+}

@@ -1,0 +1,385 @@
+{
+  "call_uuid": "90ad442b-2c95-42a8-a11a-869168deada0",
+  "eval_timestamp": "2026-06-21T02:35:40.385677+00:00",
+  "score": 70,
+  "dimensions": {
+    "data_completeness": {
+      "score": 18,
+      "rationale": "Member ID and infertility coverage with lifetime max and auth requirements by CPT were obtained, but key plan basics (group number, deductible, OOP max, copay/coinsurance, and effective dates) were not captured at all."
+    },
+    "conversation_quality": {
+      "score": 17,
+      "rationale": "The agent clearly stated purpose, provided full provider and patient details, asked concise benefit and CPT questions, and maintained a professional tone with only minor phrasing awkwardness around Winfertility handling."
+    },
+    "navigation_efficiency": {
+      "score": 16,
+      "rationale": "The IVR initially failed on DOB capture but quickly transferred to a representative and the correct benefits area was reached without loops, though there was some unavoidable hold time."
+    },
+    "error_recovery": {
+      "score": 9,
+      "rationale": "The agent adapted when told infertility is handled by Winfertility and still obtained CPT-level auth info, but did not probe further for missing core benefit fields or clarify coverage vs. auth when the rep gave brief answers."
+    },
+    "call_closure": {
+      "score": 10,
+      "rationale": "The agent obtained and repeated the reference number and rep name and closed politely, but did not summarize key benefit findings or confirm all critical data points before ending the call."
+    }
+  },
+  "flagged_moments": [
+    {
+      "timestamp_s": 615.1,
+      "issue": "Agent accepts that infertility is handled by Winfertility but does not ask for contact details or clarify whether Aetna can still provide full benefit and cost-share information.",
+      "severity": "medium"
+    },
+    {
+      "timestamp_s": 125.4,
+      "issue": "Agent never requests group number, effective dates, deductible, OOP max, or copay/coinsurance despite having ample time with the rep.",
+      "severity": "high"
+    }
+  ],
+  "what_went_well": [
+    "Clear introduction with practice name, purpose of call, and complete provider identifiers (tax ID, NPI, address).",
+    "Targeted, well-structured questions for each CPT code including coverage, prior auth, and exclusions.",
+    "Professional tone throughout, with proper confirmation of the reference number and courteous closing."
+  ],
+  "what_to_improve": [
+    "Always capture core plan details (group number, effective dates, deductible, OOP max, and relevant copay/coinsurance) before focusing on procedure-level questions.",
+    "When told a third-party vendor like Winfertility handles services, ask for their contact information and clarify what benefit and cost-share details Aetna can still provide.",
+    "Briefly summarize key findings (coverage limits, lifetime max, and auth requirements) back to the rep at the end to confirm accuracy before ending the call."
+  ],
+  "one_line_summary": "Professional and efficient infertility benefits verification call that secured CPT-level auth details but missed essential plan financial and eligibility information.",
+  "metrics": {
+    "avg_agent_response_latency_ms": 3625.7,
+    "silence_gaps": [
+      {
+        "start": 116.9,
+        "end": 125.4,
+        "duration_s": 8.5
+      },
+      {
+        "start": 332.72,
+        "end": 473.25,
+        "duration_s": 140.53
+      },
+      {
+        "start": 477.94,
+        "end": 562.19,
+        "duration_s": 84.25
+      },
+      {
+        "start": 607.09,
+        "end": 615.13,
+        "duration_s": 8.04
+      },
+      {
+        "start": 625.46,
+        "end": 629.03,
+        "duration_s": 3.57
+      },
+      {
+        "start": 643.51,
+        "end": 647.65,
+        "duration_s": 4.14
+      },
+      {
+        "start": 668.39,
+        "end": 670.91,
+        "duration_s": 2.52
+      },
+      {
+        "start": 674.87,
+        "end": 678.37,
+        "duration_s": 3.5
+      },
+      {
+        "start": 690.03,
+        "end": 693.99,
+        "duration_s": 3.96
+      },
+      {
+        "start": 703.45,
+        "end": 707.99,
+        "duration_s": 4.54
+      },
+      {
+        "start": 716.37,
+        "end": 729.31,
+        "duration_s": 12.94
+      },
+      {
+        "start": 731.23,
+        "end": 737.05,
+        "duration_s": 5.82
+      },
+      {
+        "start": 768.91,
+        "end": 776.03,
+        "duration_s": 7.12
+      },
+      {
+        "start": 803.47,
+        "end": 805.69,
+        "duration_s": 2.22
+      },
+      {
+        "start": 818.21,
+        "end": 823.41,
+        "duration_s": 5.2
+      }
+    ],
+    "interruptions": 0,
+    "total_hold_time_s": 237.72,
+    "total_turns": 30,
+    "agent_talk_ratio": 0.487
+  },
+  "flow": {
+    "checkpoints": [
+      {
+        "id": 1,
+        "name": "IVR navigated to correct department",
+        "passed": true,
+        "evidence_turn": 0,
+        "evidence_text": "... -k you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna"
+      },
+      {
+        "id": 2,
+        "name": "Reached human rep",
+        "passed": true,
+        "evidence_turn": 1,
+        "evidence_text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you "
+      },
+      {
+        "id": 3,
+        "name": "Caller identified (NPI / practice name)",
+        "passed": true,
+        "evidence_turn": 2,
+        "evidence_text": "Hi, this is Emily calling from Huntington Reproductive Center. I'm calling to verify infertility benefits for a patient. This is Jim Chadley, Infertil"
+      },
+      {
+        "id": 4,
+        "name": "Patient credentials provided (DOB / member ID)",
+        "passed": true,
+        "evidence_turn": 0,
+        "evidence_text": "... -k you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna"
+      },
+      {
+        "id": 5,
+        "name": "Eligibility / benefits requested",
+        "passed": true,
+        "evidence_turn": 2,
+        "evidence_text": "Hi, this is Emily calling from Huntington Reproductive Center. I'm calling to verify infertility benefits for a patient. This is Jim Chadley, Infertil"
+      },
+      {
+        "id": 6,
+        "name": "Required fields captured (deductible / OOP / co-pay / auth)",
+        "passed": true,
+        "evidence_turn": 9,
+        "evidence_text": "Okay, let me start with code 58322. Is this covered? Does it require prior authorization? And are there any exclusions noted for that code?"
+      },
+      {
+        "id": 7,
+        "name": "Call closed correctly",
+        "passed": true,
+        "evidence_turn": 7,
+        "evidence_text": "Got it. Thank you for checking that. I have a few specific procedure codes I need to verify with Winfertility handling infertility. Can you still conf"
+      }
+    ],
+    "checkpoints_passed": 7,
+    "checkpoints_total": 7
+  },
+  "transcript": {
+    "call_uuid": "90ad442b-2c95-42a8-a11a-869168deada0",
+    "duration_s": 832.97,
+    "speaker_role_map": {
+      "speaker_0": "agent",
+      "speaker_2": "ivr",
+      "speaker_1": "rep"
+    },
+    "turns": [
+      {
+        "speaker": "agent",
+        "start": 0.08,
+        "end": 71.08,
+        "text": "... -k you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna member ID number available. If you are calling for our fax number, for an Aetna pharmacy benefit, or for claims, press three. If you are an Aetna member, press one. If you are a healthcare provider, press two. To repeat these options, press nine. Enter or say the month, day, and year of the date of birth of the person you're calling about. Sorry, I didn't hear you. Say the date of birth of the person you're calling about, or enter it on your keypad using two digits for the month, two digits for the day, and two digits for the year. I seem to be having some difficulty. Let me transfer you to a representative who can help you. Please hold while I transfer your call."
+      },
+      {
+        "speaker": "rep",
+        "start": 72.38,
+        "end": 116.9,
+        "text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more, or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or \"Pre-cert status.\""
+      },
+      {
+        "speaker": "agent",
+        "start": 125.4,
+        "end": 332.72,
+        "text": "Hi, this is Emily calling from Huntington Reproductive Center. I'm calling to verify infertility benefits for a patient. This is Jim Chadley, Infertility. Can I have your name? Yes, my name is Emily. Phone number, callback number? The callback number is 626-204-9699, extension 1304. Tax ID also. Okay. The tax ID for the practice is 954-510-667. NPI. The NPI is 167-996-0157. Provider's name. The provider is Rampatla Anupama. Provider's address. The address is 20360 Southwest Birch Street, Newport Beach, California 92660. Member send your number now. The member ID is W256293362. Name, date of birth. The patient's name is Yanali Detelcordin. Date of birth. Yes, Detelcordin. Yeah, the date of birth. Date of birth is 09-10-1982. And how can I help you today? I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have? Stand by and I'll be checking the records here. No problem."
+      },
+      {
+        "speaker": "ivr",
+        "start": 473.25,
+        "end": 474.92,
+        "text": "One moment here, Emily."
+      },
+      {
+        "speaker": "agent",
+        "start": 474.92,
+        "end": 474.92,
+        "text": "Mm-hmm."
+      },
+      {
+        "speaker": "rep",
+        "start": 474.92,
+        "end": 477.94,
+        "text": "... again, thank you for ..."
+      },
+      {
+        "speaker": "ivr",
+        "start": 562.19,
+        "end": 607.09,
+        "text": "Okay, sorry to keep you waiting here. Okay. So based on the infertility plan, um, the coverage, it shows here, okay? For diagnosis and treatment of underlying medical conditions covered, same as any other expense. Okay? There's a dollar amount, $35,000 maximum per lifetime for, uh, artificial insemination, ovulation induction, and IVF combined. Okay? $35,000 max combined. Okay? And, uh, preset will be provided by Winfertility, a third-party vendor. No preset through Aetna. Winfertility is the one who handle the infertility services for the member."
+      },
+      {
+        "speaker": "agent",
+        "start": 615.13,
+        "end": 624.36,
+        "text": "Got it. Thank you for checking that. I have a few specific procedure codes I need to verify with Winfertility handling infertility. Can you still confirm-"
+      },
+      {
+        "speaker": "ivr",
+        "start": 624.36,
+        "end": 625.46,
+        "text": "Yeah, you can call them back. Mm-hmm."
+      },
+      {
+        "speaker": "agent",
+        "start": 629.03,
+        "end": 638.11,
+        "text": "Okay, let me start with code 58322. Is this covered? Does it require prior authorization? And are there any exclusions noted for that code?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 640.07,
+        "end": 643.51,
+        "text": "58322, no preset required. This is an IUI code."
+      },
+      {
+        "speaker": "agent",
+        "start": 647.65,
+        "end": 658.72,
+        "text": "Got it. Next code is 89260 or 261. Are these covered? Do they require prior authorization? And are there any exclusions noted?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 658.72,
+        "end": 659.62,
+        "text": "No preset is required."
+      },
+      {
+        "speaker": "agent",
+        "start": 660.89,
+        "end": 668.39,
+        "text": "Okay, next is 58970. Is that covered? Does it require prior authorization? And are there any exclusions?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 670.91,
+        "end": 674.87,
+        "text": "58970, preset required through Winfertility."
+      },
+      {
+        "speaker": "agent",
+        "start": 678.37,
+        "end": 686.89,
+        "text": "Okay, next code is 89258. Is this covered? Does it require prior authorization? And are there any exclusions noted?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 687.99,
+        "end": 690.03,
+        "text": "Preset is required through Winfertility."
+      },
+      {
+        "speaker": "agent",
+        "start": 693.99,
+        "end": 702.09,
+        "text": "Okay, next code is 89352. Is that covered? Does it require prior authorization? And are there any exclusions?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 702.09,
+        "end": 703.45,
+        "text": "Preset is required through Winfertility."
+      },
+      {
+        "speaker": "agent",
+        "start": 707.99,
+        "end": 716.37,
+        "text": "Okay, next is code 89259. Is this covered? Does it require prior authorization? And are there any exclusions noted?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 729.31,
+        "end": 731.23,
+        "text": "No preset required, 89259."
+      },
+      {
+        "speaker": "agent",
+        "start": 737.05,
+        "end": 744.94,
+        "text": "Okay, next is code 89258 for initial cryopreservation of embryos. Is that covered under the infertility benefit?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 744.94,
+        "end": 745.52,
+        "text": "Preset, preset is required."
+      },
+      {
+        "speaker": "agent",
+        "start": 745.52,
+        "end": 768.91,
+        "text": "And does it re- Got it. I have a few related pieces I need to clarify around donor and surrogate services. For diagnosis code Z52.819, egg donor services, are those covered under this infertility benefit? And if so, under what limitations or maximums?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 776.03,
+        "end": 780.93,
+        "text": "Donor services not covered."
+      },
+      {
+        "speaker": "agent",
+        "start": 780.93,
+        "end": 799.91,
+        "text": "Noted. For surrogate services, are they covered under this infertility benefit at all? And if they are, are they subject to the same $35,000 lifetime maximum or a separate limit?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 800.95,
+        "end": 803.47,
+        "text": "Surrogacy gestational carrier, no coverage."
+      },
+      {
+        "speaker": "agent",
+        "start": 805.69,
+        "end": 811.41,
+        "text": "Thanks, that's clear. Before I let you go, could I get your name and a reference number for this call, please?"
+      },
+      {
+        "speaker": "ivr",
+        "start": 811.41,
+        "end": 818.21,
+        "text": "This is James, initial C for Charlie. Reference number for today, that will be 351-650-297."
+      },
+      {
+        "speaker": "agent",
+        "start": 823.41,
+        "end": 832.97,
+        "text": "Thank you, James. And just to confirm, the reference number is 351-650-297. Thank you for all this information. Have a great day."
+      }
+    ]
+  },
+  "_tokens_used": {
+    "prompt": 3078,
+    "completion": 670,
+    "total": 3748
+  }
+}

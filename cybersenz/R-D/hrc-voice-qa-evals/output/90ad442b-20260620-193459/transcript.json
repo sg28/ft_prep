@@ -1,0 +1,191 @@
+{
+  "call_uuid": "90ad442b-2c95-42a8-a11a-869168deada0",
+  "duration_s": 832.97,
+  "speaker_role_map": {
+    "speaker_0": "agent",
+    "speaker_2": "ivr",
+    "speaker_1": "rep"
+  },
+  "turns": [
+    {
+      "speaker": "agent",
+      "start": 0.08,
+      "end": 71.08,
+      "text": "... -k you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna member ID number available. If you are calling for our fax number, for an Aetna pharmacy benefit, or for claims, press three. If you are an Aetna member, press one. If you are a healthcare provider, press two. To repeat these options, press nine. Enter or say the month, day, and year of the date of birth of the person you're calling about. Sorry, I didn't hear you. Say the date of birth of the person you're calling about, or enter it on your keypad using two digits for the month, two digits for the day, and two digits for the year. I seem to be having some difficulty. Let me transfer you to a representative who can help you. Please hold while I transfer your call."
+    },
+    {
+      "speaker": "rep",
+      "start": 72.38,
+      "end": 116.9,
+      "text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more, or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or \"Pre-cert status.\""
+    },
+    {
+      "speaker": "agent",
+      "start": 125.4,
+      "end": 332.72,
+      "text": "Hi, this is Emily calling from Huntington Reproductive Center. I'm calling to verify infertility benefits for a patient. This is Jim Chadley, Infertility. Can I have your name? Yes, my name is Emily. Phone number, callback number? The callback number is 626-204-9699, extension 1304. Tax ID also. Okay. The tax ID for the practice is 954-510-667. NPI. The NPI is 167-996-0157. Provider's name. The provider is Rampatla Anupama. Provider's address. The address is 20360 Southwest Birch Street, Newport Beach, California 92660. Member send your number now. The member ID is W256293362. Name, date of birth. The patient's name is Yanali Detelcordin. Date of birth. Yes, Detelcordin. Yeah, the date of birth. Date of birth is 09-10-1982. And how can I help you today? I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have? Stand by and I'll be checking the records here. No problem."
+    },
+    {
+      "speaker": "ivr",
+      "start": 473.25,
+      "end": 474.92,
+      "text": "One moment here, Emily."
+    },
+    {
+      "speaker": "agent",
+      "start": 474.92,
+      "end": 474.92,
+      "text": "Mm-hmm."
+    },
+    {
+      "speaker": "rep",
+      "start": 474.92,
+      "end": 477.94,
+      "text": "... again, thank you for ..."
+    },
+    {
+      "speaker": "ivr",
+      "start": 562.19,
+      "end": 607.09,
+      "text": "Okay, sorry to keep you waiting here. Okay. So based on the infertility plan, um, the coverage, it shows here, okay? For diagnosis and treatment of underlying medical conditions covered, same as any other expense. Okay? There's a dollar amount, $35,000 maximum per lifetime for, uh, artificial insemination, ovulation induction, and IVF combined. Okay? $35,000 max combined. Okay? And, uh, preset will be provided by Winfertility, a third-party vendor. No preset through Aetna. Winfertility is the one who handle the infertility services for the member."
+    },
+    {
+      "speaker": "agent",
+      "start": 615.13,
+      "end": 624.36,
+      "text": "Got it. Thank you for checking that. I have a few specific procedure codes I need to verify with Winfertility handling infertility. Can you still confirm-"
+    },
+    {
+      "speaker": "ivr",
+      "start": 624.36,
+      "end": 625.46,
+      "text": "Yeah, you can call them back. Mm-hmm."
+    },
+    {
+      "speaker": "agent",
+      "start": 629.03,
+      "end": 638.11,
+      "text": "Okay, let me start with code 58322. Is this covered? Does it require prior authorization? And are there any exclusions noted for that code?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 640.07,
+      "end": 643.51,
+      "text": "58322, no preset required. This is an IUI code."
+    },
+    {
+      "speaker": "agent",
+      "start": 647.65,
+      "end": 658.72,
+      "text": "Got it. Next code is 89260 or 261. Are these covered? Do they require prior authorization? And are there any exclusions noted?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 658.72,
+      "end": 659.62,
+      "text": "No preset is required."
+    },
+    {
+      "speaker": "agent",
+      "start": 660.89,
+      "end": 668.39,
+      "text": "Okay, next is 58970. Is that covered? Does it require prior authorization? And are there any exclusions?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 670.91,
+      "end": 674.87,
+      "text": "58970, preset required through Winfertility."
+    },
+    {
+      "speaker": "agent",
+      "start": 678.37,
+      "end": 686.89,
+      "text": "Okay, next code is 89258. Is this covered? Does it require prior authorization? And are there any exclusions noted?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 687.99,
+      "end": 690.03,
+      "text": "Preset is required through Winfertility."
+    },
+    {
+      "speaker": "agent",
+      "start": 693.99,
+      "end": 702.09,
+      "text": "Okay, next code is 89352. Is that covered? Does it require prior authorization? And are there any exclusions?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 702.09,
+      "end": 703.45,
+      "text": "Preset is required through Winfertility."
+    },
+    {
+      "speaker": "agent",
+      "start": 707.99,
+      "end": 716.37,
+      "text": "Okay, next is code 89259. Is this covered? Does it require prior authorization? And are there any exclusions noted?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 729.31,
+      "end": 731.23,
+      "text": "No preset required, 89259."
+    },
+    {
+      "speaker": "agent",
+      "start": 737.05,
+      "end": 744.94,
+      "text": "Okay, next is code 89258 for initial cryopreservation of embryos. Is that covered under the infertility benefit?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 744.94,
+      "end": 745.52,
+      "text": "Preset, preset is required."
+    },
+    {
+      "speaker": "agent",
+      "start": 745.52,
+      "end": 768.91,
+      "text": "And does it re- Got it. I have a few related pieces I need to clarify around donor and surrogate services. For diagnosis code Z52.819, egg donor services, are those covered under this infertility benefit? And if so, under what limitations or maximums?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 776.03,
+      "end": 780.93,
+      "text": "Donor services not covered."
+    },
+    {
+      "speaker": "agent",
+      "start": 780.93,
+      "end": 799.91,
+      "text": "Noted. For surrogate services, are they covered under this infertility benefit at all? And if they are, are they subject to the same $35,000 lifetime maximum or a separate limit?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 800.95,
+      "end": 803.47,
+      "text": "Surrogacy gestational carrier, no coverage."
+    },
+    {
+      "speaker": "agent",
+      "start": 805.69,
+      "end": 811.41,
+      "text": "Thanks, that's clear. Before I let you go, could I get your name and a reference number for this call, please?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 811.41,
+      "end": 818.21,
+      "text": "This is James, initial C for Charlie. Reference number for today, that will be 351-650-297."
+    },
+    {
+      "speaker": "agent",
+      "start": 823.41,
+      "end": 832.97,
+      "text": "Thank you, James. And just to confirm, the reference number is 351-650-297. Thank you for all this information. Have a great day."
+    }
+  ]
+}

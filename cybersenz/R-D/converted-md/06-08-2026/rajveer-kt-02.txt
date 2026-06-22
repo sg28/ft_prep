@@ -1,0 +1,345 @@
+Speaker 1
+Okay, while I've got you on the line, we might as well sort out Azure as well. Yeah, that's something I I I know a lot of everyone's had issues. with it and I'm not sure why because some people it will go perfectly fine and then others it'll just decide it doesn't want to work. So let me go ahead and share my screen and let's just work through this together. Alright, you can see my screen?
+
+Speaker 2
+I can now. Yeah. Great. Um Can you send me the link? I just want to like navigate along with you you just to make sure I'm but I uh Rajvir I didn't get an access to the Azure uh requested
+
+Speaker 1
+yeah that that's what I'm trying to sort out because I know some people have the issue with there as well because I as you can see here I sent it to both the secure CRM email as well as your Gmail account just because I was trying to see what would work because I know I I had the same sort of issue with RBIT.
+
+Speaker 3
+Okay.
+
+Speaker 1
+So what I'm gonna do is I'm gonna remove both of them and then we can see I'm gonna send it to your secure CRM and then we can go from there All right Do I need to do any of this? Nope. Auto on the resource group. Okay, let me also send you this link as well. Here I'm just gonna pop in the chat
+
+Speaker 2
+Um expecting a code from uh Microsoft, uh the MSol, but it's not yet yet here so let me just wait.
+
+Speaker 3
+Body enter message Okay, just got it. Didn't log in now. Sign in, except
+
+Speaker 2
+okay. I I'm able to log in, uh but I don't see any apps.
+
+Speaker 1
+Okay, so you're able to log in, that's fine. Then we go to the actual resource group itself and had you there.
+
+Speaker 3
+Yeah.
+
+Speaker 1
+Um yeah, because honestly that was the biggest hurdle because most of the time it's like people aren't even getting the infy itself. Uh let's go ahead and add a role assignment. I think for the time being, I'm gonna set you as a contributor and you know as time progresses and we get closer to production then we can change it based off of what would be required.
+
+Speaker 2
+Cool. No problem
+
+Speaker 1
+All right, review and assign. Actually, while I'm here, let me also go and assign you. you to the previous resource group as well. So you can see because the majority of your testing will be on the HRC versus the HRC dev, which is what ArtMith is doing. for the migration. So you get to see both sides and it will help with you know viewing logs, things of that nature. And actually while you're here, we'll go through the logging too. Let's go. Space ish and role assignment contributor Great, now you should have access to both of them.
+
+Speaker 3
+Refresh my groups Well let me quickly share my screen and just make sure. You can see my screen? Uh yep. So So here okay. So this is the profile, uh everything is there in my account
+
+Speaker 2
+Is there a separate link? that it you can share with me. Hey you just have to go to Azure. Uh can you show me the Azure link?
+
+Speaker 1
+It's not a link you just google Azure, order.
+
+Speaker 2
+azure. com. It should pull up from here Right.
+
+Speaker 3
+Ah, okay. Use another icon. Uh, signing optional. So no Nothing
+
+Speaker 2
+not Well to log in there. Let me see if I can do it with the get yeah This is what I tried last time with the get sign in and that's what I mentioned that I didn't get it nexus but it keeps on loop it keeps on looping like this
+
+Speaker 1
+all right let's just double check i seem to have network issues today so that's why It it's not loading properly. Uh Oh, come on. Nothing. No, my network's just taking its sweet time for some reason.
+
+Speaker 3
+Refresh. So if I now stick to one time. Next. Yeah.
+
+Speaker 2
+Yeah, something something on the MSOL verification that I'm not able to get Through towards your
+
+Speaker 3
+That's your location
+
+Speaker 2
+Um, did anybody else see this issue before?
+
+Speaker 1
+Hmm that issue hang on let me stop sharing I can't see your screen properly
+
+Speaker 2
+yes
+
+Speaker 1
+uh
+
+Speaker 2
+uh So if the portal. azure is not able to find SNAH security rm. ai. Um
+
+Speaker 3
+Do I create a new account? Connects.
+
+Speaker 1
+Wait, wait. Uh why is my network being so slow? Because then it showed me the exact email it sent to My lord, why is my network so slow? Uh Um I that okay, hang on. Just do me a favor and try it with this. You 're on and see if that's why it's not working. So try and log in with this instead of your CRM email.
+
+Speaker 2
+So sometimes exactly the you can share a link and it's probably would work. Let's try. So let me try an incognito.
+
+Speaker 1
+No, that's not the link. I was saying use that as your username. Oh
+
+Speaker 2
+you're saying you have username. Oh okay.
+
+Speaker 1
+Right? Verbatim, yeah, just enter your password in after see if that works No. Oh, we couldn't find Oh my lord. Okay, uh that's interesting. as the principal name and did do you have anything else that I don't see his mail. But
+
+Speaker 3
+it rate it is. Domain name the organization you would like to sign in. Side. What's the domain name of the organization I can use? Cybersends cyber sense Cyber sense. Cybercent
+
+Speaker 1
+I swear you think for a multi-billion dollar company like Microsoft, they couldn't get this one right. Let me just try adding your Gmail account, see if that works instead. Yeah, sure. Okay Actually, could you put your Gmail account in the chat again?
+
+Speaker 2
+Yeah.
+
+Speaker 1
+Oh okay. So try accepting the invitation. Just with the yeah. Okay, now go to portal dot azure dot com And in the domain name, go go go go back to the domain name itself in the different tab. Actually, yeah, try logging in with your Gmail account first. But if not, I I I think I've figured out what the second issue that could potentially be Nope. Okay, that's fine. So now go back to the email that it sent you Now you see they they say the domain is that. So if you try and copy that into the domain section and see if that works Now try your Gmail account Yeah, they just sent it uh no no it's the new one. They just sent a new mail, yeah
+
+Speaker 3
+There's literally no winning with issue. No, let's see with this one. Yeah, okay. Twenty Gator And okay. Next Cool. Okay. Now
+
+Speaker 1
+finally work. Now let me add you to the relevant resource groups. Amazing. I am role assignment Okay. All right, now refresh again. Oh don't know that's another issue. So
+
+Speaker 3
+let's just verify this first. Uh
+
+Speaker 1
+Oh. Now showing s your secure CRM that's
+
+Speaker 3
+email. Yeah, so this the
+
+Speaker 2
+Let's see where where we can we're solving one problem at a time. That's a good sign. Uh so
+
+Speaker 3
+directories and subscriptions Dashboard.
+
+Speaker 2
+What were we trying to look here?
+
+Speaker 1
+Okay, I'm just trying to make sure I've added now try and ref go back to it and try and refresh it again
+
+Speaker 3
+And then let's go to home.
+
+Speaker 1
+Press uh control or command shift R, whatever it does to refresh your cookies.
+
+Speaker 3
+Why is it not getting saved here? So weird.
+
+Speaker 2
+Okay, I'm locked back in again.
+
+Speaker 1
+Uh Wait, so if you refresh it, it'll log you out.
+
+Speaker 2
+Uh that's what I saw, yeah Yeah.
+
+Speaker 1
+Okay, go back to Microsoft. Press the Microsoft Azure at the top. Uh yeah, right there. And say view all resources. Ah
+
+Speaker 2
+bingo! There is it. There you go. It's it's under all resources now. It's okay, so Uh dashboard now it's everything is here now. Yeah this was missing.
+
+Speaker 1
+And it says via your secure CRM email, correct?
+
+Speaker 2
+This is this is what I see. Uh But hold on to removing the Gmail for now. Just okay let me let me try to break it one more time. Okay. Sorry about that.
+
+Speaker 1
+Don't worry. Listen, you know what? People are like, oh, AI is gonna change the world. If AI can't even fix this here, we still got a long way too much.
+
+Speaker 2
+Yeah, that's a good thing for us. You know how useless compiler is. Yes, yeah. I agree.
+
+Speaker 1
+Cool. Yeah, so you know we still go aways to go.
+
+Speaker 2
+So we now have things. Uh what are we looking at next?
+
+Speaker 1
+Okay, so now that you've got access to this, so uh regarding the so if you go purely based off a resource group, you press on HRC. HRC is the predecessor so what is currently the VM so that's HRC HRC dev is what Artbit's working on in terms of the four ACA migrations So those are the that that's probably the cleanest separation that we have in terms of that. But in terms of everything required for uh making the outbound phone calls. Do we not have that? Or we all you need is for me to send over some data to show you what the PDF should look like populated. And I'll do that in a bit, but other than that, I think we covered everything right. Cool. Or did you have any other questions?
+
+Speaker 2
+I don't have any questions at this point of time. Let me work uh look around with everything that I have. have and so let's go through actually what you're expecting from me. Just give me a brief demo and then we can start from there.
+
+Speaker 1
+Okay, amazing. Um I'll stop sharing for now. Is it okay? Yeah, that's fine. So I mean in terms of what's really to do today is just that internal testing. You You make the calls to yourself, see whether it's good, whether it's not good, uh make notes and attempt to make changes. So the thing is with the voice agents, if it's a prompt base change, it is liable to go in the wrong direction.
+
+Speaker 2
+Which you uh which you are I think you are maximized uh in your in your webpage so I can't see the uh so the link that you are working with?
+
+Speaker 1
+It it's just uh HRC. The uh link the Arpit gave was the actual container app itself. Okay. So here if you want if if it's a case of seeing the U. S. This is better.
+
+Speaker 2
+Yeah, this is better. Yeah. So do HRC outbound. Okay. So I we are I'm working with this right? Yes. Yeah. Okay, cool. So next Uh
+
+Speaker 1
+and then it is just a case of going through, choosing a file, uploading. So actually, do I have any no not chat template? Let's see if this is the Contains no CSV. Alright, that's good to see you now. Let's check whether this one works. Oh Actually cancel no one thing I need to do because otherwise the autonomous runner will send it out straight away is I need to pause it. Uh choose file. And you press okay. And I just need to make sure which one this is. Um Ah yes, bingo. It's just uh ah so but you can see the issue that this is an anthem blue cross, so it will throw a 400 error. So we can go ahead and delete that.
+
+Speaker 2
+Why would it throw a 400 error?
+
+Speaker 1
+Because we haven't set the payer name of Anthem Blue Cross yet. Okay. Uh, let's go ahead and check Outbound call template one. Sorry, I've got a million different um PD uh CSV files is populated from time ago, so Okay, these are all united. Okay, so this was back when we were testing other ones Actually, you know, it's better if I just go through and look myself because otherwise we're going to be at this all day just going back and forth, back and forth Also, uh I'll I'll let you know as well that I do have another meeting in about 10 minutes, which I'll need to hop off for. But we've m majority got through everything. So It's just this last bit of double checking.
+
+Speaker 2
+And is the login uh credentials for this one is the same as I was using, or you need to give me a separate log?
+
+Speaker 1
+Oh that's the same as what you're using.
+
+Speaker 2
+Okay. Ah
+
+Speaker 1
+bingo, this is exactly the kind. So what is this? Outbound call template four. Choose file. All right, so the one thing that needs to be edited is the from and to number so I will message this to you okay at the outbound call template four but I will change the relevant numbers because these are going based off of the previous ones. I will give you the new one so then we can that. Other than that, I think yeah, we've covered everything. Let me go ahead and do that now. Let me open that and make that change.
+
+Speaker 2
+And then we click ready to call and should trigger the call. Something else. Yeah. Okay.
+
+Speaker 1
+And actually while we're here, C D um
+
+Speaker 2
+How how much is Tulio charging per call at this point of thing
+
+Speaker 1
+it's based on a per minute basis now i want to say it's like 0. 2 cents a minute something really inconsequential and it's not even for the call itself. The majority of it is based off of the uh what do you call it? Um The majority is based off of the call recording itself.
+
+Speaker 2
+Okay, cool.
+
+Speaker 1
+So yeah, also you can see my terminal. on the right. That's also another thing. Because you've got I'm pretty sure I gave the credentials to the server in the chat, if I'm not mistaken. No, in WhatsApp, I mean.
+
+Speaker 2
+Uh for for the logging to the application or something else? Uh the server itself. I don't think so.
+
+Speaker 1
+Okay, I will go ahead and do that. Now, where 's the fold numbers? An age active numbers. It is Yep, that's the one.
+
+Speaker 3
+So then we go through there. Was it
+
+Speaker 1
+Okay, and the two number is no one sent out some calls, monitor I made one of these calls a while ago. Um Uh big god, that's the right number. So that's the Aetna's provider. No, that's the Aetna's woman's health number. Nope, you too. Ah , Ludio, I hate this I've never been good at XL. Do you know how maybe if I press X? Okay. I don't know. Just that. Yeah. That should be good to go. DOB. See, you know the funny thing with sometimes formatting the No, it needs to be the other way around. It needs to be a month, day, day, year.
+
+Speaker 2
+Yeah, we need to work with the
+
+Speaker 3
+uh yeah, okay.
+
+Speaker 1
+Uh you don't realize how many times I messed up with that one, particularly regarding the day, month, year versus month, day, day year. I spent Days trying to figure out oh my god what was the issue? Turns out it was that.
+
+Speaker 2
+Uh you can you going forward we can uh we can actually um have uh an MCP connector with the Excel files, all the Excels that we're gonna work working with and then we can just prompt with it.
+
+Speaker 1
+Yeah we could do that actually.
+
+Speaker 2
+Yeah we don't have to like individually go and fix every cell just It it will take care of it. I'll see if I can look into it later.
+
+Speaker 1
+Uh Gmail Gmail Gmail Patch file. Which one was the last one used? Alright, just sent you an email. Okay. That should come through to you soon.
+
+Speaker 2
+Okay.
+
+Speaker 1
+And uh uh I in reading through the code base, did you notice the amount of scripts that were created?
+
+Speaker 2
+Yeah.
+
+Speaker 1
+Yeah, did you
+
+Speaker 2
+do you push anything new? Uh I saw there were some changes in the voice. Was there anything else coming in?
+
+Speaker 1
+Uh not necessarily uh aspects of the voice. There were some things with the chat which needed to be changed purely due to the fact that the webhook would time out after 45 minutes. And then if a chat went longer than 45 minutes, then you'd no longer be able to see if it was a chat, even if it was a success or not. So that was the main thing that was changed on the dashboard side. However, that shouldn't really affect the voice agent in particular. But other than that, there's not been really many, any, many changes. But just to uh give you a quick aspect of what needs to be done. So within these if I can spell scripts. So the main scripts to use are the startup docker compose. sh. As the startup Docker Compose script is used as a bridge for commands, purely due to the fact that It pulls the script, it it pulls the secrets from the key vault. So anything that requires key vault access, such as like if you need to run any database queries, need to be done through that. Cause regular Docker Compose just wouldn't work. Uh along with that, if you need to rebuild the entire thing, one thing I would say is in the group chat, if uh I'll I'll show you the actual rebuild command first. deploy main dot sh this is the rebuild command if you run this during the daytime Just send a quick message just in case we are running tests in the chat agent because if you do do that, it will completely orphan the job.
+
+Speaker 2
+Okay.
+
+Speaker 1
+Uh and actually no it's C D dot dot yeah. C D H R C. So actually let's just do a quick So the three repositories, the outbound web app, which is what we're currently on, and then HRC Wiz C D. And then the voice agents. And for this one, it's a similar script with a deploy. sh rebuild as if there are any changes that need to be made, you just run this quick command. And you can do that without it affecting the other agents itself.
+
+Speaker 2
+Okay.
+
+Speaker 1
+Yeah. Other than that, any sort of questions, concerns?
+
+Speaker 2
+Oh, I'm good. Do we need to deploy and rebuild at this point of time for making the test calls?
+
+Speaker 1
+Uh no, I just did this as an example just to show you. Um but that's because this wouldn't affect the chat agent which is currently being run in a different tab. Okay.
+
+Speaker 2
+Okay, cool. uh so i'll just use that csv file uh upload it if that if if i can now if i can understand the process let me just reiterate quickly with to you. So we'll just go there, upload that file and start the call, right? Is that s that's all. Yeah. And appoint the Number to my phone number. So you gave me two numbers. Uh the f the two should be my number, right?
+
+Speaker 1
+Yes, the two numbers. So the number which if you look at the CSV file and it's the number that's ending in five triple nine, you change that to your personal number.
+
+Speaker 2
+Okay Uh I think that's all. Is there anything i do I understand correct what we're doing today?
+
+Speaker 1
+No, I I mean from what I hear you do Uh if you got anything else, just feel free to message me. And if we can find the time e either today, later on uh later on today or tomorrow, then we can try and do it uh if there's anything that is required.
+
+Speaker 2
+Okay. So you will be able to gather the communication and the recording uh on the
+
+Speaker 1
+Yeah, that should all be shown on the dashboard. So if you go back to the dashboard Um yes, I saw their Yeah, you'll be able to view PDF, download the audio. You see these older ones do not show it for a few reasons actually. Um Because it's moved over to archive storage for cost savings and it needs a day and some time to rehydrate
+
+Speaker 2
+Got it. Without the member ID uh or a patient proper patient information, will I be able to do this test?
+
+Speaker 1
+Yeah, uh it will still take you through the flow. It's just a case of reading through the prompt, understanding the flow, look through the workflow, because that will outline exactly like uh what what goes on in terms of the structure flow each section and then from there you go ahead and do the calls yourself make sure that those aspects that can't be picked up via any sort of unit testing things of that are there. So like it doesn't mess up saying words. There was isn't too much latency, things of that nature. And then once you're happy with that, then you can send out calls whether it's later on today or tomorrow. Cool, cool.
+
+Speaker 2
+Yeah. Okay. Uh okay, I'll take a look at this. Um how long are you gonna be active or you're taking break like Uh
+
+Speaker 1
+I have another meeting. I'm actually a bit late to that, but that one's fine. It's an internal meeting. There's no problem. Uh I've got a meeting, then I'm gonna go eat dinner and then Probably get back and do a bit more work. Cool, cool.
+
+Speaker 2
+I'm expecting maybe next two hours if I if I have any question just to follow up with you. Yeah, that's perfectly fine. Cool. Okay. Thanks Rajby. I'll I'll start following up on this.
+
+Speaker 1
+Alright, no problem. Cheers. Okay.
+

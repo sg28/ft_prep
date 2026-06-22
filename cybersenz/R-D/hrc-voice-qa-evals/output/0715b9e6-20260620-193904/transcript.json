@@ -1,0 +1,425 @@
+{
+  "call_uuid": "0715b9e6-f0e4-428b-9e29-5dab9c9e4016",
+  "duration_s": 809.76,
+  "speaker_role_map": {
+    "speaker_1": "agent",
+    "speaker_0": "ivr",
+    "speaker_2": "rep"
+  },
+  "turns": [
+    {
+      "speaker": "ivr",
+      "start": 0.08,
+      "end": 31.04,
+      "text": "Thank you for calling Aetna. Your call will be monitored and recorded to ensure quality service. To serve you more efficiently, please have the Aetna member ID number available. If you are calling for our fax number, for an Aetna pharmacy benefit, or for claims, press three. If you are an Aetna member, press one. If you are a healthcare provider, press two. To repeat these options, press nine."
+    },
+    {
+      "speaker": "agent",
+      "start": 38.52,
+      "end": 43.71,
+      "text": "Enter or say the month, day, and year of the date of birth of the person you're calling about."
+    },
+    {
+      "speaker": "ivr",
+      "start": 48.98,
+      "end": 59.6,
+      "text": "Sorry, I didn't hear you. Say the date of birth of the person you're calling about, or enter it on your keypad using two digits for the month, two digits for the day, and two digits for the year."
+    },
+    {
+      "speaker": "agent",
+      "start": 64.32,
+      "end": 71.42,
+      "text": "I seem to be having some difficulty. Let me transfer you to a representative who can help you. Please hold while I transfer your call."
+    },
+    {
+      "speaker": "rep",
+      "start": 72.86,
+      "end": 117.38,
+      "text": "If you are a provider, did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or, \"Pre-cert status.\""
+    },
+    {
+      "speaker": "ivr",
+      "start": 124.53,
+      "end": 127.2,
+      "text": "Aetna Infertility, this is Mark. Can I have your name, please?"
+    },
+    {
+      "speaker": "agent",
+      "start": 130.12,
+      "end": 133.06,
+      "text": "Hi. This is Emily calling from Huntington Reproductive Center."
+    },
+    {
+      "speaker": "ivr",
+      "start": 137.86,
+      "end": 140.24,
+      "text": "May I have your callback number?"
+    },
+    {
+      "speaker": "agent",
+      "start": 144.16,
+      "end": 151.15,
+      "text": "Sure. The callback number is 626-204-9699 extension 1304."
+    },
+    {
+      "speaker": "ivr",
+      "start": 161.06,
+      "end": 163.14,
+      "text": "All right. And the provider's NPI?"
+    },
+    {
+      "speaker": "agent",
+      "start": 166.51,
+      "end": 171.2,
+      "text": "The provider NPI is 1295873677."
+    },
+    {
+      "speaker": "ivr",
+      "start": 179.4,
+      "end": 180.66,
+      "text": "Can I also have the tax ID?"
+    },
+    {
+      "speaker": "agent",
+      "start": 183.66,
+      "end": 188.04,
+      "text": "Yes. The tax ID is 954510667."
+    },
+    {
+      "speaker": "ivr",
+      "start": 189.68,
+      "end": 192.36,
+      "text": "Uh, doctor's complete name and the complete address?"
+    },
+    {
+      "speaker": "agent",
+      "start": 195.9,
+      "end": 205.32,
+      "text": "The doctor's name is John M. Norian and the address is 8112 Millikin Avenue, Rancho Cucamonga, California 91730."
+    },
+    {
+      "speaker": "ivr",
+      "start": 220.44,
+      "end": 221.64,
+      "text": "And the member ID?"
+    },
+    {
+      "speaker": "agent",
+      "start": 225.84,
+      "end": 230.42,
+      "text": "The member ID is W283767028."
+    },
+    {
+      "speaker": "ivr",
+      "start": 242.48,
+      "end": 244.7,
+      "text": "Member's complete name and date of birth."
+    },
+    {
+      "speaker": "agent",
+      "start": 247.3,
+      "end": 252.53,
+      "text": "The member's name is Trista Gatoni and her date of birth is June 20th, 1991."
+    },
+    {
+      "speaker": "ivr",
+      "start": 259.82,
+      "end": 294.06,
+      "text": "All right, uh, Emily. For this patient's plan, I need to connect you to the onshore team."
+    },
+    {
+      "speaker": "agent",
+      "start": 296.58,
+      "end": 298.32,
+      "text": "Okay. I can hold for the transfer."
+    },
+    {
+      "speaker": "ivr",
+      "start": 305.98,
+      "end": 308.22,
+      "text": "All right. I'm connecting you now. Thank you for calling Aetna."
+    },
+    {
+      "speaker": "agent",
+      "start": 310.88,
+      "end": 316.72,
+      "text": "I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have?"
+    },
+    {
+      "speaker": "ivr",
+      "start": 318.54,
+      "end": 321.84,
+      "text": "I'll connect you now, uh, to, uh, the onshore team. Uh, please stay on the line."
+    },
+    {
+      "speaker": "agent",
+      "start": 324.8,
+      "end": 326.35,
+      "text": "No problem. I'll hold on the line."
+    },
+    {
+      "speaker": "rep",
+      "start": 332.68,
+      "end": 393.66,
+      "text": "Did you know you can submit your pre-certification request electronically? There's no need to wait to speak to someone. If you use our provider portal on Availity, you can also upload clinical documentation, check the status, view UM letters, and make changes to an existing request. You may even get a decision immediately. Go to www.availity.com to learn more or register for the portal. Use of this portal is free. Our virtual assistant can now be used to check the status of a pre-cert and determine if pre-cert is required. Just say, \"Pre-cert,\" and then, \"Is pre-cert required?\" or \"Pre-cert status.\"  Thank you for calling Aetna's Infertility Pre-cert Unit. This is Liz. How can I help you? Hello?"
+    },
+    {
+      "speaker": "agent",
+      "start": 393.66,
+      "end": 407.63,
+      "text": "Hi, Liz. This is Em- ... Hi, Liz. This is Emily calling from Huntington Reproductive Center. I'm calling to verify the infertility benefits on this plan. What level of infertility coverage does this patient have?"
+    },
+    {
+      "speaker": "rep",
+      "start": 408.95,
+      "end": 412.87,
+      "text": "Emily, can you provide me your phone number at the office, please?"
+    },
+    {
+      "speaker": "agent",
+      "start": 415.91,
+      "end": 423.25,
+      "text": "Yes. The callback number is 626-204-9699, extension 1304."
+    },
+    {
+      "speaker": "rep",
+      "start": 425.87,
+      "end": 426.79,
+      "text": "Your tax ID?"
+    },
+    {
+      "speaker": "agent",
+      "start": 431.63,
+      "end": 436.05,
+      "text": "The tax ID is 954-510-667."
+    },
+    {
+      "speaker": "rep",
+      "start": 438.39,
+      "end": 439.37,
+      "text": "The patient's ID?"
+    },
+    {
+      "speaker": "agent",
+      "start": 441.95,
+      "end": 446.45,
+      "text": "The member ID is W283767028."
+    },
+    {
+      "speaker": "rep",
+      "start": 449.75,
+      "end": 480.69,
+      "text": "One moment, please. Mm-hmm. Address to the practice?"
+    },
+    {
+      "speaker": "agent",
+      "start": 483.11,
+      "end": 490.03,
+      "text": "The address is 8112 Millikan Avenue, Rancho Cucamonga, California 91730."
+    },
+    {
+      "speaker": "rep",
+      "start": 491.13,
+      "end": 492.43,
+      "text": "Patient's name and date of birth?"
+    },
+    {
+      "speaker": "agent",
+      "start": 496.93,
+      "end": 502.48,
+      "text": "The patient's name is Trista Catone, and her date of birth is June 20th, 1991."
+    },
+    {
+      "speaker": "rep",
+      "start": 524.21,
+      "end": 528.74,
+      "text": "Emily, you just checked benefits on this patient. Was there something we were missing?"
+    },
+    {
+      "speaker": "agent",
+      "start": 531.75,
+      "end": 540.19,
+      "text": "Yes. We're just confirming the detailed infertility benefits for today's visit and treatment planning. Could you let me know what level of infertility coverage this patient has on the plan?"
+    },
+    {
+      "speaker": "rep",
+      "start": 541.89,
+      "end": 574.79,
+      "text": "This patient has diagnostic testing, IUIs, specifically 58321, 58322, 58323, covered under basic medical. No prior authorization is required. Patient does have coverage for ovulation inductions, no cycle limit, and she has three cycles lifetime for ART."
+    },
+    {
+      "speaker": "agent",
+      "start": 585.57,
+      "end": 586.87,
+      "text": "Got it. Thank you."
+    },
+    {
+      "speaker": "rep",
+      "start": 586.87,
+      "end": 586.88,
+      "text": "We're good."
+    },
+    {
+      "speaker": "agent",
+      "start": 586.88,
+      "end": 600.19,
+      "text": "I'd like to confirm coverage for in- Yes, I also need to verify coverage for initial cryopreservation. Can you tell me if CPT 89258 is covered, initial cryopreservation of embryos?"
+    },
+    {
+      "speaker": "rep",
+      "start": 601.57,
+      "end": 604.03,
+      "text": "Only if related to iatrogenic."
+    },
+    {
+      "speaker": "agent",
+      "start": 606.55,
+      "end": 617.73,
+      "text": "Okay. Is CPT 89337 covered for initial cryopreservation of eggs, and is CPT 89259 covered for initial cryopreservation of sperm?"
+    },
+    {
+      "speaker": "rep",
+      "start": 619.71,
+      "end": 622.07,
+      "text": "Only if related to iatrogenic."
+    },
+    {
+      "speaker": "agent",
+      "start": 626.25,
+      "end": 634.63,
+      "text": "Okay. Next, I need to check thawing procedures. Can you let me know if CPT 89 352 for thawing of embryos is covered?"
+    },
+    {
+      "speaker": "rep",
+      "start": 647.67,
+      "end": 648.97,
+      "text": "Not a covered service."
+    },
+    {
+      "speaker": "agent",
+      "start": 651.35,
+      "end": 656.13,
+      "text": "Okay. Is CPT 89 356 for thawing of eggs covered?"
+    },
+    {
+      "speaker": "rep",
+      "start": 657.65,
+      "end": 657.87,
+      "text": "No."
+    },
+    {
+      "speaker": "agent",
+      "start": 665.36,
+      "end": 669.59,
+      "text": "Is CPT 89 356 for thawing of sperm covered?"
+    },
+    {
+      "speaker": "rep",
+      "start": 670.77,
+      "end": 671.05,
+      "text": "No."
+    },
+    {
+      "speaker": "agent",
+      "start": 676.39,
+      "end": 686.61,
+      "text": "Okay. I also need to verify coverage for donor and surrogate services. Is there coverage when the diagnosis is Z52.819 for egg donor services?"
+    },
+    {
+      "speaker": "rep",
+      "start": 689.35,
+      "end": 690.45,
+      "text": "Not a covered service."
+    },
+    {
+      "speaker": "agent",
+      "start": 695.85,
+      "end": 709.57,
+      "text": "Mm-hmm. I also need to verify coverage for genetic services and storage. Is CPT 89 290 or 89 291 for PGTA biopsy covered under this plan?"
+    },
+    {
+      "speaker": "rep",
+      "start": 709.57,
+      "end": 709.87,
+      "text": "No."
+    },
+    {
+      "speaker": "agent",
+      "start": 715.34,
+      "end": 726.41,
+      "text": "Thanks. That helps. I also need to confirm any attempt or cycle limits. How many attempts are allowed for CPT 58322, IUI?"
+    },
+    {
+      "speaker": "rep",
+      "start": 727.45,
+      "end": 728.52,
+      "text": "No cycle limit."
+    },
+    {
+      "speaker": "agent",
+      "start": 731.46,
+      "end": 736.82,
+      "text": "Okay. How many attempts are allowed for CPT 58970 IVF?"
+    },
+    {
+      "speaker": "rep",
+      "start": 740.0,
+      "end": 741.46,
+      "text": "Three lifetime."
+    },
+    {
+      "speaker": "agent",
+      "start": 747.3,
+      "end": 753.88,
+      "text": "Got it. Three lifetime for IVF. Is pre-certification required for initiation of fertility treatment?"
+    },
+    {
+      "speaker": "rep",
+      "start": 753.88,
+      "end": 754.18,
+      "text": "Yes."
+    },
+    {
+      "speaker": "agent",
+      "start": 762.6,
+      "end": 770.52,
+      "text": "Okay. Before we wrap up, could I get your name as it should be noted for this call and a reference number for our records? Thank you for all this information."
+    },
+    {
+      "speaker": "rep",
+      "start": 771.64,
+      "end": 780.98,
+      "text": "Liz, L-I-Z. Call reference number 352-007-988."
+    },
+    {
+      "speaker": "agent",
+      "start": 790.26,
+      "end": 792.84,
+      "text": "Thanks, Liz. Have a great day."
+    },
+    {
+      "speaker": "rep",
+      "start": 796.28,
+      "end": 797.42,
+      "text": "Thank you for calling Aetna."
+    },
+    {
+      "speaker": "agent",
+      "start": 799.7,
+      "end": 800.18,
+      "text": "Take care."
+    },
+    {
+      "speaker": "rep",
+      "start": 805.34,
+      "end": 805.74,
+      "text": "Bye-bye."
+    },
+    {
+      "speaker": "agent",
+      "start": 809.46,
+      "end": 809.76,
+      "text": "Bye."
+    }
+  ]
+}

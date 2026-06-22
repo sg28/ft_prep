@@ -1,0 +1,176 @@
+Can
+
+Speaker 1
+you see my screen? Yep. Okay. So Uh to do too much. So Rajveer, I uploaded a file and then So the problem was I uploaded this With my this is with my number.
+
+Speaker 2
+Yeah And then because the autonomous runner is currently running, it will send that call out straight away
+
+Speaker 1
+Okay. Now we can see this is in uh this is in Q over here, right? Uh so what does this The does this have anything make does it have any significance or it's just numbers? What does this mean? What does this mean pending one?
+
+Speaker 2
+So that means that's that's how many chats are in the queue pending
+
+Speaker 1
+How many chats?
+
+Speaker 2
+No, I mean calls, but how many calls are we
+
+Speaker 1
+keep pending? Yeah. And is the same in progress?
+
+Speaker 2
+Uh that means that the call that you sent out just hasn't received a webhook, which is slightly interesting to see why. Because what that call was only like what five seconds long
+
+Speaker 1
+Okay. Uh okay, that's fine. So I'll let's take a note on this one. So I'm uh I'm I'm asking this because I'm also learning about this uh application. Okay.
+
+Speaker 2
+Yeah, yeah no that's fine.
+
+Speaker 1
+Uh so now let me go back over here if I look into it calling lanes right so what does this call in lanes running mean exactly Actually, we don't have any calls.
+
+Speaker 2
+That's the autonomous runner.
+
+Speaker 1
+Okay.
+
+Speaker 2
+The autonomous runner is the intended use of the autonomous runner is It takes whatever in the call queue, it will output, so it will look through the call queue, it will look to see if the concurrency of two agents has been met. If there's only one or zero calls in the queue that are running, it will look through the call queue, it will take the information and it will send out that call. So that's the purpose of the autonomous runner. The autonomous mode uses a heartbeat service to identify if there is a call that needs to be made within the active timeframe of Eight fifteen to four thirty PM.
+
+Speaker 1
+Okay, okay. Uh lane lane A
+
+Speaker 2
+And lane B, those are just concurrency based. So it's split from uh a concurrency of two lanes, so one call at a time. Because otherwise, theoretically speaking, we could scale up infinitely to have what like 32 plus calls going at once, which wouldn't be a good thing.
+
+Speaker 1
+Okay. No voice verification ready? What does that mean? That means there's no chat in the queue.
+
+Speaker 2
+Uh check your phone. Did you just receive a call?
+
+Speaker 1
+Not yet. No, no, no, no. That's the I I was going to come into that. Oh yeah. Two minutes ago.
+
+Speaker 2
+Yeah, see when you uploaded it. That's the whole purpose of the call lines. If this is active and uh there's a ch call waiting in the queue, it will send out a call. So what you can do is just press pause
+
+Speaker 1
+Yeah, that way you'd be able to run the verification. So when I as soon as I upload, it's going to automatically call me if to the to the number. Yep. Okay, okay. Uh but okay, so that's that's one question answered. That's fine. But if I don't answer it Does it hung up there? Like does it does it voice
+
+Speaker 2
+it goes to voicemail and then it will clear.
+
+Speaker 1
+Yeah, but from here in the dashboard, I'm not able to start a verification, right? Right? Because there's already a lane that is already in uh has not closed yet. Is it something like that?
+
+Speaker 2
+Uh I'm not sure what you mean, but you met your dashboard currently and It seems that, say for example, if I uploaded a reference document with the chat being What it is, upload process, yes, okay. Blah blah blah.
+
+Speaker 1
+So the simple question is you see this start verification sometime it gets disabled, sometimes it gets enabled right
+
+Speaker 2
+yeah now now it should be enabled because i i i thought that was weird but apparently it had some r back setting to where if it's outside of the reference timeframe than only administrative access because there's three levels of access there's um user manager and admin yeah right now you have the middle of the range manager and That's why it worked for me, but it didn't work for you because you didn't have the admin access. So I dropped it down. So temporarily everyone had access to it to run it even after hours for that test case. But uh just in terms of Oh, that's annoying. Uh give me a second. Uh So like if you refreshed and looked at the queue, you'd be able to see that there's a John Donor sitting in the queue. Yeah, and then you're able to press the button, right? If you press the button.
+
+Speaker 1
+Okay, uh one more. Let me see the let me understand the DV here So n oh so you uploaded a new file. Okay. Okay. Okay. And if I look at But it it will not call me, it will call you. Yeah Okay. Let me let me test a call. Okay. I the thing I wanted to ask also is that I have to behave or speak like a ethnic agent. for for this one to work, right? Yes.
+
+Speaker 2
+So what what you could do is there's one of two things. If you want to test the Asian behavior, you'll also be able to call that number, that number ending in Uh what where where's the number?
+
+Speaker 1
+Eight four eight seven four something like that, yeah.
+
+Speaker 2
+Yeah, eight seven four seven eight seven four seven yeah that number, you'll still be able to speak to the agent. So it is a case of you don't even need to trigger to make sure that the agent has the right behavior. You can 't go through those uh go through that aspect and you'll still be able to understand all right the agent hate behavior what's expected that way we can start sending out calls ASAP
+
+Speaker 1
+You're talking about like inbound calls.
+
+Speaker 2
+Yeah, you so the intended behavior is outbound, yes, but you can also make inbound calls to it to also test the agent behavior. It's just a simple thing of cutting out the dashboard aspect.
+
+Speaker 1
+Okay, okay. Okay, so what what what so this so I am documenting the scenarios that I have been testing, okay? uh so i'll probably share that file with you eventually like what my experiences are um i will continue doing these tests Apart from that, what what else do you want me to do like today, tomorrow?
+
+Speaker 2
+Okay, so the whole purpose really is the the thing is with the time zone as well as the other project I don't have as much time as required to run these tests manually, test it myself, make sure the agent behavior is up to scratch. So the thing is what I would want you to do is today go through the agent behavior. Upline, what is it, compare it to the prompt, see whether it's to be expected based off of the prompt, and from there make any notes if it's not, if it is good. Then great. We can send out a call to the actual insurance company. But the thing is we need to make sure that we're able to send out these calls by tomorrow to the insurance company. So any changes that have been outlined and need to be made, that's sort of the whole process here. It's not necessarily just dashboard specific, but it's agent aspects for prompting as well as if there are any programmatic changes, which I don't believe there would be. I believe it would be mainly prompt-based. So
+
+Speaker 1
+yeah. Uh can you tell me where the prompts that you have saved in right now?
+
+Speaker 2
+It would be uh can you open the repository? Yeah, so if you go into the HRC outbound web app, uh yeah, the voice agents actually, you're on the right one. Uh press that, go to agents. Right here. And then Aetna. So then the IVR prompt is in the MD file. And similarly, when you open the women's health subdirectory, it will show that prompt there too As the MD file.
+
+Speaker 1
+Okay. And we want to stick to the prompt. We are not Do you see anything else other than the prompt?
+
+Speaker 2
+Oh yeah, so we want to go through, make sure that the prompt reflects for the required behavior. So you go through the relevant questions. You ask the questions of, okay, uh, whatever is going on, I need to extract X, Y, and Z information. It goes through, asks the questions. You want to make sure that it asks the questions and it sounds human-like. Those are the main two things. And if you are satisfied with that, then we can start sending our calls tomorrow.
+
+Speaker 1
+Got it. Cool. Cool.
+
+Speaker 2
+But if possible, could you send me like some sort of message evening your time that way if there are any changes that you weren't able to make I can make those quickly. We can run through maybe one or two tests tomorrow morning and then from there start sending out.
+
+Speaker 1
+Okay, okay. And uh okay, let's do that. And um I you mentioned I won't be restricted by the window like it's 430.
+
+Speaker 2
+Yeah, so you shouldn't be restricted by the window, but even if you are, yeah, that's where inbound call comes in. So you make the phone.
+
+Speaker 1
+I just make the phone call to the agent and that should
+
+Speaker 2
+I'd say test that, double check that first, because the thing is you never know what the Twitter number is. I know it works for my UK number, but I would double check that with the um the one ending in eight, four, seven, four, or whatever, uh, that way you can go through it. I'm pretty sure it goes through the IVR section as well.
+
+Speaker 1
+Uh-huh.
+
+Speaker 2
+But uh I I think in my testing that I did it did go into uh to speak to a human being. So I'm pretty sure it got through the IVR section perfectly fine. Cool. The IVR section is very much the more forgiving aspect because obviously you're not speaking to a human being. But it's a case that the the main aspect which needs to be solidified is the agent switchover. So going from the IVR agent to
+
+Speaker 1
+the woman's health. Exactly. The switchover is the most important piece right that's what I uh also felt like and it has to be very seamless so that it doesn't understand those switches were happening yeah Exactly. Cool, cool. I can do that. I can do that. Uh we can I I'll keep you posted. Uh let me try the inbound and go through a round of uh testing this. Okay.
+
+Speaker 2
+Are great. Um
+
+Speaker 1
+yeah, in case uh I'll do this today. In case I miss the window, I'm gonna try it after 430 with the inbound. I'll just do that in the boundary.
+
+Speaker 2
+Yeah, I'd say just do one test with the inbound.
+
+Speaker 1
+I'll do that right now. Yeah, yeah. I'll do that inbound right now. That way you don't even need to worry about the uh
+
+Speaker 2
+the window.
+
+Speaker 1
+Yeah, yeah, that's what I'm gonna do right now. I I'll do a one small session right now itself as soon as we hang up. Oh amazing. Yeah, yeah. Uh okay, I'll keep you updated. Um I s I saw your message on the server credentials. I'll make sure I'll take a take a look at that to see and test actual logs on there. Okay.
+
+Speaker 3
+Okay, great.
+
+Speaker 1
+Okay. Thank you.
+
+Speaker 3
+Thank you, Raspberry.
+
+Speaker 1
+I'll keep you posted.
+
+Speaker 3
+Okay, bye. Bye.
+

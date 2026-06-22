@@ -1,0 +1,4 @@
+id,date_added,priority,status,component,title,description
+BL-001,2026-06-09,medium,open,extraction,Post-call extraction timing out,extraction.client logs APITimeoutError (Azure OpenAI) and retries with backoff after calls; investigate after the START-node blocker is cleared
+BL-002,2026-06-09,low,open,security,Rotate VM password + switch to SSH key auth,VM azureuser password was shared in plaintext over chat for a PHI system; rotate and move to key-based auth after first login
+BL-003,2026-06-09,medium,open,voice-agent,Re-run inbound behavior test once START node is fixed,After the agent re-sync verify inbound flow end-to-end: silence on pickup -> rep greeting -> clean Emily intro; then score human-likeness and IVR to Women's Health switchover
