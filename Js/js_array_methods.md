@@ -302,3 +302,83 @@ with(index, value) - index: position to replace, value: new value to put there
 ```js
 [1,2,3].with(1,9) → [1,9,3]
 ```
+
+### concat()
+
+Merge arrays into a new array (non-mutating).
+concat(...valuesOrArrays) - arguments to append, arrays are flattened one level
+
+```js
+[1,2].concat([3,4]) → [1,2,3,4]
+[1,2].concat(3, [4,5]) → [1,2,3,4,5]
+```
+
+### fill()
+
+Fill elements with a static value (mutates).
+fill(value, start, end) - value: what to fill with, start: inclusive (default 0), end: exclusive (default length)
+
+```js
+[1,2,3].fill(9) → [9,9,9]
+[1,2,3,4,5].fill(0, 1, 3) → [1,0,0,4,5]
+```
+
+### copyWithin()
+
+Copy part of the array to another location within itself (mutates).
+copyWithin(target, start, end) - target: where to copy to, start/end: range to copy from
+
+```js
+[1,2,3,4,5].copyWithin(0, 3) → [4,5,3,4,5]
+[1,2,3,4,5].copyWithin(1, 3) → [1,4,5,4,5]
+```
+
+### reduceRight()
+
+Accumulate values from right to left.
+reduceRight(callback, initialValue) - callback: accumulator function, initialValue: optional starting value
+
+```js
+[1,2,3,4].reduceRight((acc, val) => acc + val) → 10
+[1,2,3].reduceRight((acc, val) => acc.concat(val), []) → [3,2,1] (reversed)
+```
+
+### keys() / values() / entries()
+
+Return iterators over indices, elements, or [index, element] pairs.
+keys() / values() / entries() - no parameters, return an Array Iterator
+
+```js
+[...[1,2,3].keys()] → [0,1,2]
+[...['a','b','c'].values()] → ['a','b','c']
+[...[1,2].entries()] → [[0,1],[1,2]]
+```
+
+### toString() / toLocaleString()
+
+Convert array to a comma-separated string.
+toString() / toLocaleString() - no parameters (toLocaleString formats elements per locale)
+
+```js
+[1,2,3].toString() → "1,2,3"
+[1,2,3].toLocaleString() → "1,2,3"
+```
+
+### Array.isArray()
+
+Check whether a value is an array.
+Array.isArray(value) - value: what to test
+
+```js
+Array.isArray([1,2,3]) → true
+Array.isArray("abc") → false
+```
+
+### Array.fromAsync()
+
+Create an array from an async iterable, iterable, or array-like object (ES2024).
+Array.fromAsync(asyncIterable, mapFn) - asyncIterable: source, mapFn: optional transform function
+
+```js
+await Array.fromAsync([1,2,3]) → [1,2,3]
+```

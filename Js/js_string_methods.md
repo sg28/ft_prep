@@ -259,3 +259,57 @@ search(regexp) - regexp: regular expression to search
 "hello123".search(/\d/) → 5
 "hello".search(/\d/) → -1 (not found)
 ```
+
+### matchAll()
+Return an iterator of all regex matches (regexp must have the `g` flag).
+matchAll(regexp) - regexp: regular expression with global flag
+
+```js
+[..."hello world".matchAll(/o/g)] → matches at index 4 and 7
+```
+
+### toLocaleLowerCase() / toLocaleUpperCase()
+Convert case using locale-specific rules (differs from toLowerCase/toUpperCase for some locales).
+toLocaleLowerCase(locale) / toLocaleUpperCase(locale) - locale: optional BCP 47 language tag
+
+```js
+"İstanbul".toLocaleLowerCase("tr") → "istanbul" (Turkish dotted İ → dotless i)
+"istanbul".toLocaleUpperCase("tr") → "İSTANBUL" (Turkish dotless i → dotted İ)
+```
+
+### toString() / valueOf()
+Return the primitive string value.
+toString() / valueOf() - no parameters
+
+```js
+"hello".toString() → "hello"
+"hello".valueOf() → "hello"
+```
+
+### String.fromCharCode() / String.fromCodePoint()
+Build a string from UTF-16 code units or Unicode code points (static methods).
+String.fromCharCode(...codes) / String.fromCodePoint(...codePoints) - codes/codePoints: numbers to convert
+
+```js
+String.fromCharCode(104, 105) → "hi"
+String.fromCodePoint(128640) → "🚀"
+```
+
+### String.raw()
+Return the raw (unescaped) string form of a template literal (static method).
+String.raw(templateStrings, ...substitutions) - used as a tag function for template literals
+
+```js
+String.raw`Line1\nLine2` → "Line1\\nLine2" (backslash-n kept literal, not a newline)
+```
+
+### isWellFormed() / toWellFormed()
+Check for or fix lone (unpaired) UTF-16 surrogates in a string (ES2024).
+isWellFormed() - no parameters, returns true/false
+toWellFormed() - no parameters, returns a new string with lone surrogates replaced
+
+```js
+"hello".isWellFormed() → true
+"\uD800".isWellFormed() → false (lone surrogate)
+"\uD800".toWellFormed() → "�" (replaced with U+FFFD)
+```
