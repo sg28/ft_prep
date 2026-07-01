@@ -7,49 +7,64 @@ Only declarations are hoisted, not the initializations or assignments.
 ## What Gets Hoisted?
 
 Hoisting applies to:
-- Variable declarations (var, let, const)
+- Variable declarations (`var`, `let`, `const`)
 - Function declarations
 - Class declarations (introduced in ES6)
 
 ## Variable Hoisting with `var`
 
 ### Example:
-console.log(x);     // undefined
+
+```js
+console.log(x); // undefined
 var x = 5;
-console.log(x);     // 5
+console.log(x); // 5
+```
 
 ### Behind the Scenes (How JavaScript Interprets It):
+
+```js
 var x;          // Declaration is hoisted
 console.log(x); // undefined
 x = 5;          // Initialization stays in place
 console.log(x); // 5
+```
 
 ## Variable Hoisting with `let` and `const`
 
 ### Example:
-console.log(y); // Error: Cannot access 'y' before initialization
+
+```js
+console.log(y); // ReferenceError: Cannot access 'y' before initialization
 let y = 10;
-x
-console.log(z); // Error: Cannot access 'z' before initialization
+
+console.log(z); // ReferenceError: Cannot access 'z' before initialization
 const z = 15;
+```
 
 **Note:** `let` and `const` are hoisted but remain in a "temporal dead zone" until their declaration is reached.
 
 ## Function Hoisting
 
 ### Function Expressions
-greet(); // Error: greet is not a function
+
+```js
+greet(); // TypeError: greet is not a function
 
 var greet = function () {
     console.log("Hello!");
 };
+```
 
 ### Function Declarations
+
+```js
 greet(); // Output: Hello, World!
 
 function greet() {
     console.log("Hello, World!");
 }
+```
 
 ## Key Points
 
