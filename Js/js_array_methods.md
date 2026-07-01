@@ -44,8 +44,10 @@ slice(start, end) - start: inclusive, end: exclusive
 
 ### splice()
 
-Add/remove elements at index.
-splice(index, numberOfElements, addItems)
+Add/remove/replace elements at index (mutates the original array).
+splice(start, deleteCount, item1, item2, ...) - start: index to begin (negative counts from end), deleteCount: how many elements to remove, item1... : elements to insert in their place (optional)
+
+Returns a new array of the **removed** elements — not the modified array.
 
 ```js
 [1,2,3].splice(1,1,9) → [2], array becomes [1,9,3]
@@ -53,6 +55,27 @@ splice(index, numberOfElements, addItems)
 let list = [1,3,4,5];
 list.splice(1, 2, 8,9) // [ 1, 8, 9, 5 ]
 ```
+
+Three modes, isolated:
+
+```js
+// Pure deletion — no items to insert
+let a = [1,2,3,4];
+a.splice(1, 2);        // removes 2 elements starting at index 1
+console.log(a);        // [1, 4]
+
+// Pure insertion — deleteCount = 0
+let b = [1,4];
+b.splice(1, 0, 2, 3);  // insert 2,3 at index 1, delete nothing
+console.log(b);        // [1, 2, 3, 4]
+
+// Pure replacement — deleteCount matches items inserted
+let c = [1,9,3];
+c.splice(1, 1, 2);      // remove 1 element at index 1, insert 2
+console.log(c);         // [1, 2, 3]
+```
+
+Rule of thumb: **`slice` copies, `splice` cuts** — original array untouched vs. mutated in place.
 
 ### map()
 
