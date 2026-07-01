@@ -1,7 +1,7 @@
 
 function human(...args) {
     let list = [...args];
-    return this.name + "has a"+list[0]+" and a "+list[1];
+    return this.name + " has a " + list[0] + " and a " + list[1];
 }
 
 let Indian = {

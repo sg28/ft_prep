@@ -1,5 +1,3 @@
-# JavaScript Array Methods
-
 ### push()
 
 Add element(s) to the end.
@@ -34,9 +32,7 @@ Add element(s) to the start.
 
 ### slice()
 
-Extracts a portion of an array without modifying the original.
-Return shallow copy of part of array.
-slice(start, end) - start: inclusive, end: exclusive
+Extracts a portion of an array without modifying the original. Return shallow copy of part of array. slice(start, end) - start: inclusive, end: exclusive
 
 ```js
 [1,2,3,4].slice(1,3) → [2,3]
@@ -44,8 +40,7 @@ slice(start, end) - start: inclusive, end: exclusive
 
 ### splice()
 
-Add/remove/replace elements at index (mutates the original array).
-splice(start, deleteCount, item1, item2, ...) - start: index to begin (negative counts from end), deleteCount: how many elements to remove, item1... : elements to insert in their place (optional)
+Add/remove/replace elements at index (mutates the original array). splice(start, deleteCount, item1, item2, ...) - start: index to begin (negative counts from end), deleteCount: how many elements to remove, item1... : elements to insert in their place (optional)
 
 Returns a new array of the **removed** elements — not the modified array.
 
@@ -75,21 +70,36 @@ c.splice(1, 1, 2);      // remove 1 element at index 1, insert 2
 console.log(c);         // [1, 2, 3]
 ```
 
-Rule of thumb: **`slice` copies, `splice` cuts** — original array untouched vs. mutated in place.
+Rule of thumb: `slice` **copies,** `splice` **cuts** — original array untouched vs. mutated in place.
 
 ### map()
 
-Transform elements with callback.
-map(callback) - callback: function to transform each element
+Transform elements with callback. map(callback) - callback: function to transform each element
 
 ```js
 [1,2,3].map(x=>x*2) → [2,4,6]
 ```
 
+Arrow functions have two forms: implicit return (concise body, no braces) returns the expression automatically, like the example above. A block body (with braces) needs an explicit `return`, otherwise it returns `undefined` for every element. Use a block body when the transform needs more than one line:
+
+```js
+let users = [
+    { name: "Alice", age: 25 },
+    { name: "Bob", age: 17 }
+];
+
+let labeled = users.map(user => {
+    let status = user.age >= 18 ? "adult" : "minor";
+    return `${user.name} (${status})`;
+});
+
+console.log(labeled);
+// ["Alice (adult)", "Bob (minor)"]
+```
+
 ### filter()
 
-Keep elements passing test.
-filter(callback) - callback: function that returns true/false to keep/remove elements
+Keep elements passing test. filter(callback) - callback: function that returns true/false to keep/remove elements
 
 ```js
 let list = [1,2,3,4,2,1,1];
@@ -102,8 +112,7 @@ console.log(res) // [ 3, 4 ]
 
 ### reduce()
 
-Accumulate values.
-reduce(callback, initialValue) - callback: accumulator function, initialValue: starting value
+Accumulate values. reduce(callback, initialValue) - callback: accumulator function, initialValue: starting value
 
 ```js
 let list = [1,2,3,4,2,1,1];
@@ -121,8 +130,7 @@ console.log(res) // 14
 
 ### forEach()
 
-Run callback on each element.
-forEach(callback) - callback: function to execute for each element
+Run callback on each element. forEach(callback) - callback: function to execute for each element
 
 ```js
 [1,2,3].forEach(x=>console.log(x))
@@ -130,8 +138,7 @@ forEach(callback) - callback: function to execute for each element
 
 ### find()
 
-Return first element matching condition.
-find(callback) - callback: function that returns true for the element you want
+Return first element matching condition. find(callback) - callback: function that returns true for the element you want
 
 ```js
 [1,2,3].find(x=>x>1) → 2
@@ -139,8 +146,7 @@ find(callback) - callback: function that returns true for the element you want
 
 ### findIndex()
 
-Return index of first match.
-findIndex(callback) - callback: function that returns true for the element you want
+Return index of first match. findIndex(callback) - callback: function that returns true for the element you want
 
 ```js
 [1,2,3].findIndex(x=>x>1) → 1
@@ -148,8 +154,7 @@ findIndex(callback) - callback: function that returns true for the element you w
 
 ### every()
 
-Check if all elements pass test.
-every(callback) - callback: function that must return true for ALL elements
+Check if all elements pass test. every(callback) - callback: function that must return true for ALL elements
 
 ```js
 [1,2,3].every(x=>x>0) → true
@@ -157,8 +162,7 @@ every(callback) - callback: function that must return true for ALL elements
 
 ### some()
 
-Check if any element passes test.
-some(callback) - callback: function that returns true for ANY element
+Check if any element passes test. some(callback) - callback: function that returns true for ANY element
 
 ```js
 [1,2,3].some(x=>x>2) → true
@@ -166,8 +170,7 @@ some(callback) - callback: function that returns true for ANY element
 
 ### sort()
 
-Sort array (mutates).
-sort(compareFunction) - compareFunction: optional function to define sort order
+Sort array (mutates). sort(compareFunction) - compareFunction: optional function to define sort order
 
 ```js
 [3,1,2].sort() → [1,2,3]
@@ -178,8 +181,7 @@ sort(compareFunction) - compareFunction: optional function to define sort order
 
 ### reverse()
 
-Reverse array (mutates).
-reverse() - no parameters
+Reverse array (mutates). reverse() - no parameters
 
 ```js
 [1,2,3].reverse() → [3,2,1]
@@ -187,8 +189,7 @@ reverse() - no parameters
 
 ### join()
 
-Join elements into string.
-join(separator) - separator: string to put between elements
+Join elements into string. join(separator) - separator: string to put between elements
 
 ```js
 [1,2,3].join('-') → "1-2-3"
@@ -200,8 +201,7 @@ join(separator) - separator: string to put between elements
 
 ### includes()
 
-Check if array includes element.
-includes(searchElement, fromIndex) - searchElement: what to look for, fromIndex: optional start position
+Check if array includes element. includes(searchElement, fromIndex) - searchElement: what to look for, fromIndex: optional start position
 
 ```js
 [1,2,3].includes(2) → true
@@ -209,8 +209,7 @@ includes(searchElement, fromIndex) - searchElement: what to look for, fromIndex:
 
 ### indexOf()
 
-Find first index of element.
-indexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: optional start position
+Find first index of element. indexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: optional start position
 
 ```js
 [1,2,3].indexOf(2) → 1
@@ -220,8 +219,7 @@ indexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: opti
 
 ### lastIndexOf()
 
-Find last index of element.
-lastIndexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: optional start position from end
+Find last index of element. lastIndexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: optional start position from end
 
 ```js
 [1,2,3,2].lastIndexOf(2) → 3
@@ -229,8 +227,7 @@ lastIndexOf(searchElement, fromIndex) - searchElement: what to find, fromIndex: 
 
 ### Array.of()
 
-Create array from args.
-Array.of(...elements) - elements: any number of values to put in the array
+Create array from args. Array.of(...elements) - elements: any number of values to put in the array
 
 ```js
 Array.of(1,2,3) → [1,2,3]
@@ -238,8 +235,7 @@ Array.of(1,2,3) → [1,2,3]
 
 ### Array.from()
 
-Create array from iterable.
-Array.from(arrayLike, mapFn) - arrayLike: iterable object, mapFn: optional transform function
+Create array from iterable. Array.from(arrayLike, mapFn) - arrayLike: iterable object, mapFn: optional transform function
 
 ```js
 Array.from("abc") → ["a","b","c"]
@@ -247,8 +243,7 @@ Array.from("abc") → ["a","b","c"]
 
 ### flat()
 
-Flatten nested arrays.
-flat(depth) - depth: how many levels deep to flatten (default 1)
+Flatten nested arrays. flat(depth) - depth: how many levels deep to flatten (default 1)
 
 ```js
 [1,[2,[3]]].flat(2) → [1,2,3]
@@ -256,8 +251,7 @@ flat(depth) - depth: how many levels deep to flatten (default 1)
 
 ### flatMap()
 
-Map + flatten one level.
-flatMap(callback) - callback: function to transform each element, then flattens result
+Map + flatten one level. flatMap(callback) - callback: function to transform each element, then flattens result
 
 ```js
 [1,2].flatMap(x=>[x,x*2]) → [1,2,2,4]
@@ -265,8 +259,7 @@ flatMap(callback) - callback: function to transform each element, then flattens 
 
 ### at()
 
-Access by index (supports negative).
-at(index) - index: position to access (negative counts from end)
+Access by index (supports negative). at(index) - index: position to access (negative counts from end)
 
 ```js
 [1,2,3].at(-1) → 3
@@ -274,8 +267,7 @@ at(index) - index: position to access (negative counts from end)
 
 ### findLast()
 
-Find last element matching condition.
-findLast(callback) - callback: function that returns true for the element you want
+Find last element matching condition. findLast(callback) - callback: function that returns true for the element you want
 
 ```js
 [1,2,3,2].findLast(x=>x===2) → 2 (last one)
@@ -283,8 +275,7 @@ findLast(callback) - callback: function that returns true for the element you wa
 
 ### findLastIndex()
 
-Find index of last match.
-findLastIndex(callback) - callback: function that returns true for the element you want
+Find index of last match. findLastIndex(callback) - callback: function that returns true for the element you want
 
 ```js
 [1,2,3,2].findLastIndex(x=>x===2) → 3
@@ -292,8 +283,7 @@ findLastIndex(callback) - callback: function that returns true for the element y
 
 ### toReversed()
 
-Return reversed copy (non-mutating).
-toReversed() - no parameters
+Return reversed copy (non-mutating). toReversed() - no parameters
 
 ```js
 [1,2,3].toReversed() → [3,2,1]
@@ -301,8 +291,7 @@ toReversed() - no parameters
 
 ### toSorted()
 
-Return sorted copy (non-mutating).
-toSorted(compareFunction) - compareFunction: optional function to define sort order
+Return sorted copy (non-mutating). toSorted(compareFunction) - compareFunction: optional function to define sort order
 
 ```js
 [3,1,2].toSorted() → [1,2,3]
@@ -310,8 +299,7 @@ toSorted(compareFunction) - compareFunction: optional function to define sort or
 
 ### toSpliced()
 
-Return new array with splice applied (non-mutating).
-toSpliced(start, deleteCount, ...items) - start: index, deleteCount: how many to remove, items: what to add
+Return new array with splice applied (non-mutating). toSpliced(start, deleteCount, ...items) - start: index, deleteCount: how many to remove, items: what to add
 
 ```js
 [1,2,3].toSpliced(1,1,9) → [1,9,3]
@@ -319,8 +307,7 @@ toSpliced(start, deleteCount, ...items) - start: index, deleteCount: how many to
 
 ### with()
 
-Return copy with element replaced at index.
-with(index, value) - index: position to replace, value: new value to put there
+Return copy with element replaced at index. with(index, value) - index: position to replace, value: new value to put there
 
 ```js
 [1,2,3].with(1,9) → [1,9,3]
@@ -328,8 +315,7 @@ with(index, value) - index: position to replace, value: new value to put there
 
 ### concat()
 
-Merge arrays into a new array (non-mutating).
-concat(...valuesOrArrays) - arguments to append, arrays are flattened one level
+Merge arrays into a new array (non-mutating). concat(...valuesOrArrays) - arguments to append, arrays are flattened one level
 
 ```js
 [1,2].concat([3,4]) → [1,2,3,4]
@@ -338,8 +324,7 @@ concat(...valuesOrArrays) - arguments to append, arrays are flattened one level
 
 ### fill()
 
-Fill elements with a static value (mutates).
-fill(value, start, end) - value: what to fill with, start: inclusive (default 0), end: exclusive (default length)
+Fill elements with a static value (mutates). fill(value, start, end) - value: what to fill with, start: inclusive (default 0), end: exclusive (default length)
 
 ```js
 [1,2,3].fill(9) → [9,9,9]
@@ -348,8 +333,7 @@ fill(value, start, end) - value: what to fill with, start: inclusive (default 0)
 
 ### copyWithin()
 
-Copy part of the array to another location within itself (mutates).
-copyWithin(target, start, end) - target: where to copy to, start/end: range to copy from
+Copy part of the array to another location within itself (mutates). copyWithin(target, start, end) - target: where to copy to, start/end: range to copy from
 
 ```js
 [1,2,3,4,5].copyWithin(0, 3) → [4,5,3,4,5]
@@ -358,8 +342,7 @@ copyWithin(target, start, end) - target: where to copy to, start/end: range to c
 
 ### reduceRight()
 
-Accumulate values from right to left.
-reduceRight(callback, initialValue) - callback: accumulator function, initialValue: optional starting value
+Accumulate values from right to left. reduceRight(callback, initialValue) - callback: accumulator function, initialValue: optional starting value
 
 ```js
 [1,2,3,4].reduceRight((acc, val) => acc + val) → 10
@@ -368,8 +351,7 @@ reduceRight(callback, initialValue) - callback: accumulator function, initialVal
 
 ### keys() / values() / entries()
 
-Return iterators over indices, elements, or [index, element] pairs.
-keys() / values() / entries() - no parameters, return an Array Iterator
+Return iterators over indices, elements, or \[index, element\] pairs. keys() / values() / entries() - no parameters, return an Array Iterator
 
 ```js
 [...[1,2,3].keys()] → [0,1,2]
@@ -379,8 +361,7 @@ keys() / values() / entries() - no parameters, return an Array Iterator
 
 ### toString() / toLocaleString()
 
-Convert array to a comma-separated string.
-toString() / toLocaleString() - no parameters (toLocaleString formats elements per locale)
+Convert array to a comma-separated string. toString() / toLocaleString() - no parameters (toLocaleString formats elements per locale)
 
 ```js
 [1,2,3].toString() → "1,2,3"
@@ -389,8 +370,7 @@ toString() / toLocaleString() - no parameters (toLocaleString formats elements p
 
 ### Array.isArray()
 
-Check whether a value is an array.
-Array.isArray(value) - value: what to test
+Check whether a value is an array. Array.isArray(value) - value: what to test
 
 ```js
 Array.isArray([1,2,3]) → true
@@ -399,8 +379,7 @@ Array.isArray("abc") → false
 
 ### Array.fromAsync()
 
-Create an array from an async iterable, iterable, or array-like object (ES2024).
-Array.fromAsync(asyncIterable, mapFn) - asyncIterable: source, mapFn: optional transform function
+Create an array from an async iterable, iterable, or array-like object (ES2024). Array.fromAsync(asyncIterable, mapFn) - asyncIterable: source, mapFn: optional transform function
 
 ```js
 await Array.fromAsync([1,2,3]) → [1,2,3]
