@@ -1,21 +1,4 @@
-## 1. Brute Force
-
-```plaintext
-function bruteForce(nums) {
-    let maxSum = nums[0];
-
-    for (let L = 0; L < nums.length; L++) {
-        let curSum = 0;
-        for (let R = L; R < nums.length; R++) {
-            curSum += nums[R]; // Extend subarray to the right
-            maxSum = Math.max(maxSum, curSum); // Track largest sum seen
-        }
-    }
-    return maxSum;
-}
-```
-
-## 2. Kadane's Algorithm
+## 1. Kadane's Algorithm
 
 ```plaintext
 function kadanes(nums) {
@@ -31,7 +14,7 @@ function kadanes(nums) {
 }
 ```
 
-## 3. Sliding Window (Returning the Subarray)
+## 2. Sliding Window (Returning the Subarray)
 
 ```plaintext
 function slidingWindow(nums) {

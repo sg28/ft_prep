@@ -1,34 +1,19 @@
-## 1. Brute Force
-
-```plaintext
-function closeDuplicatesBruteForce(nums, k) {
-    for (let L = 0; L < nums.length; L++) {
-        for (let R = L + 1; R < Math.min(nums.length, L + k); R++) {
-            if (nums[L] == nums[R]) {
-                return true; // Duplicate found within window of size k
-            }
-        }
-    }
-    return false;
-}
-```
-
-## 2. Sliding Window (Fixed Size)
+## Sliding Window (Fixed Size)
 
 ```plaintext
 function closeDuplicates(nums, k) {
     let window = new Set(); // Current window of size <= k
-    let L = 0;
+    let leftIndex = 0;
 
-    for (let R = 0; R < nums.length; R++) {
-        if (R - L + 1 > k) {
-            window.delete(nums[L]); // Shrink window from the left
-            L++;
+    for (let rightIndex = 0; rightIndex < nums.length; rightIndex++) {
+        if (rightIndex - leftIndex + 1 > k) {
+            window.delete(nums[leftIndex]); // Shrink window from the left
+            leftIndex++;
         }
-        if (window.has(nums[R])) {
+        if (window.has(nums[rightIndex])) {
             return true; // Duplicate already in the window
         }
-        window.add(nums[R]);
+        window.add(nums[rightIndex]);
     }
     return false;
 }
