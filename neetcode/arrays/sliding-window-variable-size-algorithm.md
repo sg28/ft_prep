@@ -1,4 +1,4 @@
-## 1. Longest Subarray With Same Value
+## 1. Longest <span style="color: rgb(229, 87, 87);">Subarray</span> With <span style="color: rgb(229, 87, 87);">Same Value</span>
 
 ```plaintext
 function longestSubarray(nums) {
@@ -15,7 +15,7 @@ function longestSubarray(nums) {
 }
 ```
 
-## 2. Shortest Subarray With Sum >= Target
+## 2. Shortest Subarray With <span style="color: rgb(229, 87, 87);">Total &gt;= Target</span>
 
 ```plaintext
 function shortestSubarray(nums, target) {
@@ -23,17 +23,14 @@ function shortestSubarray(nums, target) {
     let length = Infinity;
 
     for (let R = 0; R < nums.length; R++) {
-        total += nums[R]; // Expand window from the right
+        total = total + nums[R]; // Expand window from the right
         while (total >= target) {
             length = Math.min(R - L + 1, length);
-            total -= nums[L]; // Shrink window from the left
+            total = total - nums[L]; // Shrink window from the left
             L++;
         }
     }
-
-    if (length == Infinity) {
-        return 0;
-    }
+    if (length == Infinity) return 0;
     return length;
 }
 ```
