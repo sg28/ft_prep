@@ -2,7 +2,7 @@
 
 ```plaintext
 push(n) {
-    this.stack.push(n); // Add n to the top of the stack
+    this.stack.push(n);
 }
 ```
 
@@ -10,7 +10,7 @@ push(n) {
 
 ```plaintext
 pop() {
-    return this.stack.pop(); // Remove and return the top element
+    return this.stack.pop();
 }
 ```
 
@@ -18,6 +18,6 @@ pop() {
 
 ```plaintext
 peek() {
-    return this.stack[this.stack.length - 1]; // Return the top element without removing it
+    return this.stack[this.stack.length - 1];
 }
 ```

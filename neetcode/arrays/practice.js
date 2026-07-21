@@ -1,7 +1,6 @@
 
-// Delete from the Ith index- shift left.
 function deleteFromIthPosition(
-    list, 
+    list,
     index
 ){
     for(let i = index; i < list.length - 1; i++){
@@ -10,7 +9,6 @@ function deleteFromIthPosition(
     list.length--;
 }
 
-// Inserting at the iTh Position
 function insertAtiThPosition(
     list,
     index
@@ -21,7 +19,6 @@ function insertAtiThPosition(
     list.length++;
 }
 
-// Sliding window Fixed Size.
 function SlidingWindowFixed(
     nums, k
 ){
@@ -29,25 +26,20 @@ function SlidingWindowFixed(
     let leftIndex = 0;
 
     for(let rightIndex = 0; rightIndex < nums.length; rightIndex++){
-        // Check if the diff is >= k
         if( rightIndex - leftIndex + 1 >= k){
             window.delete(leftIndex);
             leftIndex++;
         }
-        // If element already exists in the window, return true.
         if(window.has(nums[rightIndex])){
             return true;
         }
 
-        // Add nums[rightIndex] to the window.
         window.add(nums[rightIndex]);
     }
     return false;
 }
 
 
-// Sliding Window Variable
-// longest subarray with same value
 function slidingWindowVariable(
     nums,
 ){
@@ -62,7 +54,6 @@ function slidingWindowVariable(
     return length;
 }
 
-// shortest subarray whose total >= target
 function shortestWithTotal(
     nums,
     target

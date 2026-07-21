@@ -7,8 +7,8 @@ function isPalindrome(word) {
         if (word.charAt(L) != word.charAt(R)) {
             return false;
         }
-        L++; // Move left pointer inward
-        R--; // Move right pointer inward
+        L++;
+        R--;
     }
     return true;
 }
@@ -21,9 +21,9 @@ function targetSum(nums, target) {
     let L = 0, R = nums.length - 1;
     while (L < R) {
         if (nums[L] + nums[R] > target) {
-            R--; // Sum too large, shrink from the right
+            R--;
         } else if (nums[L] + nums[R] < target) {
-            L++; // Sum too small, grow from the left
+            L++;
         } else {
             return [L, R];
         }

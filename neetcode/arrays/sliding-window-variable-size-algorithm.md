@@ -7,7 +7,7 @@ function longestSubarray(nums) {
 
     for (let R = 0; R < nums.length; R++) {
         if (nums[L] != nums[R]) {
-            L = R; // New value encountered, shrink window to R
+            L = R;
         }
         length = Math.max(length, R - L + 1);
     }
@@ -23,10 +23,10 @@ function shortestSubarray(nums, target) {
     let length = Infinity;
 
     for (let R = 0; R < nums.length; R++) {
-        total = total + nums[R]; // Expand window from the right
+        total = total + nums[R];
         while (total >= target) {
             length = Math.min(R - L + 1, length);
-            total = total - nums[L]; // Shrink window from the left
+            total = total - nums[L];
             L++;
         }
     }

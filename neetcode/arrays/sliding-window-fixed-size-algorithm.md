@@ -2,16 +2,16 @@
 
 ```plaintext
 function closeDuplicates(nums, k) {
-    let window = new Set(); // Current window of size <= k
+    let window = new Set();
     let leftIndex = 0;
 
     for (let rightIndex = 0; rightIndex < nums.length; rightIndex++) {
         if (rightIndex - leftIndex + 1 > k) {
-            window.delete(nums[leftIndex]); // Shrink window from the left
+            window.delete(nums[leftIndex]);
             leftIndex++;
         }
         if (window.has(nums[rightIndex])) {
-            return true; // Duplicate already in the window
+            return true;
         }
         window.add(nums[rightIndex]);
     }

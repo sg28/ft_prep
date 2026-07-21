@@ -6,7 +6,7 @@ function kadanes(nums) {
     let curSum = 0;
 
     for (let n of nums) {
-        curSum = Math.max(curSum, 0); // Discard a negative running sum, start fresh
+        curSum = Math.max(curSum, 0);
         curSum += n;
         maxSum = Math.max(maxSum, curSum);
     }
@@ -25,7 +25,7 @@ function slidingWindow(nums) {
 
     for (let R = 0; R < nums.length; R++) {
         if (curSum < 0) {
-            curSum = 0; // Reset window, constraint was broken
+            curSum = 0;
             L = R;
         }
         curSum += nums[R];
