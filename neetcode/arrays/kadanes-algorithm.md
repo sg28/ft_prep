@@ -1,40 +1,24 @@
-## 1. Kadane's Algorithm
+# Kadane's Algorithm (Sum + Subarray)
 
 ```plaintext
 function kadanes(nums) {
     let maxSum = nums[0];
-    let curSum = 0;
+    let sum = 0;
+    let start = 0, end = 0;
+    let left = 0;
 
-    for (let n of nums) {
-        curSum = Math.max(curSum, 0);
-        curSum += n;
-        maxSum = Math.max(maxSum, curSum);
-    }
-    return maxSum;
-}
-```
-
-## 2. Sliding Window (Returning the Subarray)
-
-```plaintext
-function slidingWindow(nums) {
-    let maxSum = nums[0];
-    let curSum = 0;
-    let maxL = 0, maxR = 0;
-    let L = 0;
-
-    for (let R = 0; R < nums.length; R++) {
-        if (curSum < 0) {
-            curSum = 0;
-            L = R;
+    for (let right = 0; right < nums.length; right++) {
+        if (sum < 0) {
+            sum = 0;
+            left = right;
         }
-        curSum += nums[R];
-        if (curSum > maxSum) {
-            maxSum = curSum;
-            maxL = L;
-            maxR = R;
+        sum += nums[right];
+        if (sum > maxSum) {
+            maxSum = sum;
+            start = left;
+            end = right;
         }
     }
-    return [maxL, maxR];
+    return { maxSum, subarray: [start, end] };
 }
 ```
