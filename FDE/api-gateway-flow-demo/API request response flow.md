@@ -2,6 +2,27 @@
 
 This walks through **one** API call — `POST /orders` — end-to-end, but breaks open every gateway step (TLS, AuthN, AuthZ, rate limiting, validation, service discovery, routing) so you can see *how* each one actually works internally, not just that it happens.
 
+## Glossary (full forms, first use expanded below)
+
+| Acronym | Full Form |
+|---|---|
+| TLS | Transport Layer Security |
+| mTLS | Mutual Transport Layer Security |
+| HTTPS / HTTP | HyperText Transfer Protocol Secure / HyperText Transfer Protocol |
+| AuthN | Authentication |
+| AuthZ | Authorization |
+| JWT | JSON Web Token |
+| JWKS | JSON Web Key Set |
+| RBAC | Role-Based Access Control |
+| CA | Certificate Authority |
+| KMS | Key Management Service |
+| DNS | Domain Name System |
+| IP | Internet Protocol |
+| TTL | Time To Live |
+| DB | Database |
+| DTO | Data Transfer Object |
+| sub / exp / iss / aud | JWT standard claim names: Subject / Expiration time / Issuer / Audience |
+
 ---
 
 ## Deep Dive: What Each Gateway Step Actually Does
@@ -21,11 +42,11 @@ This arrives encrypted (HTTPS) at the gateway's public listener.
 
 ---
 
-### Step 2 — TLS Termination
+### Step 2 — TLS (Transport Layer Security) Termination
 
-- The gateway holds the server's TLS certificate/private key (or fetches it from a cert manager / KMS).
-- It decrypts the incoming TLS stream, turning HTTPS into plain HTTP **inside** the gateway process.
-- From here on, traffic to backend services is re-encrypted separately via **mTLS** (mutual TLS) on the internal service mesh — the client's original TLS session ends at the gateway.
+- The gateway holds the server's TLS certificate/private key (or fetches it from a cert manager / KMS = Key Management Service).
+- It decrypts the incoming TLS stream, turning HTTPS (HyperText Transfer Protocol Secure) into plain HTTP (HyperText Transfer Protocol) **inside** the gateway process.
+- From here on, traffic to backend services is re-encrypted separately via **mTLS** (Mutual Transport Layer Security) on the internal service mesh — the client's original TLS session ends at the gateway.
 - Why: backend services don't need to manage public certs; the gateway is the single point of exposure to the internet.
 
 ```
@@ -37,16 +58,16 @@ This arrives encrypted (HTTPS) at the gateway's public listener.
 
 ---
 
-### Step 3 — AuthN: Validate JWT
+### Step 3 — AuthN (Authentication): Validate JWT
 
 The gateway pulls the `Authorization: Bearer <token>` header and:
 
-1. **Splits** the JWT into header.payload.signature.
-2. **Verifies the signature** against the issuer's public key (fetched once from the identity provider's JWKS endpoint, cached).
-3. **Checks claims**:
-   - `exp` (expiry) — reject if in the past → `401`
-   - `iss` (issuer) — must match trusted auth server
-   - `aud` (audience) — must match this API
+1. **Splits** the JWT (JSON Web Token) into header.payload.signature.
+2. **Verifies the signature** against the issuer's public key (fetched once from the identity provider's JWKS (JSON Web Key Set) endpoint, cached).
+3. **Checks claims** (standard JWT fields):
+   - `exp` (Expiration time) — reject if in the past → `401`
+   - `iss` (Issuer) — must match trusted auth server
+   - `aud` (Audience) — must match this API
 4. If valid, decodes claims into a context object attached to the request:
 
 ```json
@@ -57,7 +78,7 @@ No database call needed — validation is purely cryptographic + local, so this 
 
 ---
 
-### Step 4 — AuthZ: Check RBAC Scope
+### Step 4 — AuthZ (Authorization): Check RBAC (Role-Based Access Control) Scope
 
 - The gateway knows (from its route config) that `POST /orders` requires scope `orders:write`.
 - It compares that against the `scope` claim decoded in Step 3.
@@ -73,7 +94,7 @@ required_scope in token_scope.split(" ")  →  true → PASS
 
 ### Step 5 — Rate Limiting
 
-- The gateway keys a counter by client identity (e.g. `usr-101` from the JWT `sub`, or by API key / IP).
+- The gateway keys a counter by client identity (e.g. `usr-101` from the JWT `sub` (Subject) claim, or by API key / IP (Internet Protocol) address).
 - Common algorithm: **sliding window** or **token bucket** stored in a fast shared store (Redis).
 
 ```
@@ -113,7 +134,7 @@ schema: {
 
 ### Step 7 — Service Discovery
 
-- The gateway doesn't hardcode `orders-service`'s IP. It asks a **service registry** (Consul, Eureka, or Kubernetes DNS/Service):
+- The gateway doesn't hardcode `orders-service`'s IP (Internet Protocol) address. It asks a **service registry** (Consul, Eureka, or Kubernetes DNS (Domain Name System) / Service):
 
 ```
 query: "orders-service"
@@ -132,10 +153,10 @@ registry response:
 ### Step 8 — Route + Forward (Token Exchange)
 
 - The gateway rewrites/matches the path to the internal route (e.g. `/orders` → `orders-service/v1/orders`).
-- It **strips the client's original JWT** — the microservice should never see or trust user-facing tokens directly.
+- It **strips the client's original JWT (JSON Web Token)** — the microservice should never see or trust user-facing tokens directly.
 - It **mints a new internal credential** — either:
-  - a short-lived internal service JWT (signed by the gateway's own internal CA), or
-  - relies on the mTLS client certificate as the identity itself.
+  - a short-lived internal service JWT (signed by the gateway's own internal CA = Certificate Authority), or
+  - relies on the mTLS (Mutual Transport Layer Security) client certificate as the identity itself.
 - It forwards the original claims as context (e.g. `X-User-Id: usr-101`) so the service knows *who* acted, without re-doing auth.
 
 ```
@@ -147,7 +168,7 @@ X-Internal-Token: <short-lived internal JWT>
 Body: { "items": [{"sku":"ABC123","qty":2}] }
 ```
 
-Why strip-and-reissue instead of just passing the client JWT through: it limits blast radius (internal token has a much shorter TTL and narrower audience), and it decouples internal services from the public identity provider entirely.
+Why strip-and-reissue instead of just passing the client JWT through: it limits blast radius (internal token has a much shorter TTL = Time To Live and narrower audience), and it decouples internal services from the public identity provider entirely.
 
 ---
 
@@ -264,10 +285,10 @@ curl -sk https://localhost:3000/orders/1004 -H "Authorization: Bearer $TOKEN"  #
 ```
 
 Notes on where the demo still simplifies vs. a real deployment:
-- **TLS** — a self-signed dev cert for `localhost`; production uses a CA-issued cert (often via a cert manager / ACME) and rotates it automatically.
-- **JWT secrets** — shared secrets (`CLIENT_JWT_SECRET`, `INTERNAL_JWT_SECRET`); production verifies client JWTs against an identity provider's public JWKS and stores internal signing keys in a KMS/secret manager.
-- **Service discovery** — a static, single-instance registry stub; production uses Consul/Eureka/Kubernetes DNS with live health checks.
+- **TLS (Transport Layer Security)** — a self-signed dev cert for `localhost`; production uses a CA (Certificate Authority)-issued cert (often via a cert manager / ACME = Automatic Certificate Management Environment) and rotates it automatically.
+- **JWT (JSON Web Token) secrets** — shared secrets (`CLIENT_JWT_SECRET`, `INTERNAL_JWT_SECRET`); production verifies client JWTs against an identity provider's public JWKS (JSON Web Key Set) and stores internal signing keys in a KMS (Key Management Service) / secret manager.
+- **Service discovery** — a static, single-instance registry stub; production uses Consul/Eureka/Kubernetes DNS (Domain Name System) with live health checks.
 - **Rate limiting** — an in-memory `Map`; production uses a shared store (Redis) so limits hold across multiple gateway instances.
-- **Caching** — an in-memory `Map` with a fixed 60s TTL; production uses Redis/Memcached with per-route TTLs and explicit invalidation on writes.
+- **Caching** — an in-memory `Map` with a fixed 60s TTL (Time To Live); production uses Redis/Memcached with per-route TTLs and explicit invalidation on writes.
 - **Circuit breaker** — a single in-process `CircuitBreaker` instance; production breakers are usually per-instance-of-the-gateway-process but coordinate trip state via shared telemetry, and thresholds are tuned per downstream dependency.
 - **Message broker** — a local `EventEmitter`; production publishes to Kafka/RabbitMQ so other services can subscribe.

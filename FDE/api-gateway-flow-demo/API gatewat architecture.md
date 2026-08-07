@@ -1,5 +1,25 @@
 # API Gateway Architecture
 
+## Glossary (full forms, first use expanded below)
+
+| Acronym | Full Form |
+|---|---|
+| TLS | Transport Layer Security |
+| mTLS | Mutual Transport Layer Security |
+| SSL | Secure Sockets Layer (predecessor to TLS; "SSL Offload" is legacy terminology for TLS termination) |
+| HTTPS | HyperText Transfer Protocol Secure |
+| AuthN | Authentication |
+| AuthZ | Authorization |
+| JWT | JSON Web Token |
+| OAuth2 | Open Authorization, version 2 |
+| RBAC | Role-Based Access Control |
+| ABAC | Attribute-Based Access Control |
+| WAF | Web Application Firewall |
+| CDN | Content Delivery Network |
+| DNS | Domain Name System |
+| L4 / L7 | Layer 4 (Transport) / Layer 7 (Application) — OSI model network layers |
+| DB | Database |
+
 ```
                                    ┌────────────────────────────┐
                                    │          CLIENTS            │
@@ -67,16 +87,16 @@
 ## Layer Breakdown
 
 ### 1. Client Layer
-- Web, mobile, and third-party consumers hit the gateway over HTTPS.
+- Web, mobile, and third-party consumers hit the gateway over HTTPS (HyperText Transfer Protocol Secure).
 
 ### 2. Edge Layer
-- **CDN / WAF** — caches static content, blocks malicious traffic.
-- **Load Balancer** — distributes traffic across gateway instances (L4/L7).
+- **CDN (Content Delivery Network) / WAF (Web Application Firewall)** — caches static content, blocks malicious traffic.
+- **Load Balancer** — distributes traffic across gateway instances (L4/L7 = Layer 4 / Layer 7, the OSI model's Transport and Application layers).
 
 ### 3. API Gateway Core
-- **TLS Termination** — decrypts incoming HTTPS.
-- **Authentication** — validates identity (OAuth2, JWT, API keys).
-- **Authorization** — enforces access policy (RBAC/ABAC).
+- **TLS (Transport Layer Security) Termination** — decrypts incoming HTTPS.
+- **Authentication (AuthN)** — validates identity (OAuth2 = Open Authorization v2, JWT = JSON Web Token, API keys).
+- **Authorization (AuthZ)** — enforces access policy (RBAC = Role-Based Access Control / ABAC = Attribute-Based Access Control).
 - **Rate Limiting / Throttling** — protects backend from abuse/overload.
 - **Request Validation** — schema checks, sanitization.
 - **Request/Response Transformation** — protocol translation, payload shaping.
@@ -96,7 +116,7 @@
 ## Common Gateway Responsibilities Summary
 | Concern         | Component                     |
 |------------------|-------------------------------|
-| Security         | TLS, AuthN, AuthZ, WAF         |
+| Security         | TLS (Transport Layer Security), AuthN (Authentication), AuthZ (Authorization), WAF (Web Application Firewall) |
 | Traffic Control   | Rate limiting, Load balancing  |
 | Resilience        | Circuit breaker, Retries       |
 | Performance       | Caching, Compression           |
