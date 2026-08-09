@@ -1,3 +1,4 @@
+```javascript
 const WINDOW_MS = 1000;
 const LIMIT = 10;
 const buckets = new Map();
@@ -39,3 +40,4 @@ function allowTokenBucket(uniqueId) {
   }
   return false;
 }
+```
