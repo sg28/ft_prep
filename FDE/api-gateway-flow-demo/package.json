@@ -1,0 +1,16 @@
+{
+  "name": "api-gateway-flow-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Runnable Node.js implementation of the POST /orders gateway pipeline described in 'API request response flow.md'",
+  "main": "gateway.js",
+  "scripts": {
+    "start:orders": "node orders-service.js",
+    "start:gateway": "node gateway.js",
+    "token": "node make-token.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

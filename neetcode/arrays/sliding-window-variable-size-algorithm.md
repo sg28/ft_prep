@@ -15,7 +15,7 @@ function longestSubarray(nums) {
 }
 ```
 
-## 2. Shortest Subarray With <span style="color: rgb(229, 87, 87);">Total &gt;= Target</span>
+## 2. Shortest Subarray With <span style="color: rgb(229, 87, 87);">Total = Target</span>
 
 ```plaintext
 function shortestSubarray(nums, target) {
