@@ -23,71 +23,69 @@
 // pq.changePriority(10, 4);
 // pq.isEmpty();    // false
 
+class PQueue {
+  constructor() {
+    this.heap = [];
+  }
 
-class PQueue{
-    constructor(){
-        this.heap = [];
+  enqueue(item, priority) {
+    this.heap.push({ item, priority });
+    this._bubbleUp(this.heap.length - 1);
+  }
+
+  dequeue() {
+    if (this.isEmpty()) return undefined;
+    const top = this.heap[0];
+    const last = this.heap.pop();
+    if (this.heap.length > 0) {
+      this.heap[0] = last;
+      this._bubbleDown(0);
     }
+    return top.item;
+  }
 
-    enqueue(item, priority){
-        this.heap.push({ item, priority });
-        this._bubbleUp(this.heap.length - 1);
+  peek() {
+    if (this.isEmpty()) return undefined;
+    return this.heap[0].item;
+  }
+
+  isEmpty() {
+    return this.heap.length === 0;
+  }
+
+  changePriority(item, newPriority) {
+    const index = this.heap.findIndex((node) => node.item === item);
+    if (index === -1) return;
+
+    const oldPriority = this.heap[index].priority;
+    this.heap[index].priority = newPriority;
+
+    if (newPriority < oldPriority) this._bubbleUp(index);
+    else this._bubbleDown(index);
+  }
+
+  _bubbleUp(i) {
+    while (i > 0) {
+      const parent = Math.floor((i - 1) / 2);
+      if (this.heap[i].priority >= this.heap[parent].priority) break;
+      [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
+      i = parent;
     }
+  }
 
-    dequeue(){
-        if (this.isEmpty()) return undefined;
-        const top = this.heap[0];
-        const last = this.heap.pop();
-        if (this.heap.length > 0) {
-            this.heap[0] = last;
-            this._bubbleDown(0);
-        }
-        return top.item;
+  _bubbleDown(i) {
+    const n = this.heap.length;
+    while (true) {
+      let smallest = i;
+      const left = 2 * i + 1;
+      const right = 2 * i + 2;
+      if (left < n && this.heap[left].priority < this.heap[smallest].priority)
+        smallest = left;
+      if (right < n && this.heap[right].priority < this.heap[smallest].priority)
+        smallest = right;
+      if (smallest === i) break;
+      [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
+      i = smallest;
     }
-
-    peek(){
-        if (this.isEmpty()) return undefined;
-        return this.heap[0].item;
-    }
-
-    isEmpty(){
-        return this.heap.length === 0;
-    }
-
-    changePriority(item, newPriority){
-        const index = this.heap.findIndex(node => node.item === item);
-        if (index === -1) return;
-        
-        const oldPriority = this.heap[index].priority;
-        this.heap[index].priority = newPriority;
-
-        if (newPriority < oldPriority) 
-            this._bubbleUp(index);
-        else 
-            this._bubbleDown(index);
-    }
-
-    _bubbleUp(i){
-        while (i > 0) {
-            const parent = Math.floor((i - 1) / 2);
-            if (this.heap[i].priority >= this.heap[parent].priority) break;
-            [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
-            i = parent;
-        }
-    }
-
-    _bubbleDown(i){
-        const n = this.heap.length;
-        while (true) {
-            let smallest = i;
-            const left = 2 * i + 1;
-            const right = 2 * i + 2;
-            if (left < n && this.heap[left].priority < this.heap[smallest].priority) smallest = left;
-            if (right < n && this.heap[right].priority < this.heap[smallest].priority) smallest = right;
-            if (smallest === i) break;
-            [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
-            i = smallest;
-        }
-    }
+  }
 }
-
