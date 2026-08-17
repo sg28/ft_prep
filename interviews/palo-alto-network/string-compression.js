@@ -23,3 +23,25 @@
 // Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
 // After modifying the input array in-place, the first 6 characters of chars should be
 // ["a","2","b","2","c","3"].
+
+
+function compressString(s) {
+    let stack = [];
+
+    for(let i = 0; i < s.length; i++){
+        if(stack.length){
+            let stackTop = stack[stack.length-1][0];
+            
+            if(stackTop === s[i]){
+                stack[stack.length-1][1]++;
+            }
+            else{
+                stack.push([s[i],1]);    
+            }
+        }else{
+            stack.push([s[i],1]);
+        }
+    }
+    return stack.map(([char,count]) => char + count ).join('');
+
+}
